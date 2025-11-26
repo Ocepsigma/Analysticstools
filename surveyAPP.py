@@ -1,121 +1,84 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+from scipy.stats import pearsonr, spearmanr, chi2_contingency
+from scipy.stats import shapiro
 
-st.set_page_config(page_title="Aplikasi Analisis Survey", layout="wide")
+st.title("Aplikasi Analisis Survey")
 
-st.title("📊 Aplikasi Analisis Data Survey")
-st.write("Upload file Excel untuk melakukan analisis deskriptif dan asosiasi.")
+uploaded_file = st.file_uploader("Upload file Excel", type=["xlsx"])
 
-# ================================
-# Fungsi Utilitas
-# ================================
-def prepare_categorical(col_series, make_bins=None, min_freq=3):
-    """Konversi kolom menjadi kategori + gabung kategori jarang."""
-    s = col_series.dropna()
+if uploaded_file:
+    df = pd.read_excel(uploaded_file)
+    st.subheader("Preview Data")
+    st.dataframe(df)
 
-    # Jika numerik dan user menentukan jumlah bins
-    if make_bins:
-        try:
-            s = pd.qcut(s, q=make_bins, duplicates='drop')
-        except:
-            s = pd.cut(s, bins=make_bins)
-        s = s.astype(str)
+    st.subheader("Analisis Deskriptif")
+    st.write(df.describe(include="all"))
 
-    # Gabung kategori jarang
-    freqs = s.value_counts()
-    rare = freqs[freqs < min_freq].index
-    s = s.replace(list(rare), "Lainnya")
+    st.subheader("Analisis Asosiasi Otomatis")
 
-    return s
+    # Pilih dua kolom
+    col1 = st.selectbox("Pilih variabel 1", df.columns)
+    col2 = st.selectbox("Pilih variabel 2", df.columns)
 
+    if col1 and col2:
+        x = df[col1].dropna()
+        y = df[col2].dropna()
 
-def chi_square_manual(table):
-    """Hitung chi-square tanpa scipy."""
-    total = table.values.sum()
-    expected = np.outer(table.sum(axis=1), table.sum(axis=0)) / total
-    chi2 = ((table - expected) ** 2 / expected).sum().sum()
-    dof = (table.shape[0] - 1) * (table.shape[1] - 1)
-    return chi2, dof, expected
+        # Tentukan tipe data
+        x_is_num = pd.api.types.is_numeric_dtype(x)
+        y_is_num = pd.api.types.is_numeric_dtype(y)
 
+        st.write(f"**Tipe data {col1}:**", "Numeric" if x_is_num else "Kategori")
+        st.write(f"**Tipe data {col2}:**", "Numeric" if y_is_num else "Kategori")
 
-# ================================
-# Upload File
-# ================================
-uploaded = st.file_uploader("Upload file Excel (.xlsx)", type=["xlsx"])
+        # CASE 1: KEDUA NUMERIC → PEARSON ATAU SPEARMAN
+        if x_is_num and y_is_num:
+            st.write("### Kedua variabel adalah numeric")
 
-if uploaded:
-    df = pd.read_excel(uploaded)
-    st.subheader("📁 Data Preview")
-    st.dataframe(df.head())
+            # Uji normalitas
+            stat1, p1 = shapiro(x)
+            stat2, p2 = shapiro(y)
 
-    # ================================
-    # ANALISIS DESKRIPTIF
-    # ================================
-    st.header("📈 Analisis Deskriptif")
+            st.write(f"Normalitas {col1}: p = {p1:.4f}")
+            st.write(f"Normalitas {col2}: p = {p2:.4f}")
 
-    deskripsi_kolom = st.selectbox("Pilih kolom untuk analisis deskriptif:", df.columns)
+            normal = (p1 > 0.05) and (p2 > 0.05)
 
-    if deskripsi_kolom:
-        col = df[deskripsi_kolom]
+            if normal:
+                st.success("Data normal → menggunakan **Pearson Correlation**")
 
-        # Jika numerik
-        if pd.api.types.is_numeric_dtype(col):
-            st.subheader("📊 Statistik Numerik")
-            st.write(col.describe())
+                r, p_value = pearsonr(x, y)
 
-            st.subheader("📉 Histogram")
-            st.bar_chart(col)
+                st.write("### Hasil Pearson")
+                st.write(f"Correlation (r): **{r:.4f}**")
+                st.write(f"P-value: **{p_value:.4f}**")
 
-        # Jika kategori / string
+            else:
+                st.warning("Data tidak normal → menggunakan **Spearman Correlation**")
+
+                r, p_value = spearmanr(x, y)
+
+                st.write("### Hasil Spearman")
+                st.write(f"Correlation (rho): **{r:.4f}**")
+                st.write(f"P-value: **{p_value:.4f}**")
+
+        # CASE 2: SALAH SATU KATEGORI → CHI-SQUARE
         else:
-            st.subheader("📊 Frekuensi Kategori")
-            count_data = col.value_counts()
-            st.write(count_data)
-            st.bar_chart(count_data)
+            st.info("Salah satu variabel kategori → menggunakan **Chi-Square Test**")
 
-    # ================================
-    # ANALISIS ASOSIASI
-    # ================================
-    st.header("🔗 Analisis Asosiasi (Chi-square)")
+            contingency_table = pd.crosstab(df[col1], df[col2])
+            st.write("### Tabel Kontingensi")
+            st.dataframe(contingency_table)
 
-    kolom_asosiasi = st.multiselect("Pilih 2 kolom kategorikal atau numerik:", df.columns)
+            chi2, p, dof, expected = chi2_contingency(contingency_table)
 
-    if len(kolom_asosiasi) == 2:
-        c1, c2 = kolom_asosiasi
+            st.write("### Hasil Chi-Square")
+            st.write(f"Chi-square: **{chi2:.4f}**")
+            st.write(f"P-value: **{p:.4f}**")
+            st.write(f"Degrees of freedom: **{dof}**")
 
-        st.write(f"Variabel dipilih: **{c1}** dan **{c2}**")
-
-        # Opsi binning
-        bins1 = st.number_input(f"Jumlah bins untuk {c1} (0 = tidak perlu)", min_value=0, max_value=20, value=0)
-        bins2 = st.number_input(f"Jumlah bins untuk {c2} (0 = tidak perlu)", min_value=0, max_value=20, value=0)
-
-        # Proses kategorisasi
-        s1 = prepare_categorical(df[c1], make_bins=(bins1 if bins1 > 1 else None))
-        s2 = prepare_categorical(df[c2], make_bins=(bins2 if bins2 > 1 else None))
-
-        # Buat tabel kontingensi
-        st.subheader("📋 Tabel Kontingensi")
-        table = pd.crosstab(s1, s2)
-        st.dataframe(table)
-
-        # Cek minimal 2 kategori
-        if table.shape[0] < 2 or table.shape[1] < 2:
-            st.error("❌ Tidak bisa menghitung asosiasi. Minimal harus ada 2 kategori di masing-masing variabel.")
-        else:
-            # Hitung chi-square manual
-            chi2, dof, expected = chi_square_manual(table)
-
-            st.subheader("📐 Hasil Chi-square")
-            st.write(f"**Chi-square:** {chi2:.4f}")
-            st.write(f"**Derajat kebebasan (df):** {dof}")
-
-            st.write("📊 **Expected Frequencies**")
-            st.dataframe(pd.DataFrame(expected, index=table.index, columns=table.columns))
-
-            st.info("Catatan: P-value tidak ditampilkan karena scipy tidak tersedia di Streamlit Community.")
-    else:
-        st.warning("Pilih **tepat 2 kolom** untuk analisis asosiasi.")
 
 
 
