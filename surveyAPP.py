@@ -210,20 +210,19 @@ if page == T("Analisis Data", "Data Analysis"):
         st.markdown("</div>", unsafe_allow_html=True)
 
 # ================================
-#  HALAMAN PROFIL PEMBUAT
+#  HALAMAN PROFIL PEMBUAT (FIXED)
 # ================================
 else:
+
     # Judul
     st.markdown(
         f"<h1 style='text-align:center; margin-bottom:20px;'>{T('Profil Pembuat Aplikasi', 'App Creator Profile')}</h1>",
         unsafe_allow_html=True
     )
 
-   # ======================
-#   FOTO PROFIL (AMAN)
-# ======================
-try:
-    # Versi HTML
+    # ============================
+    # FOTO (Selalu di Tengah)
+    # ============================
     st.markdown(
         """
         <div style='text-align:center; margin-top:10px; margin-bottom:10px;'>
@@ -232,37 +231,33 @@ try:
         """,
         unsafe_allow_html=True
     )
-except:
-    # Versi backup Streamlit (jika HTML gagal / file tidak ditemukan)
-    st.image("foto_yoseph.jpg", width=280)
 
-
-    # ======================
-    #   PERKENALAN (Bilingual)
-    # ======================
+    # ============================
+    # PERKENALAN — bilingual
+    # ============================
     intro_id = """
     <div style='text-align:center; font-size:18px; line-height:1.6; margin-top:15px;'>
-    Nama saya <b>Yoseph Sihite</b>. Web App ini dibuat sebagai bagian dari Final Project mata kuliah Statistik 1.  
-    Saya kuliah di jurusan Teknik Industri, kelas 3, dengan SID 004202400113.  
-    Saya berasal dari Group 2 dalam mata kuliah ini.  
+    Nama saya <b>Yoseph Sihite</b>. Web App ini dibuat sebagai bagian dari Final Project mata kuliah Statistik 1.<br>
+    Saya kuliah di jurusan Teknik Industri, kelas 3, dengan SID 004202400113.<br>
+    Saya berasal dari Group 2 dalam mata kuliah ini.<br>
     Web App ini selesai dibuat pada tanggal 1 Desember 2025.
     </div>
     """
 
     intro_en = """
     <div style='text-align:center; font-size:18px; line-height:1.6; margin-top:15px;'>
-    My name is <b>Yoseph Sihite</b>. This Web App was created as part of the Final Project for the Statistics 1 course.  
-    I am studying Industrial Engineering, class 3, with SID 004202400113.  
-    I am from Group 2 in this course.  
+    My name is <b>Yoseph Sihite</b>. This Web App was created as part of the Final Project for the Statistics 1 course.<br>
+    I study Industrial Engineering, class 3, with SID 004202400113.<br>
+    I am from Group 2 in this course.<br>
     This Web App was completed on December 1st, 2025.
     </div>
     """
 
     st.markdown(T(intro_id, intro_en), unsafe_allow_html=True)
 
-    # ======================
-    #   KONTRIBUSI SAYA
-    # ======================
+    # ============================
+    # KONTRIBUSI — bilingual
+    # ============================
     st.markdown(
         f"<h2 style='text-align:center; margin-top:40px;'>{T('Kontribusi Saya', 'My Contributions')}</h2>",
         unsafe_allow_html=True
@@ -270,14 +265,14 @@ except:
 
     contrib_id = """
     <div style='text-align:center; font-size:18px; line-height:1.6; margin-top:10px;'>
-    Saya membuat seluruh pertanyaan untuk kuesioner, membangun Web App ini sendiri,  
-    dan saya menyelesaikan seluruh proses pengerjaan dari awal sampai selesai secara mandiri.
+    Saya membuat seluruh pertanyaan untuk kuesioner, membangun Web App ini sendiri,<br>
+    dan menyelesaikan seluruh proses pengerjaan dari awal sampai akhir secara mandiri.
     </div>
     """
 
     contrib_en = """
     <div style='text-align:center; font-size:18px; line-height:1.6; margin-top:10px;'>
-    I created all the questionnaire questions, built this Web App myself,  
+    I created all questionnaire questions, built this Web App myself,<br>
     and completed the entire development process independently from start to finish.
     </div>
     """
