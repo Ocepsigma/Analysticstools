@@ -219,7 +219,11 @@ else:
         unsafe_allow_html=True
     )
 
-    # Foto Profil
+   # ======================
+#   FOTO PROFIL (AMAN)
+# ======================
+try:
+    # Versi HTML
     st.markdown(
         """
         <div style='text-align:center; margin-top:10px; margin-bottom:10px;'>
@@ -228,6 +232,10 @@ else:
         """,
         unsafe_allow_html=True
     )
+except:
+    # Versi backup Streamlit (jika HTML gagal / file tidak ditemukan)
+    st.image("foto_yoseph.jpg", width=280)
+
 
     # ======================
     #   PERKENALAN (Bilingual)
@@ -275,6 +283,3 @@ else:
     """
 
     st.markdown(T(contrib_id, contrib_en), unsafe_allow_html=True)
-
-
-
