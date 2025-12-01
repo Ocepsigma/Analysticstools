@@ -168,7 +168,7 @@ else:
     st.title(T("Profil Pembuat Aplikasi", "App Creator Profile"))
 
     # Foto profil
-    st.image("foto.jpg", width=300)
+    st.image("foto_yoseph.jpg", width=300)
 
     # Perkenalan
     intro_id = """
@@ -199,3 +199,4 @@ else:
     """
 
     st.write(T(contrib_id, contrib_en))
+
