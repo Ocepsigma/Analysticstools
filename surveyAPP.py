@@ -1,228 +1,185 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
-from scipy.stats import pearsonr, spearmanr, chi2_contingency, shapiro
 import matplotlib.pyplot as plt
+from scipy.stats import pearsonr, spearmanr, chi2_contingency, shapiro
 
-# =========================================
-# MULTI PAGE SELECTOR
-# =========================================
-page = st.sidebar.selectbox(
-    "Pilih Halaman / Select Page",
-    ["Analisis Data", "Profile Pembuat"]
-)
+st.set_page_config(page_title="Aplikasi Analisis Survey", layout="wide")
 
-# =========================================
-# PILIHAN BAHASA
-# =========================================
-lang = st.sidebar.selectbox(
-    "Select Language / Pilih Bahasa",
-    ["Bahasa Indonesia", "English"]
-)
+# Bahasa
+lang = st.sidebar.selectbox("Pilih Bahasa / Select Language", ["Indonesia", "English"])
 
-def txt(id, en):
-    return id if lang == "Bahasa Indonesia" else en
+def T(id, en):
+    return id if lang == "Indonesia" else en
 
-# =====================================================================
-# ============================= PAGE 1 ================================
-# =====================================================================
-if page == "Analisis Data":
+# Menu
+page = st.sidebar.radio("Menu", [T("Analisis Data", "Data Analysis"), T("Profil Pembuat", "Creator Profile")])
 
-    st.title(txt("Aplikasi Analisis Data Survey", "Survey Data Analysis App"))
 
-    uploaded_file = st.file_uploader(txt("Upload file Excel", "Upload Excel file"), type=["xlsx"])
+# =========================================================
+# =============== 1. HALAMAN ANALISIS DATA =================
+# =========================================================
+if page == T("Analisis Data", "Data Analysis"):
+    
+    st.title(T("Analisis Data Survey", "Survey Data Analysis"))
 
-    def interpret_strength(r):
-        r = abs(r)
-        if r < 0.2: return txt("Sangat lemah", "Very weak")
-        elif r < 0.4: return txt("Lemah", "Weak")
-        elif r < 0.6: return txt("Moderat", "Moderate")
-        elif r < 0.8: return txt("Kuat", "Strong")
-        else: return txt("Sangat kuat", "Very strong")
+    uploaded_file = st.file_uploader(T("Upload File Excel (.xlsx)", "Upload Excel File (.xlsx)"), type="xlsx")
 
     if uploaded_file:
         df = pd.read_excel(uploaded_file)
 
-        # ---- PREVIEW ----
-        st.subheader(txt("Preview Data", "Data Preview"))
+        st.subheader(T("Data yang Diupload", "Uploaded Data"))
         st.dataframe(df)
 
-        # ---- ANALISIS DESKRIPTIF ----
-        st.subheader(txt("Analisis Deskriptif", "Descriptive Analysis"))
-        st.write(df.describe(include="all"))
+        numeric_cols = df.select_dtypes(include="number").columns.tolist()
 
-        # ==============================
-        # HISTOGRAM & BOXPLOT
-        # ==============================
-        st.subheader(txt("Distribusi Data & Outlier", "Data Distribution & Outliers"))
+        # =====================================================
+        # VISUALISASI HISTOGRAM DAN BOXPLOT
+        # =====================================================
+        st.subheader(T("Distribusi Data", "Data Distribution"))
 
-        numeric_cols = df.select_dtypes(include=np.number).columns.tolist()
-
-        if len(numeric_cols) > 0:
-            selected_col = st.selectbox(
-                txt("Pilih variabel numeric", "Select numeric variable"),
-                numeric_cols
-            )
-
-            st.write(f"### {txt('Histogram untuk', 'Histogram for')} {selected_col}")
+        if numeric_cols:
+            selected = st.selectbox(T("Pilih Variabel", "Select Variable"), numeric_cols)
 
             # Histogram
             fig, ax = plt.subplots()
-            ax.hist(df[selected_col].dropna(), bins=20)
-            ax.set_xlabel(selected_col)
-            ax.set_ylabel(txt("Frekuensi", "Frequency"))
-            ax.set_title(txt(f"Histogram {selected_col}", f"Histogram of {selected_col}"))
+            ax.hist(df[selected], bins=20)
+            ax.set_title(f"Histogram - {selected}")
             st.pyplot(fig)
 
             # Boxplot
-            st.write(f"### {txt('Boxplot untuk Outlier', 'Boxplot for Outliers')}")
-
             fig2, ax2 = plt.subplots()
-            ax2.boxplot(df[selected_col].dropna(), vert=True)
-            ax2.set_ylabel(selected_col)
-            ax2.set_title(txt(f"Boxplot {selected_col}", f"Boxplot of {selected_col}"))
+            ax2.boxplot(df[selected])
+            ax2.set_title(f"Boxplot - {selected}")
             st.pyplot(fig2)
 
-        else:
-            st.info(txt(
-                "Tidak ada kolom numeric untuk ditampilkan.",
-                "No numeric columns available for visualization."
-            ))
-
-        # ==============================
+        # =====================================================
         # ANALISIS ASOSIASI OTOMATIS
-        # ==============================
-        st.subheader(txt("Analisis Asosiasi Otomatis", "Automatic Association Analysis"))
+        # =====================================================
+        st.subheader(T("Analisis Hubungan Variabel", "Variable Relationship Analysis"))
 
-        col1 = st.selectbox(txt("Pilih variabel 1", "Select variable 1"), df.columns)
-        col2 = st.selectbox(txt("Pilih variabel 2", "Select variable 2"), df.columns)
+        col1 = st.selectbox(T("Pilih Variabel 1", "Select Variable 1"), df.columns)
+        col2 = st.selectbox(T("Pilih Variabel 2", "Select Variable 2"), df.columns)
 
         if col1 and col2:
             x = df[col1].dropna()
             y = df[col2].dropna()
 
-            x_is_num = pd.api.types.is_numeric_dtype(x)
-            y_is_num = pd.api.types.is_numeric_dtype(y)
+            x_num = pd.api.types.is_numeric_dtype(x)
+            y_num = pd.api.types.is_numeric_dtype(y)
 
-            st.write(f"**{txt('Tipe data', 'Data type')} {col1}:**", txt("Numeric", "Numeric") if x_is_num else txt("Kategori", "Category"))
-            st.write(f"**{txt('Tipe data', 'Data type')} {col2}:**", txt("Numeric", "Numeric") if y_is_num else txt("Kategori", "Category"))
+            st.write(f"**{col1}** → {'Numeric' if x_num else 'Category'}")
+            st.write(f"**{col2}** → {'Numeric' if y_num else 'Category'}")
 
-            # ==================================================
-            # KEDUA-NYA NUMERIC
-            # ==================================================
-            if x_is_num and y_is_num:
+            # =====================================================
+            # CASE 1: BOTH NUMERIC → PEARSON / SPEARMAN
+            # =====================================================
+            if x_num and y_num:
 
-                st.write("### " + txt("Kedua variabel numeric", "Both variables are numeric"))
+                st.info(T("Kedua variabel numeric → cek normalitas", 
+                          "Both variables numeric → checking normality"))
 
-                stat1, p1 = shapiro(x)
-                stat2, p2 = shapiro(y)
+                # Uji normalitas
+                p_norm_x = shapiro(x)[1]
+                p_norm_y = shapiro(y)[1]
 
-                st.write(f"{txt('Normalitas', 'Normality')} {col1}: p = {p1:.4f}")
-                st.write(f"{txt('Normalitas', 'Normality')} {col2}: p = {p2:.4f}")
+                st.write(f"Normalitas {col1}: p = {p_norm_x:.4f}")
+                st.write(f"Normalitas {col2}: p = {p_norm_y:.4f}")
 
-                normal = (p1 > 0.05) and (p2 > 0.05)
+                normal = (p_norm_x > 0.05) and (p_norm_y > 0.05)
 
+                # ---- Pearson ----
                 if normal:
-                    st.success(txt(
-                        "Data normal → menggunakan Pearson Correlation",
-                        "Data is normal → using Pearson Correlation"
-                    ))
-
+                    st.success(T("Data normal → menggunakan Pearson Correlation", 
+                                 "Normal data → using Pearson Correlation"))
                     r, p_value = pearsonr(x, y)
+                    metode = "Pearson"
 
-                    st.write("### Pearson")
-                    st.write(f"r = **{r:.4f}**")
-                    st.write(f"P-value = **{p_value:.4f}**")
-
-                    st.subheader(txt("Kesimpulan", "Conclusion"))
-                    direction = txt("positif", "positive") if r > 0 else txt("negatif", "negative")
-                    strength = interpret_strength(r)
-                    signif = txt("Signifikan", "Significant") if p_value < 0.05 else txt("Tidak signifikan", "Not significant")
-
-                    st.write(
-                        txt(
-                            f"Hasil menunjukkan korelasi {direction} dengan kekuatan **{strength}** (r = {r:.4f}). "
-                            f"Nilai p = {p_value:.4f}, sehingga hubungan **{signif}**.",
-                            f"The results indicate a {direction} correlation with **{strength}** strength (r = {r:.4f}). "
-                            f"P-value = {p_value:.4f}, so the relationship is **{signif}**."
-                        )
-                    )
-
+                # ---- Spearman ----
                 else:
-                    st.warning(txt(
-                        "Data tidak normal → menggunakan Spearman Correlation",
-                        "Data not normal → using Spearman Correlation"
-                    ))
-
+                    st.warning(T("Data tidak normal → menggunakan Spearman Correlation", 
+                                 "Non-normal data → using Spearman Correlation"))
                     r, p_value = spearmanr(x, y)
+                    metode = "Spearman"
 
-                    st.write("### Spearman")
-                    st.write(f"rho = **{r:.4f}**")
-                    st.write(f"P-value = **{p_value:.4f}**")
+                # --- Output ---
+                st.write(f"### {metode}")
+                st.write(f"r = **{r:.4f}**")
+                st.write(f"P-value = **{p_value:.4f}**")
 
-                    st.subheader(txt("Kesimpulan", "Conclusion"))
-                    direction = txt("positif", "positive") if r > 0 else txt("negatif", "negative")
-                    strength = interpret_strength(r)
-                    signif = txt("Signifikan", "Significant") if p_value < 0.05 else txt("Tidak signifikan", "Not significant")
+                # --- Kesimpulan otomatis ---
+                arah = T("positif", "positive") if r > 0 else T("negatif", "negative")
+                signif = T("Signifikan", "Significant") if p_value < 0.05 else T("Tidak signifikan", "Not significant")
 
-                    st.write(
-                        txt(
-                            f"Hasil menunjukkan korelasi {direction} dengan kekuatan **{strength}** (rho = {r:.4f}). "
-                            f"Nilai p = {p_value:.4f}, sehingga hubungan **{signif}**.",
-                            f"The results indicate a {direction} correlation with **{strength}** strength (rho = {r:.4f}). "
-                            f"P-value = {p_value:.4f}, so the relationship is **{signif}**."
+                st.subheader(T("Kesimpulan", "Conclusion"))
+                st.write(
+                    T(
+                        f"Hubungan {arah} dengan koefisien {metode} = {r:.4f}. "
+                        f"Nilai p = {p_value:.4f} → hubungan **{signif}**.",
+                        f"{arah.capitalize()} correlation with {metode} coefficient {r:.4f}. "
+                        f"P-value = {p_value:.4f} → relationship is **{signif}**."
+                    )
+                )
+
+
+            # =====================================================
+            # CASE 2: SALAH SATU / DUA-DUANYA KATEGORI → CHI SQUARE
+            # =====================================================
+            else:
+                st.info(T("Variabel bersifat kategorik → menggunakan Chi-Square", 
+                          "Categorical variable detected → using Chi-Square Test"))
+
+                table = pd.crosstab(df[col1], df[col2])
+                st.write("### Tabel Kontingensi")
+                st.dataframe(table)
+
+                chi2, p, dof, expected = chi2_contingency(table)
+
+                st.write("### Chi-Square Test")
+                st.write(f"Chi2 = **{chi2:.4f}**")
+                st.write(f"P-value = **{p:.4f}**")
+                st.write(f"Degrees of freedom = **{dof}**")
+
+                # Kesimpulan
+                signif = p < 0.05
+
+                st.subheader(T("Kesimpulan", "Conclusion"))
+
+                if signif:
+                    st.success(
+                        T(
+                            f"Terdapat hubungan signifikan antara {col1} dan {col2}.",
+                            f"There is a significant association between {col1} and {col2}."
+                        )
+                    )
+                else:
+                    st.warning(
+                        T(
+                            f"Tidak terdapat hubungan signifikan antara {col1} dan {col2}.",
+                            f"No significant association between {col1} and {col2}."
                         )
                     )
 
-            # ==================================================
-            # VARIABEL KATEGORIK
-            # ==================================================
-            else:
-                st.info(txt(
-                    "Salah satu variabel kategori → menggunakan Chi-Square Test",
-                    "One variable is categorical → using Chi-Square Test"
-                ))
 
-                contingency_table = pd.crosstab(df[col1], df[col2])
-                st.write("### " + txt("Tabel Kontingensi", "Contingency Table"))
-                st.dataframe(contingency_table)
+# =========================================================
+# =============== 2. HALAMAN PROFIL PEMBUAT ===============
+# =========================================================
+else:
+    st.title("Profil Pembuat Aplikasi")
 
-                chi2, p, dof, expected = chi2_contingency(contingency_table)
+    # Foto profil
+    st.image("foto_yoseph.jpg", width=300)
 
-                st.write("### Chi-Square")
-                st.write(f"Chi-square: **{chi2:.4f}**")
-                st.write(f"P-value: **{p:.4f}**")
-                st.write(f"Degrees of freedom: **{dof}**")
-
-                st.subheader(txt("Kesimpulan", "Conclusion"))
-
-                if p < 0.05:
-                    st.write(txt(
-                        f"Nilai p = {p:.4f} < 0.05 → terdapat **asosiasi signifikan** antara {col1} dan {col2}.",
-                        f"P-value = {p:.4f} < 0.05 → there is a **significant association** between {col1} and {col2}."
-                    ))
-                else:
-                    st.write(txt(
-                        f"Nilai p = {p:.4f} ≥ 0.05 → **tidak ada asosiasi signifikan** antara {col1} dan {col2}.",
-                        f"P-value = {p:.4f} ≥ 0.05 → **no significant association** between {col1} and {col2}."
-                    ))
-
-# =====================================================================
-# ============================= PAGE 2 ================================
-# =====================================================================
-elif page == "Profile Pembuat":
-
-    st.title("Profile Pembuat Aplikasi")
-
-    st.subheader("👤 Nama")
-    st.write("**Yoseph Sihite**")
-
-    st.subheader("📝 Contribution")
+    # Perkenalan
     st.write("""
-    - Membuat Questioner  
-    - Membuat Web App Analisis Data
+    Nama saya Yoseph Sihite. Web App ini dibuat sebagai bagian dari Final Project mata kuliah Statistik 1.
+    Saya kuliah di President University pada jurusan Teknik Industri, kelas 3, dengan SID 004202400113.
+    Saya berasal dari Group 2 dalam pengerjaan tugas ini. Web App ini selesai dibuat pada tanggal 1 Desember 2025.
     """)
 
-    st.subheader("📷 Foto")
-
-    st.image("foto_yoseph.jpg", width=300)
+    # Kontribusi
+    st.subheader("Kontribusi Saya")
+    st.write("""
+    Saya membuat seluruh pertanyaan untuk kuesioner, saya membuat dan membangun Web App ini sendiri,
+    serta saya melakukan seluruh proses pengerjaan dari awal hingga selesai.
+    """)
