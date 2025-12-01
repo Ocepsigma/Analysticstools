@@ -165,21 +165,37 @@ if page == T("Analisis Data", "Data Analysis"):
 # =============== 2. HALAMAN PROFIL PEMBUAT ===============
 # =========================================================
 else:
-    st.title("Profil Pembuat Aplikasi")
+    st.title(T("Profil Pembuat Aplikasi", "App Creator Profile"))
 
     # Foto profil
-    st.image("foto_yoseph.jpg", width=300)
+    st.image("foto.jpg", width=300)
 
     # Perkenalan
-    st.write("""
+    intro_id = """
     Nama saya Yoseph Sihite. Web App ini dibuat sebagai bagian dari Final Project mata kuliah Statistik 1.
     Saya kuliah di President University pada jurusan Teknik Industri, kelas 3, dengan SID 004202400113.
     Saya berasal dari Group 2 dalam pengerjaan tugas ini. Web App ini selesai dibuat pada tanggal 1 Desember 2025.
-    """)
+    """
+
+    intro_en = """
+    My name is Yoseph Sihite. This Web App was created as part of the Final Project for the Statistics 1 course.
+    I am currently studying at President University majoring in Industrial Engineering, class 3, with SID 004202400113.
+    I am part of Group 2 for this project. This Web App was completed on December 1st, 2025.
+    """
+
+    st.write(T(intro_id, intro_en))
 
     # Kontribusi
-    st.subheader("Kontribusi Saya")
-    st.write("""
+    st.subheader(T("Kontribusi Saya", "My Contributions"))
+
+    contrib_id = """
     Saya membuat seluruh pertanyaan untuk kuesioner, saya membuat dan membangun Web App ini sendiri,
     serta saya melakukan seluruh proses pengerjaan dari awal hingga selesai.
-    """)
+    """
+
+    contrib_en = """
+    I created all of the questionnaire questions, I designed and built this entire Web App myself,
+    and I completed the whole development process from start to finish independently.
+    """
+
+    st.write(T(contrib_id, contrib_en))
