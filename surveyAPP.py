@@ -472,12 +472,44 @@ st.markdown("""
         to { filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)); }
     }
     
-    /* Language selector */
+    /* Language selector - LEFT SIDE ONLY */
     .language-selector {
+        position: fixed;
+        top: 20px;
+        left: 20px;
+        z-index: 1000;
         display: flex;
-        justify-content: center;
+        flex-direction: column;
         gap: 0.5rem;
-        margin-bottom: 1rem;
+    }
+    
+    .lang-button {
+        background: rgba(255, 255, 255, 0.95);
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 0.5rem 1rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        backdrop-filter: blur(10px);
+        min-width: 120px;
+        text-align: center;
+    }
+    
+    .lang-button:hover {
+        background: #3b82f6;
+        color: white;
+        border-color: #3b82f6;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+    
+    .lang-button.active {
+        background: #3b82f6;
+        color: white;
+        border-color: #3b82f6;
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
     }
     
     /* Upload area styling - CENTERED */
@@ -796,33 +828,6 @@ st.markdown("""
     /* Spinner */
     .stSpinner {
         color: #3b82f6;
-    }
-    
-    /* Language buttons styling */
-    .lang-button {
-        background: rgba(255, 255, 255, 0.9);
-        border: 1px solid #d1d5db;
-        border-radius: 6px;
-        padding: 0.5rem 1rem;
-        margin: 0 0.25rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: 500;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .lang-button:hover {
-        background: #3b82f6;
-        color: white;
-        border-color: #3b82f6;
-        transform: translateY(-1px);
-    }
-    
-    .lang-button.active {
-        background: #3b82f6;
-        color: white;
-        border-color: #3b82f6;
     }
     
     /* Floating elements for tech feel */
@@ -1186,7 +1191,7 @@ def association_analysis(df, numerical_cols, categorical_cols):
                     """, unsafe_allow_html=True)
 
 def main():
-    # Language selector
+    # Language selector - LEFT SIDE ONLY
     lang_id_active = "active" if st.session_state.language == 'id' else ""
     lang_en_active = "active" if st.session_state.language == 'en' else ""
     lang_zh_active = "active" if st.session_state.language == 'zh' else ""
@@ -1199,8 +1204,8 @@ def main():
     </div>
     """, unsafe_allow_html=True)
     
-    # Language buttons (functional)
-    col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 6, 1])
+    # Language buttons (functional) - HIDDEN
+    col1, col2, col3 = st.columns([1, 1, 1])
     with col1:
         if st.button("🇮🇩 ID", key="lang_id"):
             st.session_state.language = 'id'
