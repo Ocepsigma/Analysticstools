@@ -24,46 +24,81 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS with design inspired by first image
+# Custom CSS with background image - WORKING SOLUTION
 st.markdown("""
 <style>
-    /* Main container with clean white card design */
-    .main .block-container {{
-        background: rgba(255, 255, 255, 0.95);
-        backdrop-filter: blur(10px);
-        border-radius: 15px;
+    /* Main background with gradient fallback */
+    .stApp {
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 25%, #3b82f6 50%, #1e40af 75%, #1e3a8a 100%);
+        background-size: 400% 400%;
+        animation: gradientShift 15s ease infinite;
+        position: relative;
+        overflow-x: hidden;
+    }
+    
+    /* Add binary code overlay effect */
+    .stApp::before {
+        content: "";
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: 
+            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(59, 130, 246, 0.03) 2px, rgba(59, 130, 246, 0.03) 4px),
+            repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(59, 130, 246, 0.03) 2px, rgba(59, 130, 246, 0.03) 4px);
+        background-size: 50px 50px;
+        pointer-events: none;
+        z-index: -1;
+    }
+    
+    /* Animated gradient keyframes */
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+    
+    /* Main container with glassmorphism effect */
+    .main .block-container {
+        background: rgba(255, 255, 255, 0.92);
+        backdrop-filter: blur(12px);
+        border-radius: 20px;
         padding: 2rem;
         margin-top: 2rem;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        border: 1px solid rgba(255, 255, 255, 0.3);
-    }}
+        box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        position: relative;
+        z-index: 1;
+    }
     
     /* Sidebar with professional gradient */
-    .css-1d391kg {{
-        background: linear-gradient(135deg, #1e40af, #3730a3);
+    .css-1d391kg {
+        background: linear-gradient(135deg, rgba(30, 64, 175, 0.95), rgba(55, 48, 163, 0.95));
         backdrop-filter: blur(10px);
-    }}
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
     
-    .css-1d391kg .stSelectbox > div > div {{
+    .css-1d391kg .stSelectbox > div > div {
         background-color: rgba(255, 255, 255, 0.95);
         color: #1e293b;
         border-radius: 8px;
-    }}
+    }
     
-    .css-1d391kg .stFileUploader {{
+    .css-1d391kg .stFileUploader {
         background-color: rgba(255, 255, 255, 0.1);
         border: 2px dashed rgba(255, 255, 255, 0.4);
         border-radius: 10px;
         padding: 1rem;
-    }}
+    }
     
-    .css-1d391kg .stFileUploader label {{
+    .css-1d391kg .stFileUploader label {
         color: white;
         font-weight: 500;
-    }}
+    }
     
     /* Main header with professional blue gradient */
-    .main-header {{
+    .main-header {
         font-size: 2.8rem;
         font-weight: 700;
         background: linear-gradient(135deg, #1e40af, #3b82f6, #60a5fa);
@@ -73,10 +108,17 @@ st.markdown("""
         text-align: center;
         margin-bottom: 2rem;
         text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
-    }}
+        animation: textGlow 3s ease-in-out infinite alternate;
+    }
+    
+    /* Text glow animation */
+    @keyframes textGlow {
+        from { filter: drop-shadow(0 0 10px rgba(59, 130, 246, 0.5)); }
+        to { filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)); }
+    }
     
     /* Section headers */
-    .section-header {{
+    .section-header {
         font-size: 1.6rem;
         font-weight: 600;
         color: #1e40af;
@@ -84,26 +126,49 @@ st.markdown("""
         margin-bottom: 1rem;
         border-left: 4px solid #3b82f6;
         padding-left: 1rem;
-    }}
+        background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), transparent);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+    }
     
     /* Upload area styling */
-    .upload-area {{
-        background: #f8fafc;
+    .upload-area {
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
         border: 2px dashed #cbd5e1;
         border-radius: 12px;
         padding: 2rem;
         text-align: center;
         margin: 1rem 0;
         transition: all 0.3s ease;
-    }}
+        position: relative;
+        overflow: hidden;
+    }
     
-    .upload-area:hover {{
+    .upload-area::before {
+        content: "";
+        position: absolute;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: linear-gradient(45deg, transparent, rgba(59, 130, 246, 0.05), transparent);
+        animation: shimmer 3s infinite;
+    }
+    
+    @keyframes shimmer {
+        0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+        100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+    }
+    
+    .upload-area:hover {
         border-color: #3b82f6;
-        background: #f1f5f9;
-    }}
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+    }
     
     /* Metric cards with clean design */
-    .metric-card {{
+    .metric-card {
         background: linear-gradient(135deg, #f8fafc, #f1f5f9);
         border: 1px solid #e2e8f0;
         border-radius: 12px;
@@ -111,58 +176,90 @@ st.markdown("""
         margin: 0.5rem 0;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
         transition: all 0.3s ease;
-    }}
+        position: relative;
+        overflow: hidden;
+    }
     
-    .metric-card:hover {{
+    .metric-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.1), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .metric-card:hover::before {
+        left: 100%;
+    }
+    
+    .metric-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         border-color: #3b82f6;
-    }}
+    }
     
     /* Insight boxes */
-    .insight-box {{
+    .insight-box {
         background: linear-gradient(135deg, #eff6ff, #dbeafe);
         border-left: 4px solid #3b82f6;
         padding: 1.5rem;
         margin: 1rem 0;
         border-radius: 8px;
         border: 1px solid #bfdbfe;
-    }}
+        position: relative;
+    }
+    
+    .insight-box::after {
+        content: "💡";
+        position: absolute;
+        top: -10px;
+        right: 10px;
+        font-size: 1.5rem;
+        animation: pulse 2s infinite;
+    }
+    
+    @keyframes pulse {
+        0%, 100% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+    }
     
     /* Success messages */
-    .stSuccess {{
+    .stSuccess {
         background: linear-gradient(135deg, #f0fdf4, #dcfce7);
         border-left: 4px solid #22c55e;
         border-radius: 8px;
         border: 1px solid #bbf7d0;
-    }}
+    }
     
     /* Info messages */
-    .stInfo {{
+    .stInfo {
         background: linear-gradient(135deg, #eff6ff, #dbeafe);
         border-left: 4px solid #3b82f6;
         border-radius: 8px;
         border: 1px solid #bfdbfe;
-    }}
+    }
     
     /* Warning messages */
-    .stWarning {{
+    .stWarning {
         background: linear-gradient(135deg, #fffbeb, #fef3c7);
         border-left: 4px solid #f59e0b;
         border-radius: 8px;
         border: 1px solid #fde68a;
-    }}
+    }
     
     /* Error messages */
-    .stError {{
+    .stError {
         background: linear-gradient(135deg, #fef2f2, #fee2e2);
         border-left: 4px solid #ef4444;
         border-radius: 8px;
         border: 1px solid #fecaca;
-    }}
+    }
     
     /* Buttons with professional blue gradient */
-    .stButton > button {{
+    .stButton > button {
         background: linear-gradient(135deg, #3b82f6, #1e40af);
         color: white;
         border: none;
@@ -171,71 +268,88 @@ st.markdown("""
         font-weight: 600;
         transition: all 0.3s ease;
         box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
-    }}
+        position: relative;
+        overflow: hidden;
+    }
     
-    .stButton > button:hover {{
+    .stButton > button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .stButton > button:hover::before {
+        left: 100%;
+    }
+    
+    .stButton > button:hover {
         background: linear-gradient(135deg, #1e40af, #1e3a8a);
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
-    }}
+    }
     
     /* Select boxes */
-    .stSelectbox > div > div {{
+    .stSelectbox > div > div {
         background-color: rgba(255, 255, 255, 0.95);
         border-radius: 8px;
         border: 1px solid #d1d5db;
-    }}
+    }
     
     /* Radio buttons */
-    .stRadio > div {{
+    .stRadio > div {
         background-color: rgba(255, 255, 255, 0.8);
         border-radius: 8px;
         padding: 1rem;
         border: 1px solid #e5e7eb;
-    }}
+    }
     
     /* Tabs */
-    .stTabs {{
+    .stTabs {
         background-color: rgba(255, 255, 255, 0.9);
         border-radius: 12px;
         padding: 0.5rem;
         border: 1px solid #e5e7eb;
-    }}
+    }
     
     /* Dataframes */
-    .dataframe {{
+    .dataframe {
         border-radius: 8px;
         overflow: hidden;
         box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-    }}
+    }
     
     /* Expander */
-    .streamlit-expanderHeader {{
+    .streamlit-expanderHeader {
         background-color: #f8fafc;
         border-radius: 8px;
         font-weight: 600;
         color: #1e40af;
         border: 1px solid #e2e8f0;
-    }}
+    }
     
     /* Sidebar text */
-    .css-1d391kg h3 {{
+    .css-1d391kg h3 {
         color: white;
         text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    }}
+    }
     
-    .css-1d391kg p {{
+    .css-1d391kg p {
         color: rgba(255, 255, 255, 0.9);
         line-height: 1.5;
-    }}
+    }
     
     /* Spinner */
-    .stSpinner {{
+    .stSpinner {
         color: #3b82f6;
-    }}
+    }
     
     /* Language buttons styling */
-    .lang-button {{
+    .lang-button {
         background: rgba(255, 255, 255, 0.9);
         border: 1px solid #d1d5db;
         border-radius: 6px;
@@ -244,20 +358,65 @@ st.markdown("""
         cursor: pointer;
         transition: all 0.3s ease;
         font-weight: 500;
-    }}
+        position: relative;
+        overflow: hidden;
+    }
     
-    .lang-button:hover {{
+    .lang-button:hover {
         background: #3b82f6;
         color: white;
         border-color: #3b82f6;
-    }}
+        transform: translateY(-1px);
+    }
     
-    .lang-button.active {{
+    .lang-button.active {
         background: #3b82f6;
         color: white;
         border-color: #3b82f6;
-    }}
+    }
+    
+    /* Add floating elements for tech feel */
+    .floating-element {
+        position: fixed;
+        width: 4px;
+        height: 4px;
+        background: rgba(59, 130, 246, 0.6);
+        border-radius: 50%;
+        pointer-events: none;
+        animation: float 20s infinite linear;
+        z-index: 0;
+    }
+    
+    @keyframes float {
+        0% {
+            transform: translateY(100vh) translateX(0) rotate(0deg);
+            opacity: 0;
+        }
+        10% {
+            opacity: 1;
+        }
+        90% {
+            opacity: 1;
+        }
+        100% {
+            transform: translateY(-100vh) translateX(100px) rotate(360deg);
+            opacity: 0;
+        }
+    }
+    
+    /* Add multiple floating elements */
+    .floating-element:nth-child(2) { animation-delay: 5s; left: 20%; }
+    .floating-element:nth-child(3) { animation-delay: 10s; left: 40%; }
+    .floating-element:nth-child(4) { animation-delay: 15s; left: 60%; }
+    .floating-element:nth-child(5) { animation-delay: 2s; left: 80%; }
 </style>
+
+<!-- Floating elements -->
+<div class="floating-element"></div>
+<div class="floating-element"></div>
+<div class="floating-element"></div>
+<div class="floating-element"></div>
+<div class="floating-element"></div>
 """, unsafe_allow_html=True)
 
 # Helper functions
