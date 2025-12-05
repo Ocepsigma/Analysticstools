@@ -472,14 +472,6 @@ st.markdown("""
         to { filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)); }
     }
     
-    /* Language selector in header */
-    .header-language-selector {
-        display: flex;
-        justify-content: center;
-        gap: 0.5rem;
-        margin-bottom: 1rem;
-    }
-    
     /* Upload area styling - CENTERED */
     .upload-container {
         display: flex;
@@ -796,33 +788,6 @@ st.markdown("""
     /* Spinner */
     .stSpinner {
         color: #3b82f6;
-    }
-    
-    /* Language buttons styling */
-    .lang-button {
-        background: rgba(255, 255, 255, 0.9);
-        border: 1px solid #d1d5db;
-        border-radius: 6px;
-        padding: 0.5rem 1rem;
-        margin: 0 0.25rem;
-        cursor: pointer;
-        transition: all 0.3s ease;
-        font-weight: 500;
-        position: relative;
-        overflow: hidden;
-    }
-    
-    .lang-button:hover {
-        background: #3b82f6;
-        color: white;
-        border-color: #3b82f6;
-        transform: translateY(-1px);
-    }
-    
-    .lang-button.active {
-        background: #3b82f6;
-        color: white;
-        border-color: #3b82f6;
     }
     
     /* Floating elements for tech feel */
@@ -1186,23 +1151,10 @@ def association_analysis(df, numerical_cols, categorical_cols):
                     """, unsafe_allow_html=True)
 
 def main():
-    # Language selector in header
-    lang_id_active = "active" if st.session_state.language == 'id' else ""
-    lang_en_active = "active" if st.session_state.language == 'en' else ""
-    lang_zh_active = "active" if st.session_state.language == 'zh' else ""
-    
-    st.markdown(f"""
-    <div class="header-language-selector">
-        <button class="lang-button {lang_id_active}" onclick="window.location.reload(); location.href='?lang=id'">🇮🇩 Indonesia</button>
-        <button class="lang-button {lang_en_active}" onclick="window.location.reload(); location.href='?lang=en'">🇬🇧 English</button>
-        <button class="lang-button {lang_zh_active}" onclick="window.location.reload(); location.href='?lang=zh'">🇨🇳 中文</button>
-    </div>
-    """, unsafe_allow_html=True)
-    
     # Main header
     st.markdown(f'<h1 class="main-header">{get_translation("title")}</h1>', unsafe_allow_html=True)
     
-    # Language buttons (functional) - Moved to top
+    # Language buttons (functional) - ONLY IN TOP LEFT
     col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 6, 1])
     with col1:
         if st.button("🇮🇩 ID", key="lang_id"):
