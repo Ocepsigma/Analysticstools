@@ -168,18 +168,6 @@ st.markdown("""
         border-radius: 8px;
     }
     
-    .css-1d391kg .stFileUploader {
-        background-color: rgba(255, 255, 255, 0.1);
-        border: 2px dashed rgba(255, 255, 255, 0.4);
-        border-radius: 10px;
-        padding: 1rem;
-    }
-    
-    .css-1d391kg .stFileUploader label {
-        color: white;
-        font-weight: 500;
-    }
-    
     /* Main header with professional blue gradient */
     .main-header {
         font-size: 2.8rem;
@@ -189,7 +177,7 @@ st.markdown("""
         -webkit-text-fill-color: transparent;
         background-clip: text;
         text-align: center;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
         text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
         animation: textGlow 3s ease-in-out infinite alternate;
     }
@@ -200,34 +188,21 @@ st.markdown("""
         to { filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)); }
     }
     
-    /* Section headers */
-    .section-header {
-        font-size: 1.6rem;
-        font-weight: 600;
-        color: #1e40af;
-        margin-top: 2rem;
-        margin-bottom: 1rem;
-        border-left: 4px solid #3b82f6;
-        padding-left: 1rem;
-        background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), transparent);
-        padding: 0.5rem 1rem;
-        border-radius: 8px;
-    }
-    
-    /* Upload area styling */
-    .upload-area {
-        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    /* Upload area styling - CENTERED AND BELOW TITLE */
+    .upload-section {
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
         border: 2px dashed #cbd5e1;
-        border-radius: 12px;
-        padding: 2rem;
+        border-radius: 16px;
+        padding: 2.5rem;
         text-align: center;
-        margin: 1rem 0;
+        margin: 2rem 0;
         transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
     }
     
-    .upload-area::before {
+    .upload-section::before {
         content: "";
         position: absolute;
         top: -50%;
@@ -243,11 +218,102 @@ st.markdown("""
         100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
     }
     
-    .upload-area:hover {
+    .upload-section:hover {
         border-color: #3b82f6;
-        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        background: linear-gradient(135deg, rgba(239, 246, 255, 0.95), rgba(219, 234, 254, 0.95));
         transform: translateY(-2px);
-        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
+        box-shadow: 0 8px 30px rgba(59, 130, 246, 0.2);
+    }
+    
+    .upload-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1e40af;
+        margin-bottom: 1rem;
+        background: linear-gradient(135deg, #1e40af, #3b82f6);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+    
+    .upload-description {
+        color: #64748b;
+        font-size: 1.1rem;
+        margin-bottom: 1.5rem;
+        line-height: 1.5;
+    }
+    
+    .upload-button {
+        background: linear-gradient(135deg, #3b82f6, #1e40af);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 1rem 2rem;
+        font-weight: 600;
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        position: relative;
+        overflow: hidden;
+        cursor: pointer;
+    }
+    
+    .upload-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+        transition: left 0.5s ease;
+    }
+    
+    .upload-button:hover::before {
+        left: 100%;
+    }
+    
+    .upload-button:hover {
+        background: linear-gradient(135deg, #1e40af, #1e3a8a);
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+    }
+    
+    /* File info styling */
+    .file-info {
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        border-left: 4px solid #22c55e;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border: 1px solid #bbf7d0;
+        box-shadow: 0 2px 10px rgba(34, 197, 94, 0.1);
+    }
+    
+    .file-name {
+        font-weight: 600;
+        color: #15803d;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+    }
+    
+    .file-size {
+        color: #16a34a;
+        font-size: 0.9rem;
+    }
+    
+    /* Section headers */
+    .section-header {
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #1e40af;
+        margin-top: 2rem;
+        margin-bottom: 1rem;
+        border-left: 4px solid #3b82f6;
+        padding-left: 1rem;
+        background: linear-gradient(90deg, rgba(59, 130, 246, 0.1), transparent);
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
     }
     
     /* Metric cards with clean design */
@@ -492,6 +558,11 @@ st.markdown("""
     .floating-element:nth-child(3) { animation-delay: 10s; left: 40%; }
     .floating-element:nth-child(4) { animation-delay: 15s; left: 60%; }
     .floating-element:nth-child(5) { animation-delay: 2s; left: 80%; }
+    
+    /* Hide default file uploader styling */
+    .stFileUploader {
+        display: none;
+    }
 </style>
 
 <!-- Floating elements -->
@@ -501,6 +572,10 @@ st.markdown("""
 <div class="floating-element"></div>
 <div class="floating-element"></div>
 """, unsafe_allow_html=True)
+
+# Global variable to store uploaded file
+if 'uploaded_file' not in st.session_state:
+    st.session_state.uploaded_file = None
 
 # Helper functions
 def load_data(file):
@@ -801,25 +876,62 @@ def main():
     # Main header
     st.markdown('<h1 class="main-header">Analisis Data Survei</h1>', unsafe_allow_html=True)
     
-    # Upload area - inspired by first image
+    # Upload area - CENTERED AND BELOW TITLE
     st.markdown("""
-    <div class="upload-area">
-        <h3 style="color: #1e40af; margin-bottom: 1rem;">Unggah File Excel Anda untuk memulai analisis</h3>
-        <p style="color: #64748b; margin-bottom: 1rem;">Drag and drop file here<br>Limit 200MB per file • XLSX, XLS</p>
+    <div class="upload-section">
+        <div class="upload-title">📊 Unggah File Excel Anda untuk Memulai Analisis</div>
+        <div class="upload-description">
+            Drag and drop file di sini<br>
+            Limit 200MB per file • Format XLSX, XLS, CSV
+        </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # Sidebar
-    st.sidebar.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: white; margin: 1rem 0;">📋 Menu</div>', unsafe_allow_html=True)
-    st.sidebar.markdown("Upload file Excel/CSV survey Anda untuk memulai analisis.")
+    # Custom file upload button
+    uploaded_file = st.file_uploader("Pilih file Excel/CSV", type=['xlsx', 'xls', 'csv'], key='main_file_uploader')
     
-    # File upload
-    uploaded_file = st.sidebar.file_uploader("Upload File Survey", type=['xlsx', 'csv'])
-    
+    # Store file in session state
     if uploaded_file is not None:
+        st.session_state.uploaded_file = uploaded_file
+        
+        # Show file info
+        st.markdown(f"""
+        <div class="file-info">
+            <div class="file-name">📁 {uploaded_file.name}</div>
+            <div class="file-size">Ukuran: {uploaded_file.size / 1024 / 1024:.2f} MB</div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    # Sidebar content
+    st.sidebar.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: white; margin: 1rem 0;">📋 Menu</div>', unsafe_allow_html=True)
+    st.sidebar.markdown("""
+    <div style="color: rgba(255, 255, 255, 0.9); line-height: 1.5;">
+        <p style="margin-bottom: 1rem;">📊 <strong>Analisis Data Survei</strong></p>
+        <p style="margin-bottom: 1rem;">Upload file Excel/CSV survey Anda untuk memulai analisis komprehensif.</p>
+        
+        <p style="margin-bottom: 1rem;">🔍 <strong>Fitur Utama:</strong></p>
+        <ul style="margin-left: 1rem; color: rgba(255, 255, 255, 0.8);">
+            <li>Analisis Deskriptif</li>
+            <li>Uji Statistik</li>
+            <li>Visualisasi Data</li>
+            <li>Export Hasil</li>
+        </ul>
+        
+        <p style="margin-bottom: 1rem;">📈 <strong>Metode Analisis:</strong></p>
+        <ul style="margin-left: 1rem; color: rgba(255, 255, 255, 0.8);">
+            <li>Chi-Square Test</li>
+            <li>Korelasi Pearson/Spearman</li>
+            <li>ANOVA Test</li>
+            <li>Statistik Deskriptif</li>
+        </ul>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Process uploaded file
+    if st.session_state.uploaded_file is not None:
         # Load data
         with st.spinner("Memuat data..."):
-            df = load_data(uploaded_file)
+            df = load_data(st.session_state.uploaded_file)
         
         if df is not None:
             # Success message
@@ -836,13 +948,13 @@ def main():
             col1, col2 = st.columns(2)
             with col1:
                 if numerical_cols:
-                    st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #1e40af; margin: 0.5rem 0;">Kolom Numerik:</div>', unsafe_allow_html=True)
+                    st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #1e40af; margin: 0.5rem 0;">📊 Kolom Numerik:</div>', unsafe_allow_html=True)
                     for col in numerical_cols:
                         st.markdown(f"• {col}")
             
             with col2:
                 if categorical_cols:
-                    st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">Kolom Kategorikal:</div>', unsafe_allow_html=True)
+                    st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">📋 Kolom Kategorikal:</div>', unsafe_allow_html=True)
                     for col in categorical_cols:
                         st.markdown(f"• {col}")
             
@@ -879,7 +991,7 @@ def main():
 <div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border: 1px solid #e5e7eb; margin: 1rem 0;">
 <h2 style="color: #1e40af; margin-bottom: 1rem;">🚀 Cara Menggunakan Aplikasi Ini</h2>
 <ol style="color: #374151; line-height: 1.6;">
-    <li><strong style="color: #3b82f6;">Upload File</strong>: Klik tombol "Browse Files" di sidebar untuk mengupload file Excel (.xlsx) atau CSV (.csv)</li>
+    <li><strong style="color: #3b82f6;">Upload File</strong>: Klik tombol "Pilih file Excel/CSV" di bawah judul untuk mengupload file Excel (.xlsx) atau CSV (.csv)</li>
     <li><strong style="color: #7c3aed;">Analisis Deskriptif</strong>: Dapatkan statistik dasar, visualisasi distribusi, dan insight awal dari data Anda</li>
     <li><strong style="color: #dc2626;">Analisis Asosiasi</strong>: Temukan hubungan antar variabel dengan uji statistik</li>
     <li><strong style="color: #059669;">Export Results</strong>: Download hasil analisis dalam format CSV</li>
@@ -909,7 +1021,7 @@ def main():
 
 <h3 style="color: #ea580c; margin: 1.5rem 0 1rem 0;">📊 Format File yang Didukung:</h3>
 <ul style="color: #374151; line-height: 1.5;">
-    <li>Excel (.xlsx)</li>
+    <li>Excel (.xlsx, .xls)</li>
     <li>CSV (.csv)</li>
 </ul>
 
