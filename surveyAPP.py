@@ -25,6 +25,276 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+# Multi-language translations
+TRANSLATIONS = {
+    "id": {
+        "title": "Analisis Data Survei",
+        "upload_title": "📊 Unggah File Excel Anda untuk Memulai Analisis",
+        "upload_description": "Drag and drop file di sini<br>Limit 200MB per file • Format XLSX, XLS, CSV",
+        "upload_button": "📁 Pilih File Excel/CSV",
+        "success_message": "✅ Data berhasil dimuat! Dataset memiliki",
+        "rows_text": "baris",
+        "columns_text": "kolom",
+        "numerical_columns": "Kolom Numerik",
+        "categorical_columns": "Kolom Kategorikal",
+        "descriptive_analysis": "📈 Analisis Deskriptif",
+        "association_analysis": "🔗 Analisis Asosiasi",
+        "dataset_overview": "📊 Dataset Overview",
+        "missing_values": "🔍 Missing Values",
+        "numerical_stats": "🔢 Statistik Numerik",
+        "data_visualization": "📊 Visualisasi Data",
+        "correlation_matrix": "🔗 Matriks Korelasi",
+        "categorical_analysis": "📋 Analisis Kategorikal",
+        "frequency_table": "📊 Tabel Frekuensi",
+        "chi_square_test": "🎯 Uji Chi-Square",
+        "correlation_analysis": "📊 Analisis Korelasi",
+        "anova_test": "🔄 Uji ANOVA",
+        "instructions": "🚀 Cara Menggunakan Aplikasi Ini",
+        "upload_step": "Upload file Excel (.xlsx) atau CSV (.csv)",
+        "analysis_step": "Pilih analisis yang ingin dilakukan",
+        "export_step": "Download hasil analisis dalam format CSV",
+        "features_title": "📋 Fitur Utama",
+        "descriptive_features": "📈 Analisis Deskriptif",
+        "association_features": "🔗 Analisis Asosiasi",
+        "supported_formats": "📊 Format File yang Didukung",
+        "tip": "Pastikan data Anda memiliki header yang jelas dan format yang konsisten untuk hasil analisis yang optimal.",
+        "error_no_file": "Silakan upload file terlebih dahulu!",
+        "select_numerical_column": "Pilih kolom numerik:",
+        "select_categorical_column": "Pilih kolom kategorikal:",
+        "select_variable_1": "Pilih variabel 1:",
+        "select_variable_2": "Pilih variabel 2:",
+        "analyze_chi_square": "Analisis Chi-Square",
+        "contingency_table": "Tabel Kontingensi",
+        "chi_square_results": "Hasil Chi-Square",
+        "significant": "Signifikan",
+        "not_significant": "Tidak Signifikan",
+        "significant_association": "Ada hubungan signifikan antara",
+        "no_significant_association": "Tidak ada hubungan signifikan antara",
+        "correlation_method": "Metode Korelasi",
+        "pearson": "Pearson",
+        "spearman": "Spearman",
+        "analyze_correlation": "Analisis Korelasi",
+        "correlation_results": "Hasil Korelasi",
+        "categorical_numerical_analysis": "Analisis Kategorikal vs Numerik",
+        "select_categorical_variable": "Pilih variabel kategorikal:",
+        "select_numerical_variable": "Pilih variabel numerik:",
+        "analyze_categorical_numerical": "Analisis Kategorikal-Numerik",
+        "anova_results": "Hasil ANOVA",
+        "significant_difference": "Ada perbedaan signifikan dalam rata-rata",
+        "mean_difference": "antara kategori",
+        "no_significant_difference": "Tidak ada perbedaan signifikan dalam rata-rata",
+        "no_mean_difference": "antara kategori",
+        "total_rows": "Total Baris",
+        "total_columns": "Total Kolom",
+        "category": "Kategori",
+        "frequency": "Frekuensi",
+        "percentage": "Persentase",
+        "columns": "Kolom",
+        "file_name": "📁",
+        "file_size": "Ukuran",
+        "download_summary": "Download Summary Report",
+        "see_raw_data": "👀 Lihat Data Mentah",
+        "export_results": "💾 Export Hasil Analisis",
+        "loading_data": "Memuat data...",
+        "insight": "💡 Insight:",
+        "significant_insight": "Terdapat asosiasi yang signifikan antara variabel",
+        "not_significant_insight": "Tidak terdapat asosiasi yang signifikan antara variabel",
+        "independent_variables": "Variabel-variabel ini tidak independen satu sama lain.",
+        "independent_variables_alt": "Variabel-variabel ini cenderung independen.",
+        "correlation_strength": "sangat kuat" if abs(0.8) >= 0.8 else "kuat" if abs(0.8) >= 0.6 else "sedang" if abs(0.8) >= 0.4 else "lemah" if abs(0.8) >= 0.2 else "sangat lemah",
+        "positive": "positif",
+        "negative": "negatif",
+        "correlation_insight": "Terdapat hubungan",
+        "between_variables": "antara",
+        "statistical_significance": "Hubungan ini signifikan secara statistik.",
+        "no_statistical_significance": "Hubungan ini tidak signifikan secara statistik.",
+        "mean_difference_insight": "Terdapat perbedaan yang signifikan dalam rata-rata",
+        "between_categories": "antar kategori",
+        "no_mean_difference_insight": "Tidak ada perbedaan signifikan dalam rata-rata",
+        "between_categories_alt": "antar kategori"
+    },
+    "en": {
+        "title": "Survey Data Analysis",
+        "upload_title": "📊 Upload Your Excel File to Start Analysis",
+        "upload_description": "Drag and drop file here<br>Limit 200MB per file • XLSX, XLS, CSV formats",
+        "upload_button": "📁 Browse Excel/CSV Files",
+        "success_message": "✅ Data successfully loaded! Dataset has",
+        "rows_text": "rows",
+        "columns_text": "columns",
+        "numerical_columns": "Numerical Columns",
+        "categorical_columns": "Categorical Columns",
+        "descriptive_analysis": "📈 Descriptive Analysis",
+        "association_analysis": "🔗 Association Analysis",
+        "dataset_overview": "📊 Dataset Overview",
+        "missing_values": "🔍 Missing Values",
+        "numerical_stats": "🔢 Numerical Statistics",
+        "data_visualization": "📊 Data Visualization",
+        "correlation_matrix": "🔗 Correlation Matrix",
+        "categorical_analysis": "📋 Categorical Analysis",
+        "frequency_table": "📊 Frequency Table",
+        "chi_square_test": "🎯 Chi-Square Test",
+        "correlation_analysis": "📊 Correlation Analysis",
+        "anova_test": "🔄 ANOVA Test",
+        "instructions": "🚀 How to Use This Application",
+        "upload_step": "Upload Excel (.xlsx) or CSV (.csv) file",
+        "analysis_step": "Choose an analysis to perform",
+        "export_step": "Download analysis results in CSV format",
+        "features_title": "📋 Main Features",
+        "descriptive_features": "📈 Descriptive Analysis",
+        "association_features": "🔗 Association Analysis",
+        "supported_formats": "📊 Supported File Formats",
+        "tip": "Ensure your data has clear headers and consistent format for optimal analysis results.",
+        "error_no_file": "Please upload a file first!",
+        "select_numerical_column": "Select numerical column:",
+        "select_categorical_column": "Select categorical column:",
+        "select_variable_1": "Select variable 1:",
+        "select_variable_2": "Select variable 2:",
+        "analyze_chi_square": "Analyze Chi-Square",
+        "contingency_table": "Contingency Table",
+        "chi_square_results": "Chi-Square Results",
+        "significant": "Significant",
+        "not_significant": "Not Significant",
+        "significant_association": "There is a significant association between",
+        "no_significant_association": "There is no significant association between",
+        "correlation_method": "Correlation Method",
+        "pearson": "Pearson",
+        "spearman": "Spearman",
+        "analyze_correlation": "Analyze Correlation",
+        "correlation_results": "Correlation Results",
+        "categorical_numerical_analysis": "Categorical vs Numerical Analysis",
+        "select_categorical_variable": "Select categorical variable:",
+        "select_numerical_variable": "Select numerical variable:",
+        "analyze_categorical_numerical": "Analyze Categorical-Numerical",
+        "anova_results": "ANOVA Results",
+        "significant_difference": "There is a significant difference in mean",
+        "mean_difference": "between categories",
+        "no_significant_difference": "There is no significant difference in mean",
+        "no_mean_difference": "between categories",
+        "total_rows": "Total Rows",
+        "total_columns": "Total Columns",
+        "category": "Category",
+        "frequency": "Frequency",
+        "percentage": "Percentage",
+        "columns": "Columns",
+        "file_name": "📁",
+        "file_size": "Size",
+        "download_summary": "Download Summary Report",
+        "see_raw_data": "👀 See Raw Data",
+        "export_results": "💾 Export Analysis Results",
+        "loading_data": "Loading data...",
+        "insight": "💡 Insight:",
+        "significant_insight": "There is a significant association between variables",
+        "not_significant_insight": "There is no significant association between variables",
+        "independent_variables": "These variables are not independent of each other.",
+        "independent_variables_alt": "These variables tend to be independent.",
+        "correlation_strength": "very strong" if abs(0.8) >= 0.8 else "strong" if abs(0.8) >= 0.6 else "moderate" if abs(0.8) >= 0.4 else "weak" if abs(0.8) >= 0.2 else "very weak",
+        "positive": "positive",
+        "negative": "negative",
+        "correlation_insight": "There is a",
+        "between_variables": "between",
+        "statistical_significance": "This relationship is statistically significant.",
+        "no_statistical_significance": "This relationship is not statistically significant.",
+        "mean_difference_insight": "There is a significant difference in mean",
+        "between_categories": "between categories",
+        "no_mean_difference_insight": "There is no significant difference in mean",
+        "between_categories_alt": "between categories"
+    },
+    "zh": {
+        "title": "调查数据分析",
+        "upload_title": "📊 上传您的Excel文件以开始分析",
+        "upload_description": "拖放文件到这里<br>每个文件限制200MB • XLSX、XLS、CSV格式",
+        "upload_button": "📁 浏览Excel/CSV文件",
+        "success_message": "✅ 数据成功加载！数据集有",
+        "rows_text": "行",
+        "columns_text": "列",
+        "numerical_columns": "数值列",
+        "categorical_columns": "分类列",
+        "descriptive_analysis": "📈 描述性分析",
+        "association_analysis": "🔗 关联分析",
+        "dataset_overview": "📊 数据集概览",
+        "missing_values": "🔍 缺失值",
+        "numerical_stats": "🔢 数值统计",
+        "data_visualization": "📊 数据可视化",
+        "correlation_matrix": "🔗 相关矩阵",
+        "categorical_analysis": "📋 分类分析",
+        "frequency_table": "📊 频率表",
+        "chi_square_test": "🎯 卡方检验",
+        "correlation_analysis": "📊 相关分析",
+        "anova_test": "🔄 方差分析",
+        "instructions": "🚀 如何使用此应用程序",
+        "upload_step": "上传Excel (.xlsx) 或 CSV (.csv) 文件",
+        "analysis_step": "选择要执行的分析",
+        "export_step": "以CSV格式下载分析结果",
+        "features_title": "📋 主要功能",
+        "descriptive_features": "📈 描述性分析",
+        "association_features": "🔗 关联分析",
+        "supported_formats": "📊 支持的文件格式",
+        "tip": "确保您的数据有清晰的标题和一致的格式，以获得最佳分析结果。",
+        "error_no_file": "请先上传文件！",
+        "select_numerical_column": "选择数值列：",
+        "select_categorical_column": "选择分类列：",
+        "select_variable_1": "选择变量1：",
+        "select_variable_2": "选择变量2：",
+        "analyze_chi_square": "分析卡方",
+        "contingency_table": "列联表",
+        "chi_square_results": "卡方结果",
+        "significant": "显著",
+        "not_significant": "不显著",
+        "significant_association": "变量之间存在显著关联",
+        "no_significant_association": "变量之间不存在显著关联",
+        "correlation_method": "相关方法",
+        "pearson": "皮尔逊",
+        "spearman": "斯皮尔曼",
+        "analyze_correlation": "分析相关性",
+        "correlation_results": "相关结果",
+        "categorical_numerical_analysis": "分类与数值分析",
+        "select_categorical_variable": "选择分类变量：",
+        "select_numerical_variable": "选择数值变量：",
+        "analyze_categorical_numerical": "分析分类-数值",
+        "anova_results": "方差分析结果",
+        "significant_difference": "平均值存在显著差异",
+        "mean_difference": "在类别之间",
+        "no_significant_difference": "平均值不存在显著差异",
+        "no_mean_difference": "在类别之间",
+        "total_rows": "总行数",
+        "total_columns": "总列数",
+        "category": "类别",
+        "frequency": "频率",
+        "percentage": "百分比",
+        "columns": "列",
+        "file_name": "📁",
+        "file_size": "大小",
+        "download_summary": "下载摘要报告",
+        "see_raw_data": "👀 查看原始数据",
+        "export_results": "💾 导出分析结果",
+        "loading_data": "加载数据...",
+        "insight": "💡 洞察：",
+        "significant_insight": "变量之间存在显著关联",
+        "not_significant_insight": "变量之间不存在显著关联",
+        "independent_variables": "这些变量彼此不独立。",
+        "independent_variables_alt": "这些变量倾向于独立。",
+        "correlation_strength": "非常强" if abs(0.8) >= 0.8 else "强" if abs(0.8) >= 0.6 else "中等" if abs(0.8) >= 0.4 else "弱" if abs(0.8) >= 0.2 else "非常弱",
+        "positive": "正",
+        "negative": "负",
+        "correlation_insight": "存在",
+        "between_variables": "之间",
+        "statistical_significance": "这种关系在统计上是显著的。",
+        "no_statistical_significance": "这种关系在统计上不显著。",
+        "mean_difference_insight": "平均值存在显著差异",
+        "between_categories": "在类别之间",
+        "no_mean_difference_insight": "平均值不存在显著差异",
+        "between_categories_alt": "在类别之间"
+    }
+}
+
+# Initialize session state for language
+if 'language' not in st.session_state:
+    st.session_state.language = 'id'
+
+def get_translation(key):
+    """Get translation for current language"""
+    return TRANSLATIONS[st.session_state.language].get(key, key)
+
 # Background image function
 def get_background_image():
     """Load background image from multiple sources"""
@@ -147,7 +417,7 @@ st.markdown("""
         backdrop-filter: blur(12px);
         border-radius: 20px;
         padding: 2rem;
-        margin-top: 2rem;
+        margin-top: 0.5rem;
         box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
         border: 1px solid rgba(255, 255, 255, 0.18);
         position: relative;
@@ -207,7 +477,7 @@ st.markdown("""
         display: flex;
         justify-content: center;
         gap: 0.5rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
     }
     
     /* Upload area styling - CENTERED */
@@ -216,7 +486,7 @@ st.markdown("""
         justify-content: center;
         align-items: center;
         min-height: 400px;
-        margin: 2rem 0;
+        margin: 1rem 0;
     }
     
     .upload-area {
@@ -602,6 +872,15 @@ st.markdown("""
         position: absolute;
         left: -9999px;
     }
+    
+    /* Hide default Streamlit elements */
+    .stHeader {
+        visibility: hidden;
+    }
+    
+    footer {
+        visibility: hidden;
+    }
 </style>
 
 <!-- Floating elements -->
@@ -625,7 +904,7 @@ def load_data(file):
         elif file.name.endswith('.csv'):
             df = pd.read_csv(file)
         else:
-            st.error("File tidak didukung. Harap upload file Excel (.xlsx) atau CSV (.csv)")
+            st.error(get_translation("error_no_file"))
             return None
         return df
     except Exception as e:
@@ -640,28 +919,28 @@ def get_column_types(df):
 
 def descriptive_analysis(df, numerical_cols, categorical_cols):
     """Perform descriptive analysis"""
-    st.markdown('<div class="section-header">📈 Analisis Deskriptif</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-header">{get_translation("descriptive_analysis")}</div>', unsafe_allow_html=True)
     
     # Basic Statistics
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">📊 Dataset Overview</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">{get_translation("dataset_overview")}</div>', unsafe_allow_html=True)
         st.markdown(f"""
         <div class="metric-card">
-            <strong>Jumlah Baris:</strong> {df.shape[0]:,}<br>
-            <strong>Jumlah Kolom:</strong> {df.shape[1]}<br>
-            <strong>Kolom Numerik:</strong> {len(numerical_cols)}<br>
-            <strong>Kolom Kategorikal:</strong> {len(categorical_cols)}
+            <strong>{get_translation("total_rows")}:</strong> {df.shape[0]:,}<br>
+            <strong>{get_translation("total_columns")}:</strong> {df.shape[1]}<br>
+            <strong>{get_translation("numerical_columns")}:</strong> {len(numerical_cols)}<br>
+            <strong>{get_translation("categorical_columns")}:</strong> {len(categorical_cols)}
         </div>
         """, unsafe_allow_html=True)
         
         # Missing values
         missing_data = df.isnull().sum()
         if missing_data.sum() > 0:
-            st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #f59e0b; margin: 1rem 0;">🔍 Missing Values</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #f59e0b; margin: 1rem 0;">{get_translation("missing_values")}</div>', unsafe_allow_html=True)
             missing_df = pd.DataFrame({
-                'Kolom': missing_data.index,
+                get_translation("columns"): missing_data.index,
                 'Jumlah Missing': missing_data.values,
                 'Persentase': (missing_data.values / len(df) * 100).round(2)
             })
@@ -671,16 +950,16 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
     with col2:
         # Numerical columns statistics
         if numerical_cols:
-            st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #059669; margin: 1rem 0;">🔢 Statistik Numerik</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #059669; margin: 1rem 0;">{get_translation("numerical_stats")}</div>', unsafe_allow_html=True)
             stats_df = df[numerical_cols].describe().round(2)
             st.dataframe(stats_df, use_container_width=True)
     
     # Visualizations
     if numerical_cols:
-        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">📊 Visualisasi Data Numerik</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">{get_translation("data_visualization")}</div>', unsafe_allow_html=True)
         
         # Distribution plots
-        selected_num_col = st.selectbox("Pilih kolom numerik untuk distribusi:", numerical_cols)
+        selected_num_col = st.selectbox(get_translation("select_numerical_column"), numerical_cols)
         
         col1, col2 = st.columns(2)
         with col1:
@@ -698,22 +977,22 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
         
         # Correlation matrix for numerical variables
         if len(numerical_cols) > 1:
-            st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #7c3aed; margin: 1rem 0;">🔗 Matriks Korelasi</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #7c3aed; margin: 1rem 0;">{get_translation("correlation_matrix")}</div>', unsafe_allow_html=True)
             correlation_matrix = df[numerical_cols].corr()
             
             fig_corr = px.imshow(correlation_matrix, 
                                 text_auto=True, 
                                 aspect="auto",
                                 color_continuous_scale='RdBu_r',
-                                title='Matriks Korelasi Variabel Numerik')
+                                title=get_translation("correlation_matrix"))
             fig_corr.update_layout(height=500)
             st.plotly_chart(fig_corr, use_container_width=True)
     
     # Categorical analysis
     if categorical_cols:
-        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #dc2626; margin: 1rem 0;">📋 Analisis Data Kategorikal</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #dc2626; margin: 1rem 0;">{get_translation("categorical_analysis")}</div>', unsafe_allow_html=True)
         
-        selected_cat_col = st.selectbox("Pilih kolom kategorikal:", categorical_cols)
+        selected_cat_col = st.selectbox(get_translation("select_categorical_column"), categorical_cols)
         
         col1, col2 = st.columns(2)
         
@@ -735,48 +1014,48 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
             st.plotly_chart(fig_bar, use_container_width=True)
         
         # Frequency table
-        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #0891b2; margin: 1rem 0;">📊 Tabel Frekuensi</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #0891b2; margin: 1rem 0;">{get_translation("frequency_table")}</div>', unsafe_allow_html=True)
         freq_table = pd.DataFrame({
-            'Kategori': value_counts.index,
-            'Frekuensi': value_counts.values,
-            'Persentase': (value_counts.values / len(df) * 100).round(2)
+            get_translation("category"): value_counts.index,
+            get_translation("frequency"): value_counts.values,
+            get_translation("percentage"): (value_counts.values / len(df) * 100).round(2)
         })
         st.dataframe(freq_table, use_container_width=True)
 
 def association_analysis(df, numerical_cols, categorical_cols):
     """Perform association analysis"""
-    st.markdown('<div class="section-header">🔗 Analisis Asosiasi</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="section-header">{get_translation("association_analysis")}</div>', unsafe_allow_html=True)
     
     # Chi-square test for categorical variables
     if len(categorical_cols) >= 2:
-        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #ea580c; margin: 1rem 0;">🎯 Uji Chi-Square (Variabel Kategorikal)</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #ea580c; margin: 1rem 0;">{get_translation("chi_square_test")}</div>', unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         with col1:
-            var1 = st.selectbox("Pilih variabel 1:", categorical_cols, key='cat1')
+            var1 = st.selectbox(get_translation("select_variable_1"), categorical_cols, key='cat1')
         with col2:
-            var2 = st.selectbox("Pilih variabel 2:", [col for col in categorical_cols if col != var1], key='cat2')
+            var2 = st.selectbox(get_translation("select_variable_2"), [col for col in categorical_cols if col != var1], key='cat2')
         
-        if st.button("Analisis Chi-Square"):
+        if st.button(get_translation("analyze_chi_square")):
             # Create contingency table
             contingency_table = pd.crosstab(df[var1], df[var2])
             
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">Tabel Kontingensi</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("contingency_table")}</div>', unsafe_allow_html=True)
                 st.dataframe(contingency_table, use_container_width=True)
             
             with col2:
                 # Perform chi-square test
                 chi2, p_value, dof, expected = chi2_contingency(contingency_table)
                 
-                st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #059669; margin: 0.5rem 0;">Hasil Uji Chi-Square</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #059669; margin: 0.5rem 0;">{get_translation("chi_square_results")}</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="metric-card">
                     <strong>Chi-Square Statistic:</strong> {chi2:.4f}<br>
                     <strong>P-value:</strong> {p_value:.4f}<br>
                     <strong>Degrees of Freedom:</strong> {dof}<br>
-                    <strong>Signifikansi:</strong> {'✅ Signifikan' if p_value < 0.05 else '❌ Tidak Signifikan'}
+                    <strong>Signifikansi:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -784,59 +1063,59 @@ def association_analysis(df, numerical_cols, categorical_cols):
                 if p_value < 0.05:
                     st.markdown(f"""
                     <div class="insight-box">
-                        <strong>💡 Insight:</strong> Terdapat asosiasi yang signifikan antara variabel {var1} dan {var2}.
-                        Variabel-variabel ini tidak independen satu sama lain.
+                        <strong>{get_translation("insight")}</strong> {get_translation("significant_insight")} {var1} dan {var2}.
+                        {get_translation("independent_variables")}
                     </div>
                     """, unsafe_allow_html=True)
                 else:
                     st.markdown(f"""
                     <div class="insight-box">
-                        <strong>💡 Insight:</strong> Tidak terdapat asosiasi yang signifikan antara variabel {var1} dan {var2}.
-                        Variabel-variabel ini cenderung independen.
+                        <strong>{get_translation("insight")}</strong> {get_translation("not_significant_insight")} {var1} dan {var2}.
+                        {get_translation("independent_variables_alt")}
                     </div>
                     """, unsafe_allow_html=True)
     
     # Correlation analysis for numerical variables
     if len(numerical_cols) >= 2:
-        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #7c3aed; margin: 1rem 0;">📊 Analisis Korelasi (Variabel Numerik)</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #7c3aed; margin: 1rem 0;">{get_translation("correlation_analysis")}</div>', unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         with col1:
-            var3 = st.selectbox("Pilih variabel numerik 1:", numerical_cols, key='num1')
+            var3 = st.selectbox(get_translation("select_variable_1"), numerical_cols, key='num1')
         with col2:
-            var4 = st.selectbox("Pilih variabel numerik 2:", [col for col in numerical_cols if col != var3], key='num2')
+            var4 = st.selectbox(get_translation("select_variable_2"), [col for col in numerical_cols if col != var3], key='num2')
         
-        correlation_method = st.radio("Metode Korelasi:", ['Pearson', 'Spearman'])
+        correlation_method = st.radio(get_translation("correlation_method"), [get_translation("pearson"), get_translation("spearman")])
         
-        if st.button("Analisis Korelasi"):
+        if st.button(get_translation("analyze_correlation")):
             # Remove rows with missing values for selected variables
             clean_df = df[[var3, var4]].dropna()
             
             # Calculate correlation
-            if correlation_method == 'Pearson':
+            if correlation_method == get_translation("pearson"):
                 corr_coef, p_value = pearsonr(clean_df[var3], clean_df[var4])
             else:
                 corr_coef, p_value = spearmanr(clean_df[var3], clean_df[var4])
             
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #0891b2; margin: 0.5rem 0;">Hasil Korelasi</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0891b2; margin: 0.5rem 0;">{get_translation("correlation_results")}</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="metric-card">
                     <strong>Koefisien Korelasi ({correlation_method}):</strong> {corr_coef:.4f}<br>
                     <strong>P-value:</strong> {p_value:.4f}<br>
-                    <strong>Signifikansi:</strong> {'✅ Signifikan' if p_value < 0.05 else '❌ Tidak Signifikan'}
+                    <strong>Signifikansi:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
                 </div>
                 """, unsafe_allow_html=True)
                 
                 # Interpretation
-                strength = "sangat kuat" if abs(corr_coef) >= 0.8 else "kuat" if abs(corr_coef) >= 0.6 else "sedang" if abs(corr_coef) >= 0.4 else "lemah" if abs(corr_coef) >= 0.2 else "sangat lemah"
-                direction = "positif" if corr_coef > 0 else "negatif"
+                strength = get_translation("correlation_strength")
+                direction = get_translation("positive") if corr_coef > 0 else get_translation("negative")
                 
                 st.markdown(f"""
                 <div class="insight-box">
-                    <strong>💡 Insight:</strong> Terdapat hubungan {direction} yang {strength} antara {var3} dan {var4}.
-                    {"Hubungan ini signifikan secara statistik." if p_value < 0.05 else "Hubungan ini tidak signifikan secara statistik."}
+                    <strong>{get_translation("insight")}</strong> {get_translation("correlation_insight")} {direction} {strength} {get_translation("between_variables")} {var3} dan {var4}.
+                    {get_translation("statistical_significance") if p_value < 0.05 else get_translation("no_statistical_significance")}
                 </div>
                 """, unsafe_allow_html=True)
             
@@ -850,15 +1129,15 @@ def association_analysis(df, numerical_cols, categorical_cols):
     
     # Categorical vs Numerical analysis
     if numerical_cols and categorical_cols:
-        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #0891b2; margin: 1rem 0;">🔄 Analisis Kategorikal vs Numerik</div>', unsafe_allow_html=True)
+        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #0891b2; margin: 1rem 0;">{get_translation("categorical_numerical_analysis")}</div>', unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         with col1:
-            cat_var = st.selectbox("Pilih variabel kategorikal:", categorical_cols, key='cat_num')
+            cat_var = st.selectbox(get_translation("select_categorical_variable"), categorical_cols, key='cat_num')
         with col2:
-            num_var = st.selectbox("Pilih variabel numerik:", numerical_cols, key='num_cat')
+            num_var = st.selectbox(get_translation("select_numerical_variable"), numerical_cols, key='num_cat')
         
-        if st.button("Analisis Kategorikal-Numerik"):
+        if st.button(get_translation("analyze_categorical_numerical")):
             # Group by categorical variable
             grouped_data = df.groupby(cat_var)[num_var].describe()
             
@@ -884,52 +1163,76 @@ def association_analysis(df, numerical_cols, categorical_cols):
             if len(category_groups) >= 2:
                 f_stat, p_value = stats.f_oneway(*category_groups)
                 
-                st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">Hasil ANOVA</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("anova_results")}</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="metric-card">
                     <strong>F-statistic:</strong> {f_stat:.4f}<br>
                     <strong>P-value:</strong> {p_value:.4f}<br>
-                    <strong>Signifikansi:</strong> {'✅ Signifikan' if p_value < 0.05 else '❌ Tidak Signifikan'}
+                    <strong>Signifikansi:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
                 </div>
                 """, unsafe_allow_html=True)
                 
                 if p_value < 0.05:
                     st.markdown(f"""
                     <div class="insight-box">
-                        <strong>💡 Insight:</strong> Terdapat perbedaan yang signifikan dalam rata-rata {num_var} antar kategori {cat_var}.
+                        <strong>{get_translation("insight")}</strong> {get_translation("mean_difference_insight")} {num_var} {get_translation("between_categories")} {cat_var}.
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.markdown(f"""
+                    <div class="insight-box">
+                        <strong>{get_translation("insight")}</strong> {get_translation("no_mean_difference_insight")} {num_var} {get_translation("between_categories_alt")}.
                     </div>
                     """, unsafe_allow_html=True)
 
 def main():
     # Language selector
-    st.markdown("""
+    lang_id_active = "active" if st.session_state.language == 'id' else ""
+    lang_en_active = "active" if st.session_state.language == 'en' else ""
+    lang_zh_active = "active" if st.session_state.language == 'zh' else ""
+    
+    st.markdown(f"""
     <div class="language-selector">
-        <span class="lang-button active">🇮🇩 Indonesia</span>
-        <span class="lang-button">🇬🇧 English</span>
-        <span class="lang-button">🇨🇳 中文</span>
+        <button class="lang-button {lang_id_active}" onclick="window.location.reload(); location.href='?lang=id'">🇮🇩 Indonesia</button>
+        <button class="lang-button {lang_en_active}" onclick="window.location.reload(); location.href='?lang=en'">🇬🇧 English</button>
+        <button class="lang-button {lang_zh_active}" onclick="window.location.reload(); location.href='?lang=zh'">🇨🇳 中文</button>
     </div>
     """, unsafe_allow_html=True)
     
+    # Language buttons (functional)
+    col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 6, 1])
+    with col1:
+        if st.button("🇮🇩 ID", key="lang_id"):
+            st.session_state.language = 'id'
+            st.rerun()
+    with col2:
+        if st.button("🇬🇧 EN", key="lang_en"):
+            st.session_state.language = 'en'
+            st.rerun()
+    with col3:
+        if st.button("🇨🇳 中文", key="lang_zh"):
+            st.session_state.language = 'zh'
+            st.rerun()
+    
     # Main header
-    st.markdown('<h1 class="main-header">Analisis Data Survei</h1>', unsafe_allow_html=True)
+    st.markdown(f'<h1 class="main-header">{get_translation("title")}</h1>', unsafe_allow_html=True)
     
     # Upload area - CENTERED IN MIDDLE
     if st.session_state.uploaded_file is None:
         st.markdown("""
         <div class="upload-container">
             <div class="upload-area">
-                <div class="upload-title">📊 Unggah File Excel Anda untuk Memulai Analisis</div>
+                <div class="upload-title">""" + get_translation("upload_title") + """</div>
                 <div class="upload-description">
-                    Drag and drop file di sini<br>
-                    Limit 200MB per file • Format XLSX, XLS, CSV
+                    """ + get_translation("upload_description") + """
                 </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
     
     # File uploader (HIDDEN - used by JavaScript)
-    uploaded_file = st.file_uploader("Upload File", type=['xlsx', 'xls', 'csv'], 
-                                   help="Upload file Excel atau CSV untuk analisis data",
+    uploaded_file = st.file_uploader(get_translation("upload_button"), type=['xlsx', 'xls', 'csv'], 
+                                   help=get_translation("upload_step"),
                                    label_visibility="collapsed")
     
     if uploaded_file is not None:
@@ -939,21 +1242,21 @@ def main():
         # Show file info
         st.markdown(f"""
         <div class="file-info">
-            <div class="file-name">📁 {uploaded_file.name}</div>
-            <div class="file-size">Ukuran: {uploaded_file.size / 1024 / 1024:.2f} MB</div>
+            <div class="file-name">{get_translation("file_name")} {uploaded_file.name}</div>
+            <div class="file-size">{get_translation("file_size")}: {uploaded_file.size / 1024 / 1024:.2f} MB</div>
         </div>
         """, unsafe_allow_html=True)
         
         # Load data
-        with st.spinner("Memuat data..."):
+        with st.spinner(get_translation("loading_data")):
             df = load_data(uploaded_file)
         
         if df is not None:
             # Success message
-            st.success(f"✅ Data berhasil dimuat! Dataset memiliki {df.shape[0]} baris dan {df.shape[1]} kolom.")
+            st.success(f"{get_translation('success_message')} {df.shape[0]} {get_translation('rows_text')} dan {df.shape[1]} {get_translation('columns_text')}.")
             
             # Show raw data
-            with st.expander("👀 Lihat Data Mentah"):
+            with st.expander(get_translation("see_raw_data")):
                 st.dataframe(df, use_container_width=True)
             
             # Get column types
@@ -963,18 +1266,18 @@ def main():
             col1, col2 = st.columns(2)
             with col1:
                 if numerical_cols:
-                    st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #1e40af; margin: 0.5rem 0;">📊 Kolom Numerik:</div>', unsafe_allow_html=True)
+                    st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #1e40af; margin: 0.5rem 0;">{get_translation("numerical_columns")}:</div>', unsafe_allow_html=True)
                     for col in numerical_cols:
                         st.markdown(f"• {col}")
             
             with col2:
                 if categorical_cols:
-                    st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">📋 Kolom Kategorikal:</div>', unsafe_allow_html=True)
+                    st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("categorical_columns")}:</div>', unsafe_allow_html=True)
                     for col in categorical_cols:
                         st.markdown(f"• {col}")
             
             # Analysis tabs
-            tab1, tab2 = st.tabs(["📈 Analisis Deskriptif", "🔗 Analisis Asosiasi"])
+            tab1, tab2 = st.tabs([get_translation("descriptive_analysis"), get_translation("association_analysis")])
             
             with tab1:
                 descriptive_analysis(df, numerical_cols, categorical_cols)
@@ -984,12 +1287,12 @@ def main():
             
             # Export functionality
             st.markdown("---")
-            st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #059669; margin: 1rem 0;">💾 Export Hasil Analisis</div>', unsafe_allow_html=True)
+            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #059669; margin: 1rem 0;">{get_translation("export_results")}</div>', unsafe_allow_html=True)
             
-            if st.button("Download Summary Report"):
+            if st.button(get_translation("download_summary")):
                 # Create a summary report
                 summary_data = {
-                    'Metric': ['Total Rows', 'Total Columns', 'Numerical Columns', 'Categorical Columns', 'Missing Values'],
+                    'Metric': [get_translation("total_rows"), get_translation("total_columns"), get_translation("numerical_columns"), get_translation("categorical_columns"), 'Missing Values'],
                     'Value': [df.shape[0], df.shape[1], len(numerical_cols), len(categorical_cols), df.isnull().sum().sum()]
                 }
                 summary_df = pd.DataFrame(summary_data)
@@ -1002,20 +1305,19 @@ def main():
     
     else:
         # Instructions
-        st.markdown("""
+        st.markdown(f"""
 <div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border: 1px solid #e5e7eb; margin: 2rem 0;">
-<h2 style="color: #1e40af; margin-bottom: 1rem;">🚀 Cara Menggunakan Aplikasi Ini</h2>
+<h2 style="color: #1e40af; margin-bottom: 1rem;">{get_translation("instructions")}</h2>
 <ol style="color: #374151; line-height: 1.6;">
-    <li><strong style="color: #3b82f6;">Upload File</strong>: Klik tombol upload di tengah halaman untuk mengupload file Excel (.xlsx) atau CSV (.csv)</li>
-    <li><strong style="color: #7c3aed;">Analisis Deskriptif</strong>: Dapatkan statistik dasar, visualisasi distribusi, dan insight awal dari data Anda</li>
-    <li><strong style="color: #dc2626;">Analisis Asosiasi</strong>: Temukan hubungan antar variabel dengan uji statistik</li>
-    <li><strong style="color: #059669;">Export Results</strong>: Download hasil analisis dalam format CSV</li>
+    <li><strong style="color: #3b82f6;">{get_translation("upload_step")}</strong></li>
+    <li><strong style="color: #7c3aed;">{get_translation("analysis_step")}</strong></li>
+    <li><strong style="color: #dc2626;">{get_translation("export_step")}</strong></li>
 </ol>
 
-<h3 style="color: #1e40af; margin: 1.5rem 0 1rem 0;">📋 Fitur Utama:</h3>
+<h3 style="color: #1e40af; margin: 1.5rem 0 1rem 0;">{get_translation("features_title")}</h3>
 
 <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #3b82f6;">
-<h4 style="color: #1e40af; margin-bottom: 0.5rem;">📈 Analisis Deskriptif:</h4>
+<h4 style="color: #1e40af; margin-bottom: 0.5rem;">{get_translation("descriptive_features")}:</h4>
 <ul style="color: #374151; line-height: 1.5;">
     <li>Statistik dasar (mean, median, modus, standar deviasi)</li>
     <li>Visualisasi distribusi data</li>
@@ -1025,7 +1327,7 @@ def main():
 </div>
 
 <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #dc2626;">
-<h4 style="color: #dc2626; margin-bottom: 0.5rem;">🔗 Analisis Asosiasi:</h4>
+<h4 style="color: #dc2626; margin-bottom: 0.5rem;">{get_translation("association_features")}:</h4>
 <ul style="color: #374151; line-height: 1.5;">
     <li>Uji Chi-Square untuk variabel kategorikal</li>
     <li>Analisis korelasi (Pearson/Spearman) untuk variabel numerik</li>
@@ -1034,18 +1336,17 @@ def main():
 </ul>
 </div>
 
-<h3 style="color: #ea580c; margin: 1.5rem 0 1rem 0;">📊 Format File yang Didukung:</h3>
+<h3 style="color: #ea580c; margin: 1.5rem 0 1rem 0;">{get_translation("supported_formats")}</h3>
 <ul style="color: #374151; line-height: 1.5;">
     <li>Excel (.xlsx, .xls)</li>
     <li>CSV (.csv)</li>
 </ul>
 
 <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); padding: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6; margin: 1rem 0;">
-<p style="color: #1e40af; margin: 0; font-weight: 600;">💡 <strong>Tip</strong>: Pastikan data Anda memiliki header yang jelas dan format yang konsisten untuk hasil analisis yang optimal.</p>
+<p style="color: #1e40af; margin: 0; font-weight: 600;">💡 <strong>Tip</strong>: {get_translation("tip")}</p>
 </div>
 </div>
-""", unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
-    
