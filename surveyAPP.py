@@ -153,8 +153,8 @@ def load_background_styles():
     
     # Method 1: Try to load from current directory
     try:
-        if os.path.exists('background_digital.png'):
-            with open('background_digital.png', 'rb') as f:
+        if os.path.exists('background.png'):
+            with open('background.png', 'rb') as f:
                 image_data = f.read()
             encoded = base64.b64encode(image_data).decode()
             background_styles.append(f"""
@@ -736,3 +736,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
