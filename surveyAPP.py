@@ -54,8 +54,11 @@ TRANSLATIONS = {
         "analysis_step": "Pilih analisis yang ingin dilakukan",
         "export_step": "Download hasil analisis dalam format CSV",
         "features_title": "📋 Fitur Utama",
+        "descriptive_features_list": "<li>Statistik dasar (mean, median, modus, standar deviasi)</li><li>Visualisasi distribusi data</li><li>Analisis missing values</li><li>Matriks korelasi</li>",
+        "association_features_list": "<li>Uji Chi-Square untuk variabel kategorikal</li><li>Analisis korelasi (Pearson/Spearman) untuk variabel numerik</li><li>ANOVA untuk analisis kategorikal vs numerik</li><li>Visualisasi hubungan antar variabel</li>",
         "descriptive_features": "📈 Analisis Deskriptif",
         "association_features": "🔗 Analisis Asosiasi",
+        "supported_formats_list": "<li>Excel (.xlsx, .xls)</li><li>CSV (.csv)</li>",
         "supported_formats": "📊 Format File yang Didukung",
         "tip": "Pastikan data Anda memiliki header yang jelas dan format yang konsisten untuk hasil analisis yang optimal.",
         "error_no_file": "Silakan upload file terlebih dahulu!",
@@ -111,7 +114,17 @@ TRANSLATIONS = {
         "mean_difference_insight": "Terdapat perbedaan yang signifikan dalam rata-rata",
         "between_categories": "antar kategori",
         "no_mean_difference_insight": "Tidak ada perbedaan signifikan dalam rata-rata",
-        "between_categories_alt": "antar kategori"
+        "between_categories_alt": "antar kategori",
+        "distribution": "Distribusi",
+        "frequency_chart": "Frekuensi",
+        "chi_square_statistic": "Chi-Square Statistic",
+        "degrees_of_freedom": "Degrees of Freedom",
+        "significance": "Signifikansi",
+        "correlation_coefficient": "Koefisien Korelasi",
+        "statistics_by": "Statistik {0} berdasarkan {1}",
+        "distribution_by": "Distribusi {0} berdasarkan {1}",
+        "f_statistic": "F-statistic",
+        "p_value": "P-value"
     },
     "en": {
         "title": "Survey Data Analysis",
@@ -140,8 +153,11 @@ TRANSLATIONS = {
         "analysis_step": "Choose an analysis to perform",
         "export_step": "Download analysis results in CSV format",
         "features_title": "📋 Main Features",
+        "descriptive_features_list": "<li>Basic statistics (mean, median, mode, standard deviation)</li><li>Data distribution visualization</li><li>Missing values analysis</li><li>Correlation matrix</li>",
+        "association_features_list": "<li>Chi-Square test for categorical variables</li><li>Correlation analysis (Pearson/Spearman) for numerical variables</li><li>ANOVA for categorical vs numerical analysis</li><li>Variable relationship visualization</li>",
         "descriptive_features": "📈 Descriptive Analysis",
         "association_features": "🔗 Association Analysis",
+        "supported_formats_list": "<li>Excel (.xlsx, .xls)</li><li>CSV (.csv)</li>",
         "supported_formats": "📊 Supported File Formats",
         "tip": "Ensure your data has clear headers and consistent format for optimal analysis results.",
         "error_no_file": "Please upload a file first!",
@@ -197,7 +213,17 @@ TRANSLATIONS = {
         "mean_difference_insight": "There is a significant difference in mean",
         "between_categories": "between categories",
         "no_mean_difference_insight": "There is no significant difference in mean",
-        "between_categories_alt": "between categories"
+        "between_categories_alt": "between categories",
+        "distribution": "Distribution",
+        "frequency_chart": "Frequency",
+        "chi_square_statistic": "Chi-Square Statistic",
+        "degrees_of_freedom": "Degrees of Freedom",
+        "significance": "Significance",
+        "correlation_coefficient": "Correlation Coefficient",
+        "statistics_by": "Statistics of {0} by {1}",
+        "distribution_by": "Distribution of {0} by {1}",
+        "f_statistic": "F-statistic",
+        "p_value": "P-value"
     },
     "zh": {
         "title": "调查数据分析",
@@ -226,8 +252,11 @@ TRANSLATIONS = {
         "analysis_step": "选择要执行的分析",
         "export_step": "以CSV格式下载分析结果",
         "features_title": "📋 主要功能",
+        "descriptive_features_list": "<li>基本统计（均值、中位数、众数、标准差）</li><li>数据分布可视化</li><li>缺失值分析</li><li>相关矩阵</li>",
+        "association_features_list": "<li>分类变量的卡方检验</li><li>数值变量的相关分析（皮尔逊/斯皮尔曼）</li><li>分类vs数值的方差分析</li><li>变量关系可视化</li>",
         "descriptive_features": "📈 描述性分析",
         "association_features": "🔗 关联分析",
+        "supported_formats_list": "<li>Excel (.xlsx, .xls)</li><li>CSV (.csv)</li>",
         "supported_formats": "📊 支持的文件格式",
         "tip": "确保您的数据有清晰的标题和一致的格式，以获得最佳分析结果。",
         "error_no_file": "请先上传文件！",
@@ -283,7 +312,17 @@ TRANSLATIONS = {
         "mean_difference_insight": "平均值存在显著差异",
         "between_categories": "在类别之间",
         "no_mean_difference_insight": "平均值不存在显著差异",
-        "between_categories_alt": "在类别之间"
+        "between_categories_alt": "在类别之间",
+        "distribution": "分布",
+        "frequency_chart": "频率",
+        "chi_square_statistic": "卡方统计量",
+        "degrees_of_freedom": "自由度",
+        "significance": "显著性",
+        "correlation_coefficient": "相关系数",
+        "statistics_by": "{1}的{0}统计",
+        "distribution_by": "{0}按{1}的分布",
+        "f_statistic": "F统计量",
+        "p_value": "P值"
     }
 }
 
@@ -929,7 +968,7 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
         col1, col2 = st.columns(2)
         with col1:
             # Histogram
-            fig_hist = px.histogram(df, x=selected_num_col, title=f'Distribusi {selected_num_col}',
+            fig_hist = px.histogram(df, x=selected_num_col, title=f'{get_translation("distribution")} {selected_num_col}',
                                    nbins=30, marginal='box')
             fig_hist.update_layout(height=400)
             st.plotly_chart(fig_hist, use_container_width=True)
@@ -966,7 +1005,7 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
             value_counts = df[selected_cat_col].value_counts()
             fig_pie = px.pie(values=value_counts.values, 
                             names=value_counts.index, 
-                            title=f'Distribusi {selected_cat_col}')
+                            title=f'{get_translation("distribution")} {selected_cat_col}')
             fig_pie.update_layout(height=400)
             st.plotly_chart(fig_pie, use_container_width=True)
         
@@ -974,8 +1013,8 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
             # Bar chart
             fig_bar = px.bar(x=value_counts.index, 
                            y=value_counts.values,
-                           title=f'Frekuensi {selected_cat_col}')
-            fig_bar.update_layout(height=400, xaxis_title=selected_cat_col, yaxis_title='Frekuensi')
+                           title=f'{get_translation("frequency_chart")} {selected_cat_col}')
+            fig_bar.update_layout(height=400, xaxis_title=selected_cat_col, yaxis_title=get_translation("frequency_chart"))
             st.plotly_chart(fig_bar, use_container_width=True)
         
         # Frequency table
@@ -1017,10 +1056,10 @@ def association_analysis(df, numerical_cols, categorical_cols):
                 st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #059669; margin: 0.5rem 0;">{get_translation("chi_square_results")}</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="metric-card">
-                    <strong>Chi-Square Statistic:</strong> {chi2:.4f}<br>
-                    <strong>P-value:</strong> {p_value:.4f}<br>
-                    <strong>Degrees of Freedom:</strong> {dof}<br>
-                    <strong>Signifikansi:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
+                    <strong>{get_translation("chi_square_statistic")}:</strong> {chi2:.4f}<br>
+                    <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
+                    <strong>{get_translation("degrees_of_freedom")}:</strong> {dof}<br>
+                    <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -1067,9 +1106,9 @@ def association_analysis(df, numerical_cols, categorical_cols):
                 st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0891b2; margin: 0.5rem 0;">{get_translation("correlation_results")}</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="metric-card">
-                    <strong>Koefisien Korelasi ({correlation_method}):</strong> {corr_coef:.4f}<br>
-                    <strong>P-value:</strong> {p_value:.4f}<br>
-                    <strong>Signifikansi:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
+                    <strong>{get_translation("correlation_coefficient")} ({correlation_method}):</strong> {corr_coef:.4f}<br>
+                    <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
+                    <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -1108,13 +1147,13 @@ def association_analysis(df, numerical_cols, categorical_cols):
             
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0d9488; margin: 0.5rem 0;">Statistik {num_var} berdasarkan {cat_var}</div>', unsafe_allow_html=True)
+                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0d9488; margin: 0.5rem 0;">{get_translation("statistics_by").format(num_var, cat_var)}</div>', unsafe_allow_html=True)
                 st.dataframe(grouped_data.round(2), use_container_width=True)
             
             with col2:
                 # Box plot by category
                 fig_box_cat = px.box(df, x=cat_var, y=num_var, 
-                                   title=f'Distribusi {num_var} berdasarkan {cat_var}')
+                                   title=get_translation("distribution_by").format(num_var, cat_var))
                 fig_box_cat.update_layout(height=400)
                 st.plotly_chart(fig_box_cat, use_container_width=True)
             
@@ -1131,9 +1170,9 @@ def association_analysis(df, numerical_cols, categorical_cols):
                 st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("anova_results")}</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="metric-card">
-                    <strong>F-statistic:</strong> {f_stat:.4f}<br>
-                    <strong>P-value:</strong> {p_value:.4f}<br>
-                    <strong>Signifikansi:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
+                    <strong>{get_translation("f_statistic")}:</strong> {f_stat:.4f}<br>
+                    <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
+                    <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
                 </div>
                 """, unsafe_allow_html=True)
                 
@@ -1271,27 +1310,20 @@ def main():
 <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #3b82f6;">
 <h4 style="color: #1e40af; margin-bottom: 0.5rem;">{get_translation("descriptive_features")}:</h4>
 <ul style="color: #374151; line-height: 1.5;">
-    <li>Statistik dasar (mean, median, modus, standar deviasi)</li>
-    <li>Visualisasi distribusi data</li>
-    <li>Analisis missing values</li>
-    <li>Matriks korelasi</li>
+    {get_translation("descriptive_features_list")}
 </ul>
 </div>
 
 <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #dc2626;">
 <h4 style="color: #dc2626; margin-bottom: 0.5rem;">{get_translation("association_features")}:</h4>
 <ul style="color: #374151; line-height: 1.5;">
-    <li>Uji Chi-Square untuk variabel kategorikal</li>
-    <li>Analisis korelasi (Pearson/Spearman) untuk variabel numerik</li>
-    <li>ANOVA untuk analisis kategorikal vs numerik</li>
-    <li>Visualisasi hubungan antar variabel</li>
+    {get_translation("association_features_list")}
 </ul>
 </div>
 
 <h3 style="color: #ea580c; margin: 1.5rem 0 1rem 0;">{get_translation("supported_formats")}</h3>
 <ul style="color: #374151; line-height: 1.5;">
-    <li>Excel (.xlsx, .xls)</li>
-    <li>CSV (.csv)</li>
+  {get_translation("supported_formats_list")}
 </ul>
 
 <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); padding: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6; margin: 1rem 0;">
