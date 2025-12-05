@@ -25,12 +25,11 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Background image function - WORKING SOLUTION
+# Background image function
 def get_background_image():
     """Load background image from multiple sources"""
     background_styles = []
     
-    # Try to load from different sources
     try:
         # Method 1: Try to read from current directory
         if os.path.exists('background.jpg'):
@@ -142,11 +141,6 @@ st.markdown("""
         100% { transform: translateY(50px); }
     }
     
-    /* Hide sidebar */
-    .css-1d391kg {
-        display: none;
-    }
-    
     /* Main container with glassmorphism effect */
     .main .block-container {
         background: rgba(255, 255, 255, 0.92);
@@ -161,6 +155,31 @@ st.markdown("""
         max-width: 1000px;
         margin-left: auto;
         margin-right: auto;
+    }
+    
+    /* Sidebar with professional gradient */
+    .css-1d391kg {
+        background: linear-gradient(135deg, rgba(30, 64, 175, 0.95), rgba(55, 48, 163, 0.95));
+        backdrop-filter: blur(10px);
+        border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    
+    .css-1d391kg .stSelectbox > div > div {
+        background-color: rgba(255, 255, 255, 0.95);
+        color: #1e293b;
+        border-radius: 8px;
+    }
+    
+    .css-1d391kg .stFileUploader {
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 2px dashed rgba(255, 255, 255, 0.4);
+        border-radius: 10px;
+        padding: 1rem;
+    }
+    
+    .css-1d391kg .stFileUploader label {
+        color: white;
+        font-weight: 500;
     }
     
     /* Main header with professional blue gradient */
@@ -493,6 +512,17 @@ st.markdown("""
         border: 1px solid #e2e8f0;
     }
     
+    /* Sidebar text */
+    .css-1d391kg h3 {
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }
+    
+    .css-1d391kg p {
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.5;
+    }
+    
     /* Spinner */
     .stSpinner {
         color: #3b82f6;
@@ -560,12 +590,7 @@ st.markdown("""
     .floating-element:nth-child(4) { animation-delay: 15s; left: 60%; }
     .floating-element:nth-child(5) { animation-delay: 2s; left: 80%; }
     
-    /* Hide default file uploader */
-    .stFileUploader {
-        display: none;
-    }
-    
-    /* Custom file uploader */
+    /* Custom file uploader styling */
     .custom-file-upload {
         position: relative;
         display: inline-block;
@@ -898,41 +923,17 @@ def main():
                     Drag and drop file di sini<br>
                     Limit 200MB per file • Format XLSX, XLS, CSV
                 </div>
-                <div class="custom-file-upload">
-                    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display: none;">
-                    <button class="upload-button" onclick="document.getElementById('fileInput').click()">
-                        📁 Pilih File Excel/CSV
-                    </button>
-                </div>
             </div>
         </div>
         """, unsafe_allow_html=True)
-        
-        # JavaScript to handle file upload
-        st.markdown("""
-        <script>
-            document.getElementById('fileInput').addEventListener('change', function(e) {
-                const file = e.target.files[0];
-                if (file) {
-                    // Create a FileReader to read the file
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        // Store the file data in a hidden input or use another method
-                        // For now, we'll just show a message
-                        alert('File selected: ' + file.name + '\\nSize: ' + (file.size / 1024 / 1024).toFixed(2) + ' MB');
-                    };
-                    reader.readAsDataURL(file);
-                }
-            });
-        </script>
-        """, unsafe_allow_html=True)
     
-    # Alternative: Use Streamlit's file uploader (hidden)
+    # File uploader (HIDDEN - used by JavaScript)
     uploaded_file = st.file_uploader("Upload File", type=['xlsx', 'xls', 'csv'], 
                                    help="Upload file Excel atau CSV untuk analisis data",
                                    label_visibility="collapsed")
     
     if uploaded_file is not None:
+        # Store file in session state
         st.session_state.uploaded_file = uploaded_file
         
         # Show file info
@@ -1005,7 +1006,7 @@ def main():
 <div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border: 1px solid #e5e7eb; margin: 2rem 0;">
 <h2 style="color: #1e40af; margin-bottom: 1rem;">🚀 Cara Menggunakan Aplikasi Ini</h2>
 <ol style="color: #374151; line-height: 1.6;">
-    <li><strong style="color: #3b82f6;">Upload File</strong>: Klik tombol "Pilih File Excel/CSV" di tengah halaman untuk mengupload file Excel (.xlsx) atau CSV (.csv)</li>
+    <li><strong style="color: #3b82f6;">Upload File</strong>: Klik tombol upload di tengah halaman untuk mengupload file Excel (.xlsx) atau CSV (.csv)</li>
     <li><strong style="color: #7c3aed;">Analisis Deskriptif</strong>: Dapatkan statistik dasar, visualisasi distribusi, dan insight awal dari data Anda</li>
     <li><strong style="color: #dc2626;">Analisis Asosiasi</strong>: Temukan hubungan antar variabel dengan uji statistik</li>
     <li><strong style="color: #059669;">Export Results</strong>: Download hasil analisis dalam format CSV</li>
