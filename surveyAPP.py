@@ -18,40 +18,245 @@ warnings.filterwarnings('ignore')
 
 # Set page config
 st.set_page_config(
-    page_title="Aplikasi Analisis Survey",
+    page_title="Analisis Data Survei",
     page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS
+# Custom CSS with design inspired by first image
 st.markdown("""
 <style>
-    .main-header {
-        font-size: 2.5rem;
-        color: #1f77b4;
+    /* Main container with clean white card design */
+    .main .block-container {{
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(10px);
+        border-radius: 15px;
+        padding: 2rem;
+        margin-top: 2rem;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+    }}
+    
+    /* Sidebar with professional gradient */
+    .css-1d391kg {{
+        background: linear-gradient(135deg, #1e40af, #3730a3);
+        backdrop-filter: blur(10px);
+    }}
+    
+    .css-1d391kg .stSelectbox > div > div {{
+        background-color: rgba(255, 255, 255, 0.95);
+        color: #1e293b;
+        border-radius: 8px;
+    }}
+    
+    .css-1d391kg .stFileUploader {{
+        background-color: rgba(255, 255, 255, 0.1);
+        border: 2px dashed rgba(255, 255, 255, 0.4);
+        border-radius: 10px;
+        padding: 1rem;
+    }}
+    
+    .css-1d391kg .stFileUploader label {{
+        color: white;
+        font-weight: 500;
+    }}
+    
+    /* Main header with professional blue gradient */
+    .main-header {{
+        font-size: 2.8rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #1e40af, #3b82f6, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
         text-align: center;
         margin-bottom: 2rem;
-    }
-    .section-header {
-        font-size: 1.5rem;
-        color: #2c3e50;
+        text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+    }}
+    
+    /* Section headers */
+    .section-header {{
+        font-size: 1.6rem;
+        font-weight: 600;
+        color: #1e40af;
         margin-top: 2rem;
         margin-bottom: 1rem;
-    }
-    .metric-card {
-        background-color: #f0f2f6;
-        padding: 1rem;
-        border-radius: 10px;
-        margin: 0.5rem 0;
-    }
-    .insight-box {
-        background-color: #e8f4fd;
-        border-left: 4px solid #1f77b4;
-        padding: 1rem;
+        border-left: 4px solid #3b82f6;
+        padding-left: 1rem;
+    }}
+    
+    /* Upload area styling */
+    .upload-area {{
+        background: #f8fafc;
+        border: 2px dashed #cbd5e1;
+        border-radius: 12px;
+        padding: 2rem;
+        text-align: center;
         margin: 1rem 0;
-        border-radius: 5px;
-    }
+        transition: all 0.3s ease;
+    }}
+    
+    .upload-area:hover {{
+        border-color: #3b82f6;
+        background: #f1f5f9;
+    }}
+    
+    /* Metric cards with clean design */
+    .metric-card {{
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 0.5rem 0;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }}
+    
+    .metric-card:hover {{
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-color: #3b82f6;
+    }}
+    
+    /* Insight boxes */
+    .insight-box {{
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        border-left: 4px solid #3b82f6;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border-radius: 8px;
+        border: 1px solid #bfdbfe;
+    }}
+    
+    /* Success messages */
+    .stSuccess {{
+        background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+        border-left: 4px solid #22c55e;
+        border-radius: 8px;
+        border: 1px solid #bbf7d0;
+    }}
+    
+    /* Info messages */
+    .stInfo {{
+        background: linear-gradient(135deg, #eff6ff, #dbeafe);
+        border-left: 4px solid #3b82f6;
+        border-radius: 8px;
+        border: 1px solid #bfdbfe;
+    }}
+    
+    /* Warning messages */
+    .stWarning {{
+        background: linear-gradient(135deg, #fffbeb, #fef3c7);
+        border-left: 4px solid #f59e0b;
+        border-radius: 8px;
+        border: 1px solid #fde68a;
+    }}
+    
+    /* Error messages */
+    .stError {{
+        background: linear-gradient(135deg, #fef2f2, #fee2e2);
+        border-left: 4px solid #ef4444;
+        border-radius: 8px;
+        border: 1px solid #fecaca;
+    }}
+    
+    /* Buttons with professional blue gradient */
+    .stButton > button {{
+        background: linear-gradient(135deg, #3b82f6, #1e40af);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+    }}
+    
+    .stButton > button:hover {{
+        background: linear-gradient(135deg, #1e40af, #1e3a8a);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+    }}
+    
+    /* Select boxes */
+    .stSelectbox > div > div {{
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 8px;
+        border: 1px solid #d1d5db;
+    }}
+    
+    /* Radio buttons */
+    .stRadio > div {{
+        background-color: rgba(255, 255, 255, 0.8);
+        border-radius: 8px;
+        padding: 1rem;
+        border: 1px solid #e5e7eb;
+    }}
+    
+    /* Tabs */
+    .stTabs {{
+        background-color: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 0.5rem;
+        border: 1px solid #e5e7eb;
+    }}
+    
+    /* Dataframes */
+    .dataframe {{
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    }}
+    
+    /* Expander */
+    .streamlit-expanderHeader {{
+        background-color: #f8fafc;
+        border-radius: 8px;
+        font-weight: 600;
+        color: #1e40af;
+        border: 1px solid #e2e8f0;
+    }}
+    
+    /* Sidebar text */
+    .css-1d391kg h3 {{
+        color: white;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
+    }}
+    
+    .css-1d391kg p {{
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.5;
+    }}
+    
+    /* Spinner */
+    .stSpinner {{
+        color: #3b82f6;
+    }}
+    
+    /* Language buttons styling */
+    .lang-button {{
+        background: rgba(255, 255, 255, 0.9);
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        padding: 0.5rem 1rem;
+        margin: 0 0.25rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        font-weight: 500;
+    }}
+    
+    .lang-button:hover {{
+        background: #3b82f6;
+        color: white;
+        border-color: #3b82f6;
+    }}
+    
+    .lang-button.active {{
+        background: #3b82f6;
+        color: white;
+        border-color: #3b82f6;
+    }}
 </style>
 """, unsafe_allow_html=True)
 
@@ -85,7 +290,7 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
     col1, col2 = st.columns(2)
     
     with col1:
-        st.markdown("### 📊 Dataset Overview")
+        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">📊 Dataset Overview</div>', unsafe_allow_html=True)
         st.markdown(f"""
         <div class="metric-card">
             <strong>Jumlah Baris:</strong> {df.shape[0]:,}<br>
@@ -98,7 +303,7 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
         # Missing values
         missing_data = df.isnull().sum()
         if missing_data.sum() > 0:
-            st.markdown("### 🔍 Missing Values")
+            st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #f59e0b; margin: 1rem 0;">🔍 Missing Values</div>', unsafe_allow_html=True)
             missing_df = pd.DataFrame({
                 'Kolom': missing_data.index,
                 'Jumlah Missing': missing_data.values,
@@ -110,13 +315,13 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
     with col2:
         # Numerical columns statistics
         if numerical_cols:
-            st.markdown("### 🔢 Statistik Numerik")
+            st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #059669; margin: 1rem 0;">🔢 Statistik Numerik</div>', unsafe_allow_html=True)
             stats_df = df[numerical_cols].describe().round(2)
             st.dataframe(stats_df, use_container_width=True)
     
     # Visualizations
     if numerical_cols:
-        st.markdown("### 📊 Visualisasi Data Numerik")
+        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">📊 Visualisasi Data Numerik</div>', unsafe_allow_html=True)
         
         # Distribution plots
         selected_num_col = st.selectbox("Pilih kolom numerik untuk distribusi:", numerical_cols)
@@ -137,7 +342,7 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
         
         # Correlation matrix for numerical variables
         if len(numerical_cols) > 1:
-            st.markdown("### 🔗 Matriks Korelasi")
+            st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #7c3aed; margin: 1rem 0;">🔗 Matriks Korelasi</div>', unsafe_allow_html=True)
             correlation_matrix = df[numerical_cols].corr()
             
             fig_corr = px.imshow(correlation_matrix, 
@@ -150,7 +355,7 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
     
     # Categorical analysis
     if categorical_cols:
-        st.markdown("### 📋 Analisis Data Kategorikal")
+        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #dc2626; margin: 1rem 0;">📋 Analisis Data Kategorikal</div>', unsafe_allow_html=True)
         
         selected_cat_col = st.selectbox("Pilih kolom kategorikal:", categorical_cols)
         
@@ -174,7 +379,7 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
             st.plotly_chart(fig_bar, use_container_width=True)
         
         # Frequency table
-        st.markdown("### 📊 Tabel Frekuensi")
+        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #0891b2; margin: 1rem 0;">📊 Tabel Frekuensi</div>', unsafe_allow_html=True)
         freq_table = pd.DataFrame({
             'Kategori': value_counts.index,
             'Frekuensi': value_counts.values,
@@ -188,7 +393,7 @@ def association_analysis(df, numerical_cols, categorical_cols):
     
     # Chi-square test for categorical variables
     if len(categorical_cols) >= 2:
-        st.markdown("### 🎯 Uji Chi-Square (Variabel Kategorikal)")
+        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #ea580c; margin: 1rem 0;">🎯 Uji Chi-Square (Variabel Kategorikal)</div>', unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         with col1:
@@ -202,14 +407,14 @@ def association_analysis(df, numerical_cols, categorical_cols):
             
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown("#### Tabel Kontingensi")
+                st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">Tabel Kontingensi</div>', unsafe_allow_html=True)
                 st.dataframe(contingency_table, use_container_width=True)
             
             with col2:
                 # Perform chi-square test
                 chi2, p_value, dof, expected = chi2_contingency(contingency_table)
                 
-                st.markdown("#### Hasil Uji Chi-Square")
+                st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #059669; margin: 0.5rem 0;">Hasil Uji Chi-Square</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="metric-card">
                     <strong>Chi-Square Statistic:</strong> {chi2:.4f}<br>
@@ -221,23 +426,23 @@ def association_analysis(df, numerical_cols, categorical_cols):
                 
                 # Interpretation
                 if p_value < 0.05:
-                    st.markdown("""
+                    st.markdown(f"""
                     <div class="insight-box">
-                        <strong>💡 Insight:</strong> Terdapat asosiasi yang signifikan antara variabel {} dan {}.
+                        <strong>💡 Insight:</strong> Terdapat asosiasi yang signifikan antara variabel {var1} dan {var2}.
                         Variabel-variabel ini tidak independen satu sama lain.
                     </div>
-                    """.format(var1, var2), unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
                 else:
-                    st.markdown("""
+                    st.markdown(f"""
                     <div class="insight-box">
-                        <strong>💡 Insight:</strong> Tidak terdapat asosiasi yang signifikan antara variabel {} dan {}.
+                        <strong>💡 Insight:</strong> Tidak terdapat asosiasi yang signifikan antara variabel {var1} dan {var2}.
                         Variabel-variabel ini cenderung independen.
                     </div>
-                    """.format(var1, var2), unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
     
     # Correlation analysis for numerical variables
     if len(numerical_cols) >= 2:
-        st.markdown("### 📊 Analisis Korelasi (Variabel Numerik)")
+        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #7c3aed; margin: 1rem 0;">📊 Analisis Korelasi (Variabel Numerik)</div>', unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         with col1:
@@ -248,7 +453,7 @@ def association_analysis(df, numerical_cols, categorical_cols):
         correlation_method = st.radio("Metode Korelasi:", ['Pearson', 'Spearman'])
         
         if st.button("Analisis Korelasi"):
-            # Remove rows with missing values for the selected variables
+            # Remove rows with missing values for selected variables
             clean_df = df[[var3, var4]].dropna()
             
             # Calculate correlation
@@ -259,7 +464,7 @@ def association_analysis(df, numerical_cols, categorical_cols):
             
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown("#### Hasil Korelasi")
+                st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #0891b2; margin: 0.5rem 0;">Hasil Korelasi</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="metric-card">
                     <strong>Koefisien Korelasi ({correlation_method}):</strong> {corr_coef:.4f}<br>
@@ -289,7 +494,7 @@ def association_analysis(df, numerical_cols, categorical_cols):
     
     # Categorical vs Numerical analysis
     if numerical_cols and categorical_cols:
-        st.markdown("### 🔄 Analisis Kategorikal vs Numerik")
+        st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #0891b2; margin: 1rem 0;">🔄 Analisis Kategorikal vs Numerik</div>', unsafe_allow_html=True)
         
         col1, col2 = st.columns(2)
         with col1:
@@ -303,7 +508,7 @@ def association_analysis(df, numerical_cols, categorical_cols):
             
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown(f"#### Statistik {num_var} berdasarkan {cat_var}")
+                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0d9488; margin: 0.5rem 0;">Statistik {num_var} berdasarkan {cat_var}</div>', unsafe_allow_html=True)
                 st.dataframe(grouped_data.round(2), use_container_width=True)
             
             with col2:
@@ -323,7 +528,7 @@ def association_analysis(df, numerical_cols, categorical_cols):
             if len(category_groups) >= 2:
                 f_stat, p_value = stats.f_oneway(*category_groups)
                 
-                st.markdown("#### Hasil ANOVA")
+                st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">Hasil ANOVA</div>', unsafe_allow_html=True)
                 st.markdown(f"""
                 <div class="metric-card">
                     <strong>F-statistic:</strong> {f_stat:.4f}<br>
@@ -333,18 +538,37 @@ def association_analysis(df, numerical_cols, categorical_cols):
                 """, unsafe_allow_html=True)
                 
                 if p_value < 0.05:
-                    st.markdown("""
+                    st.markdown(f"""
                     <div class="insight-box">
-                        <strong>💡 Insight:</strong> Terdapat perbedaan yang signifikan dalam rata-rata {} antar kategori {}.
+                        <strong>💡 Insight:</strong> Terdapat perbedaan yang signifikan dalam rata-rata {num_var} antar kategori {cat_var}.
                     </div>
-                    """.format(num_var, cat_var), unsafe_allow_html=True)
+                    """, unsafe_allow_html=True)
 
 def main():
+    # Language selector
+    col1, col2, col3 = st.columns([1, 2, 1])
+    with col2:
+        st.markdown("""
+        <div style="text-align: center; margin: 1rem 0;">
+            <span class="lang-button active">🇮🇩 Indonesia</span>
+            <span class="lang-button">🇬🇧 English</span>
+            <span class="lang-button">🇨🇳 中文</span>
+        </div>
+        """, unsafe_allow_html=True)
+    
     # Main header
-    st.markdown('<h1 class="main-header">📊 Aplikasi Analisis Data Survey</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">Analisis Data Survei</h1>', unsafe_allow_html=True)
+    
+    # Upload area - inspired by first image
+    st.markdown("""
+    <div class="upload-area">
+        <h3 style="color: #1e40af; margin-bottom: 1rem;">Unggah File Excel Anda untuk memulai analisis</h3>
+        <p style="color: #64748b; margin-bottom: 1rem;">Drag and drop file here<br>Limit 200MB per file • XLSX, XLS</p>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Sidebar
-    st.sidebar.markdown("### 📋 Menu")
+    st.sidebar.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: white; margin: 1rem 0;">📋 Menu</div>', unsafe_allow_html=True)
     st.sidebar.markdown("Upload file Excel/CSV survey Anda untuk memulai analisis.")
     
     # File upload
@@ -370,13 +594,13 @@ def main():
             col1, col2 = st.columns(2)
             with col1:
                 if numerical_cols:
-                    st.markdown("#### Kolom Numerik:")
+                    st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #1e40af; margin: 0.5rem 0;">Kolom Numerik:</div>', unsafe_allow_html=True)
                     for col in numerical_cols:
                         st.markdown(f"• {col}")
             
             with col2:
                 if categorical_cols:
-                    st.markdown("#### Kolom Kategorikal:")
+                    st.markdown('<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">Kolom Kategorikal:</div>', unsafe_allow_html=True)
                     for col in categorical_cols:
                         st.markdown(f"• {col}")
             
@@ -391,7 +615,7 @@ def main():
             
             # Export functionality
             st.markdown("---")
-            st.markdown("### 💾 Export Hasil Analisis")
+            st.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: #059669; margin: 1rem 0;">💾 Export Hasil Analisis</div>', unsafe_allow_html=True)
             
             if st.button("Download Summary Report"):
                 # Create a summary report
@@ -404,40 +628,54 @@ def main():
                 # Convert to CSV
                 csv = summary_df.to_csv(index=False)
                 b64 = base64.b64encode(csv.encode()).decode()
-                href = f'<a href="data:file/csv;base64,{b64}" download="survey_analysis_summary.csv">Download CSV Summary</a>'
+                href = f'<a href="data:file/csv;base64,{b64}" download="survey_analysis_summary.csv" style="background: #3b82f6; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">Download CSV Summary</a>'
                 st.markdown(href, unsafe_allow_html=True)
     
     else:
         # Instructions
         st.markdown("""
-        ## 🚀 Cara Menggunakan Aplikasi Ini
-        
-        1. **Upload File**: Klik tombol "Browse Files" di sidebar untuk mengupload file Excel (.xlsx) atau CSV (.csv)
-        2. **Analisis Deskriptif**: Dapatkan statistik dasar, visualisasi distribusi, dan insight awal dari data Anda
-        3. **Analisis Asosiasi**: Temukan hubungan antar variabel dengan uji statistik
-        4. **Export Results**: Download hasil analisis dalam format CSV
-        
-        ### 📋 Fitur Utama:
-        
-        **Analisis Deskriptif:**
-        - Statistik dasar (mean, median, modus, standar deviasi)
-        - Visualisasi distribusi data
-        - Analisis missing values
-        - Matriks korelasi
-        
-        **Analisis Asosiasi:**
-        - Uji Chi-Square untuk variabel kategorikal
-        - Analisis korelasi (Pearson/Spearman) untuk variabel numerik
-        - ANOVA untuk analisis kategorikal vs numerik
-        - Visualisasi hubungan antar variabel
-        
-        ### 📊 Format File yang Didukung:
-        - Excel (.xlsx)
-        - CSV (.csv)
-        """)
-        
-        # Sample data info
-        st.info("💡 **Tip**: Pastikan data Anda memiliki header yang jelas dan format yang konsisten untuk hasil analisis yang optimal.")
+<div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border: 1px solid #e5e7eb; margin: 1rem 0;">
+<h2 style="color: #1e40af; margin-bottom: 1rem;">🚀 Cara Menggunakan Aplikasi Ini</h2>
+<ol style="color: #374151; line-height: 1.6;">
+    <li><strong style="color: #3b82f6;">Upload File</strong>: Klik tombol "Browse Files" di sidebar untuk mengupload file Excel (.xlsx) atau CSV (.csv)</li>
+    <li><strong style="color: #7c3aed;">Analisis Deskriptif</strong>: Dapatkan statistik dasar, visualisasi distribusi, dan insight awal dari data Anda</li>
+    <li><strong style="color: #dc2626;">Analisis Asosiasi</strong>: Temukan hubungan antar variabel dengan uji statistik</li>
+    <li><strong style="color: #059669;">Export Results</strong>: Download hasil analisis dalam format CSV</li>
+</ol>
+
+<h3 style="color: #1e40af; margin: 1.5rem 0 1rem 0;">📋 Fitur Utama:</h3>
+
+<div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #3b82f6;">
+<h4 style="color: #1e40af; margin-bottom: 0.5rem;">📈 Analisis Deskriptif:</h4>
+<ul style="color: #374151; line-height: 1.5;">
+    <li>Statistik dasar (mean, median, modus, standar deviasi)</li>
+    <li>Visualisasi distribusi data</li>
+    <li>Analisis missing values</li>
+    <li>Matriks korelasi</li>
+</ul>
+</div>
+
+<div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #dc2626;">
+<h4 style="color: #dc2626; margin-bottom: 0.5rem;">🔗 Analisis Asosiasi:</h4>
+<ul style="color: #374151; line-height: 1.5;">
+    <li>Uji Chi-Square untuk variabel kategorikal</li>
+    <li>Analisis korelasi (Pearson/Spearman) untuk variabel numerik</li>
+    <li>ANOVA untuk analisis kategorikal vs numerik</li>
+    <li>Visualisasi hubungan antar variabel</li>
+</ul>
+</div>
+
+<h3 style="color: #ea580c; margin: 1.5rem 0 1rem 0;">📊 Format File yang Didukung:</h3>
+<ul style="color: #374151; line-height: 1.5;">
+    <li>Excel (.xlsx)</li>
+    <li>CSV (.csv)</li>
+</ul>
+
+<div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); padding: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6; margin: 1rem 0;">
+<p style="color: #1e40af; margin: 0; font-weight: 600;">💡 <strong>Tip</strong>: Pastikan data Anda memiliki header yang jelas dan format yang konsisten untuk hasil analisis yang optimal.</p>
+</div>
+</div>
+""", unsafe_allow_html=True)
 
 if __name__ == "__main__":
     main()
