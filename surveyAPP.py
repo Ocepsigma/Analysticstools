@@ -8,6 +8,7 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import io
 import base64
+import os
 from scipy import stats
 from scipy.stats import chi2_contingency, pearsonr, spearmanr
 from sklearn.preprocessing import LabelEncoder
@@ -24,19 +25,102 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS with background image - WORKING SOLUTION
+# Background image function - WORKING SOLUTION
+def get_background_image():
+    """Load background image from multiple sources"""
+    background_styles = []
+    
+    # Try to load from different sources
+    try:
+        # Method 1: Try to read from current directory
+        if os.path.exists('background.jpg'):
+            with open('background.jpg', 'rb') as f:
+                image_data = f.read()
+            encoded = base64.b64encode(image_data).decode()
+            background_styles.append(f"""
+                .stApp {{
+                    background-image: url("data:image/jpeg;base64,{encoded}");
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                }}
+            """)
+        elif os.path.exists('background.png'):
+            with open('background.png', 'rb') as f:
+                image_data = f.read()
+            encoded = base64.b64encode(image_data).decode()
+            background_styles.append(f"""
+                .stApp {{
+                    background-image: url("data:image/png;base64,{encoded}");
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                }}
+            """)
+    except Exception as e:
+        print(f"Error loading background: {e}")
+    
+    # Method 2: Try to load from assets folder
+    try:
+        if os.path.exists('assets/background.jpg'):
+            with open('assets/background.jpg', 'rb') as f:
+                image_data = f.read()
+            encoded = base64.b64encode(image_data).decode()
+            background_styles.append(f"""
+                .stApp {{
+                    background-image: url("data:image/jpeg;base64,{encoded}");
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                }}
+            """)
+        elif os.path.exists('assets/background.png'):
+            with open('assets/background.png', 'rb') as f:
+                image_data = f.read()
+            encoded = base64.b64encode(image_data).decode()
+            background_styles.append(f"""
+                .stApp {{
+                    background-image: url("data:image/png;base64,{encoded}");
+                    background-size: cover;
+                    background-position: center;
+                    background-repeat: no-repeat;
+                    background-attachment: fixed;
+                }}
+            """)
+    except Exception as e:
+        print(f"Error loading background from assets: {e}")
+    
+    # If no background found, use gradient fallback
+    if not background_styles:
+        background_styles.append("""
+            .stApp {
+                background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #1e293b 75%, #0f172a 100%);
+                background-size: 400% 400%;
+                animation: gradientShift 15s ease infinite;
+            }
+        """)
+    
+    return background_styles
+
+# Apply background styles
+background_styles = get_background_image()
+for style in background_styles:
+    st.markdown(f"<style>{style}</style>", unsafe_allow_html=True)
+
+# Custom CSS with design inspired by first image
 st.markdown("""
 <style>
-    /* Main background with gradient fallback */
-    .stApp {
-        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 25%, #3b82f6 50%, #1e40af 75%, #1e3a8a 100%);
-        background-size: 400% 400%;
-        animation: gradientShift 15s ease infinite;
-        position: relative;
-        overflow-x: hidden;
+    /* Animated gradient keyframes */
+    @keyframes gradientShift {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
     }
     
-    /* Add binary code overlay effect */
+    /* Binary rain effect */
     .stApp::before {
         content: "";
         position: fixed;
@@ -45,18 +129,17 @@ st.markdown("""
         width: 100%;
         height: 100%;
         background-image: 
-            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(59, 130, 246, 0.03) 2px, rgba(59, 130, 246, 0.03) 4px),
-            repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(59, 130, 246, 0.03) 2px, rgba(59, 130, 246, 0.03) 4px);
+            repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(59, 130, 246, 0.1) 2px, rgba(59, 130, 246, 0.1) 4px),
+            repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(59, 130, 246, 0.1) 2px, rgba(59, 130, 246, 0.1) 4px);
         background-size: 50px 50px;
         pointer-events: none;
         z-index: -1;
+        animation: binaryMove 20s linear infinite;
     }
     
-    /* Animated gradient keyframes */
-    @keyframes gradientShift {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+    @keyframes binaryMove {
+        0% { transform: translateY(0); }
+        100% { transform: translateY(50px); }
     }
     
     /* Main container with glassmorphism effect */
@@ -375,7 +458,7 @@ st.markdown("""
         border-color: #3b82f6;
     }
     
-    /* Add floating elements for tech feel */
+    /* Floating elements for tech feel */
     .floating-element {
         position: fixed;
         width: 4px;
