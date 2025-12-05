@@ -142,6 +142,11 @@ st.markdown("""
         100% { transform: translateY(50px); }
     }
     
+    /* Hide sidebar */
+    .css-1d391kg {
+        display: none;
+    }
+    
     /* Main container with glassmorphism effect */
     .main .block-container {
         background: rgba(255, 255, 255, 0.92);
@@ -153,19 +158,9 @@ st.markdown("""
         border: 1px solid rgba(255, 255, 255, 0.18);
         position: relative;
         z-index: 1;
-    }
-    
-    /* Sidebar with professional gradient */
-    .css-1d391kg {
-        background: linear-gradient(135deg, rgba(30, 64, 175, 0.95), rgba(55, 48, 163, 0.95));
-        backdrop-filter: blur(10px);
-        border-right: 1px solid rgba(255, 255, 255, 0.1);
-    }
-    
-    .css-1d391kg .stSelectbox > div > div {
-        background-color: rgba(255, 255, 255, 0.95);
-        color: #1e293b;
-        border-radius: 8px;
+        max-width: 1000px;
+        margin-left: auto;
+        margin-right: auto;
     }
     
     /* Main header with professional blue gradient */
@@ -188,21 +183,37 @@ st.markdown("""
         to { filter: drop-shadow(0 0 20px rgba(59, 130, 246, 0.8)); }
     }
     
-    /* Upload area styling - CENTERED AND BELOW TITLE */
-    .upload-section {
+    /* Language selector */
+    .language-selector {
+        display: flex;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 2rem;
+    }
+    
+    /* Upload area styling - CENTERED */
+    .upload-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 400px;
+        margin: 2rem 0;
+    }
+    
+    .upload-area {
         background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
         border: 2px dashed #cbd5e1;
         border-radius: 16px;
-        padding: 2.5rem;
+        padding: 3rem;
         text-align: center;
-        margin: 2rem 0;
         transition: all 0.3s ease;
         position: relative;
         overflow: hidden;
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        min-width: 500px;
     }
     
-    .upload-section::before {
+    .upload-area::before {
         content: "";
         position: absolute;
         top: -50%;
@@ -218,7 +229,7 @@ st.markdown("""
         100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
     }
     
-    .upload-section:hover {
+    .upload-area:hover {
         border-color: #3b82f6;
         background: linear-gradient(135deg, rgba(239, 246, 255, 0.95), rgba(219, 234, 254, 0.95));
         transform: translateY(-2px);
@@ -276,7 +287,7 @@ st.markdown("""
     .upload-button:hover {
         background: linear-gradient(135deg, #1e40af, #1e3a8a);
         transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(59, 130, 246, 0.6);
+        box-shadow: 0 6px 25px rgba(59, 130, 246, 0.6);
     }
     
     /* File info styling */
@@ -288,6 +299,7 @@ st.markdown("""
         margin: 1rem 0;
         border: 1px solid #bbf7d0;
         box-shadow: 0 2px 10px rgba(34, 197, 94, 0.1);
+        text-align: center;
     }
     
     .file-name {
@@ -481,17 +493,6 @@ st.markdown("""
         border: 1px solid #e2e8f0;
     }
     
-    /* Sidebar text */
-    .css-1d391kg h3 {
-        color: white;
-        text-shadow: 1px 1px 2px rgba(0,0,0,0.2);
-    }
-    
-    .css-1d391kg p {
-        color: rgba(255, 255, 255, 0.9);
-        line-height: 1.5;
-    }
-    
     /* Spinner */
     .stSpinner {
         color: #3b82f6;
@@ -559,9 +560,22 @@ st.markdown("""
     .floating-element:nth-child(4) { animation-delay: 15s; left: 60%; }
     .floating-element:nth-child(5) { animation-delay: 2s; left: 80%; }
     
-    /* Hide default file uploader styling */
+    /* Hide default file uploader */
     .stFileUploader {
         display: none;
+    }
+    
+    /* Custom file uploader */
+    .custom-file-upload {
+        position: relative;
+        display: inline-block;
+        cursor: pointer;
+        width: 100%;
+    }
+    
+    .custom-file-upload input[type=file] {
+        position: absolute;
+        left: -9999px;
     }
 </style>
 
@@ -863,34 +877,61 @@ def association_analysis(df, numerical_cols, categorical_cols):
 
 def main():
     # Language selector
-    col1, col2, col3 = st.columns([1, 2, 1])
-    with col2:
-        st.markdown("""
-        <div style="text-align: center; margin: 1rem 0;">
-            <span class="lang-button active">🇮🇩 Indonesia</span>
-            <span class="lang-button">🇬🇧 English</span>
-            <span class="lang-button">🇨🇳 中文</span>
-        </div>
-        """, unsafe_allow_html=True)
+    st.markdown("""
+    <div class="language-selector">
+        <span class="lang-button active">🇮🇩 Indonesia</span>
+        <span class="lang-button">🇬🇧 English</span>
+        <span class="lang-button">🇨🇳 中文</span>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Main header
     st.markdown('<h1 class="main-header">Analisis Data Survei</h1>', unsafe_allow_html=True)
     
-    # Upload area - CENTERED AND BELOW TITLE
-    st.markdown("""
-    <div class="upload-section">
-        <div class="upload-title">📊 Unggah File Excel Anda untuk Memulai Analisis</div>
-        <div class="upload-description">
-            Drag and drop file di sini<br>
-            Limit 200MB per file • Format XLSX, XLS, CSV
+    # Upload area - CENTERED IN MIDDLE
+    if st.session_state.uploaded_file is None:
+        st.markdown("""
+        <div class="upload-container">
+            <div class="upload-area">
+                <div class="upload-title">📊 Unggah File Excel Anda untuk Memulai Analisis</div>
+                <div class="upload-description">
+                    Drag and drop file di sini<br>
+                    Limit 200MB per file • Format XLSX, XLS, CSV
+                </div>
+                <div class="custom-file-upload">
+                    <input type="file" id="fileInput" accept=".xlsx,.xls,.csv" style="display: none;">
+                    <button class="upload-button" onclick="document.getElementById('fileInput').click()">
+                        📁 Pilih File Excel/CSV
+                    </button>
+                </div>
+            </div>
         </div>
-    </div>
-    """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)
+        
+        # JavaScript to handle file upload
+        st.markdown("""
+        <script>
+            document.getElementById('fileInput').addEventListener('change', function(e) {
+                const file = e.target.files[0];
+                if (file) {
+                    // Create a FileReader to read the file
+                    const reader = new FileReader();
+                    reader.onload = function(e) {
+                        // Store the file data in a hidden input or use another method
+                        // For now, we'll just show a message
+                        alert('File selected: ' + file.name + '\\nSize: ' + (file.size / 1024 / 1024).toFixed(2) + ' MB');
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        </script>
+        """, unsafe_allow_html=True)
     
-    # Custom file upload button
-    uploaded_file = st.file_uploader("Pilih file Excel/CSV", type=['xlsx', 'xls', 'csv'], key='main_file_uploader')
+    # Alternative: Use Streamlit's file uploader (hidden)
+    uploaded_file = st.file_uploader("Upload File", type=['xlsx', 'xls', 'csv'], 
+                                   help="Upload file Excel atau CSV untuk analisis data",
+                                   label_visibility="collapsed")
     
-    # Store file in session state
     if uploaded_file is not None:
         st.session_state.uploaded_file = uploaded_file
         
@@ -901,37 +942,10 @@ def main():
             <div class="file-size">Ukuran: {uploaded_file.size / 1024 / 1024:.2f} MB</div>
         </div>
         """, unsafe_allow_html=True)
-    
-    # Sidebar content
-    st.sidebar.markdown('<div style="font-size: 1.3rem; font-weight: 600; color: white; margin: 1rem 0;">📋 Menu</div>', unsafe_allow_html=True)
-    st.sidebar.markdown("""
-    <div style="color: rgba(255, 255, 255, 0.9); line-height: 1.5;">
-        <p style="margin-bottom: 1rem;">📊 <strong>Analisis Data Survei</strong></p>
-        <p style="margin-bottom: 1rem;">Upload file Excel/CSV survey Anda untuk memulai analisis komprehensif.</p>
         
-        <p style="margin-bottom: 1rem;">🔍 <strong>Fitur Utama:</strong></p>
-        <ul style="margin-left: 1rem; color: rgba(255, 255, 255, 0.8);">
-            <li>Analisis Deskriptif</li>
-            <li>Uji Statistik</li>
-            <li>Visualisasi Data</li>
-            <li>Export Hasil</li>
-        </ul>
-        
-        <p style="margin-bottom: 1rem;">📈 <strong>Metode Analisis:</strong></p>
-        <ul style="margin-left: 1rem; color: rgba(255, 255, 255, 0.8);">
-            <li>Chi-Square Test</li>
-            <li>Korelasi Pearson/Spearman</li>
-            <li>ANOVA Test</li>
-            <li>Statistik Deskriptif</li>
-        </ul>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    # Process uploaded file
-    if st.session_state.uploaded_file is not None:
         # Load data
         with st.spinner("Memuat data..."):
-            df = load_data(st.session_state.uploaded_file)
+            df = load_data(uploaded_file)
         
         if df is not None:
             # Success message
@@ -988,10 +1002,10 @@ def main():
     else:
         # Instructions
         st.markdown("""
-<div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border: 1px solid #e5e7eb; margin: 1rem 0;">
+<div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border: 1px solid #e5e7eb; margin: 2rem 0;">
 <h2 style="color: #1e40af; margin-bottom: 1rem;">🚀 Cara Menggunakan Aplikasi Ini</h2>
 <ol style="color: #374151; line-height: 1.6;">
-    <li><strong style="color: #3b82f6;">Upload File</strong>: Klik tombol "Pilih file Excel/CSV" di bawah judul untuk mengupload file Excel (.xlsx) atau CSV (.csv)</li>
+    <li><strong style="color: #3b82f6;">Upload File</strong>: Klik tombol "Pilih File Excel/CSV" di tengah halaman untuk mengupload file Excel (.xlsx) atau CSV (.csv)</li>
     <li><strong style="color: #7c3aed;">Analisis Deskriptif</strong>: Dapatkan statistik dasar, visualisasi distribusi, dan insight awal dari data Anda</li>
     <li><strong style="color: #dc2626;">Analisis Asosiasi</strong>: Temukan hubungan antar variabel dengan uji statistik</li>
     <li><strong style="color: #059669;">Export Results</strong>: Download hasil analisis dalam format CSV</li>
