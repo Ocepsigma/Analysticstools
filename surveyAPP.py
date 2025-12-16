@@ -17,6 +17,14 @@ from sklearn.decomposition import PCA
 import warnings
 warnings.filterwarnings('ignore')
 
+# Try to import statsmodels for trendline functionality
+try:
+    import statsmodels.api as sm
+    STATSMODELS_AVAILABLE = True
+except ImportError:
+    STATSMODELS_AVAILABLE = False
+    warnings.warn("statsmodels not available. Trendline functionality will be disabled.")
+
 # Set page config
 st.set_page_config(
     page_title="Analisis Data Survei",
@@ -104,7 +112,7 @@ TRANSLATIONS = {
         "not_significant_insight": "Tidak terdapat asosiasi yang signifikan antara variabel",
         "independent_variables": "Variabel-variabel ini tidak independen satu sama lain.",
         "independent_variables_alt": "Variabel-variabel ini cenderung independen.",
-        "correlation_strength": "sangat kuat" if abs(0.8) >= 0.8 else "kuat" if abs(0.8) >= 0.6 else "sedang" if abs(0.8) >= 0.4 else "lemah" if abs(0.8) >= 0.2 else "sangat lemah",
+        "correlation_strength": "sangat kuat",
         "positive": "positif",
         "negative": "negatif",
         "correlation_insight": "Terdapat hubungan",
@@ -215,7 +223,7 @@ TRANSLATIONS = {
         "not_significant_insight": "There is no significant association between variables",
         "independent_variables": "These variables are not independent of each other.",
         "independent_variables_alt": "These variables tend to be independent.",
-        "correlation_strength": "very strong" if abs(0.8) >= 0.8 else "strong" if abs(0.8) >= 0.6 else "moderate" if abs(0.8) >= 0.4 else "weak" if abs(0.8) >= 0.2 else "very weak",
+        "correlation_strength": "very strong",
         "positive": "positive",
         "negative": "negative",
         "correlation_insight": "There is a",
@@ -326,7 +334,7 @@ TRANSLATIONS = {
         "not_significant_insight": "变量之间不存在显著关联",
         "independent_variables": "这些变量彼此不独立。",
         "independent_variables_alt": "这些变量倾向于独立。",
-        "correlation_strength": "非常强" if abs(0.8) >= 0.8 else "强" if abs(0.8) >= 0.6 else "中等" if abs(0.8) >= 0.4 else "弱" if abs(0.8) >= 0.2 else "非常弱",
+        "correlation_strength": "非常强",
         "positive": "正",
         "negative": "负",
         "correlation_insight": "存在",
@@ -1028,530 +1036,651 @@ def get_correlation_strength(correlation):
     """Get correlation strength description"""
     abs_corr = abs(correlation)
     if abs_corr >= 0.8:
-        return get_translation("correlation_strength").split("sangat kuat")[0] + "sangat kuat"
+        return "sangat kuat"
     elif abs_corr >= 0.6:
-        return get_translation("correlation_strength").split("kuat")[0] + "kuat"
+        return "kuat"
     elif abs_corr >= 0.4:
-        return get_translation("correlation_strength").split("sedang")[0] + "sedang"
+        return "sedang"
     elif abs_corr >= 0.2:
-        return get_translation("correlation_strength").split("lemah")[0] + "lemah"
+        return "lemah"
     else:
-        return get_translation("correlation_strength").split("sangat lemah")[0] + "sangat lemah"
+        return "sangat lemah"
 
 def automatic_association_analysis(df, var1, var2, numerical_cols, categorical_cols):
     """Perform automatic association analysis based on variable types"""
     
-    # Determine variable types
-    var1_type = 'numerical' if var1 in numerical_cols else 'categorical'
-    var2_type = 'numerical' if var2 in numerical_cols else 'categorical'
-    
-    analysis_info = determine_analysis_type(var1_type, var2_type, var1, var2)
-    
-    st.markdown(f'<div class="analysis-type-card">', unsafe_allow_html=True)
-    st.markdown(f'<div class="analysis-type-title">{analysis_info["icon"]} {analysis_info["title"]}</div>', unsafe_allow_html=True)
-    st.markdown(f'<div class="analysis-type-desc">{analysis_info["description"]}</div>', unsafe_allow_html=True)
-    st.markdown(f'</div>', unsafe_allow_html=True)
-    
-    if analysis_info['type'] == 'chi-square':
-        # Chi-Square test for categorical variables
-        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #ea580c; margin: 1rem 0;">{get_translation("chi_square_results")}</div>', unsafe_allow_html=True)
+    try:
+        # Determine variable types
+        var1_type = 'numerical' if var1 in numerical_cols else 'categorical'
+        var2_type = 'numerical' if var2 in numerical_cols else 'categorical'
         
-        # Create contingency table
-        contingency_table = pd.crosstab(df[var1], df[var2])
+        analysis_info = determine_analysis_type(var1_type, var2_type, var1, var2)
         
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("contingency_table")}</div>', unsafe_allow_html=True)
-            st.dataframe(contingency_table, use_container_width=True)
+        st.markdown(f'<div class="analysis-type-card">', unsafe_allow_html=True)
+        st.markdown(f'<div class="analysis-type-title">{analysis_info["icon"]} {analysis_info["title"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="analysis-type-desc">{analysis_info["description"]}</div>', unsafe_allow_html=True)
+        st.markdown(f'</div>', unsafe_allow_html=True)
         
-        with col2:
-            # Perform chi-square test
-            chi2, p_value, dof, expected = chi2_contingency(contingency_table)
+        if analysis_info['type'] == 'chi-square':
+            # Chi-Square test for categorical variables
+            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #ea580c; margin: 1rem 0;">{get_translation("chi_square_results")}</div>', unsafe_allow_html=True)
             
-            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #059669; margin: 0.5rem 0;">{get_translation("chi_square_results")}</div>', unsafe_allow_html=True)
-            st.markdown(f"""
-            <div class="metric-card">
-                <strong>{get_translation("chi_square_statistic")}:</strong> {chi2:.4f}<br>
-                <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
-                <strong>{get_translation("degrees_of_freedom")}:</strong> {dof}<br>
-                <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
-            </div>
-            """, unsafe_allow_html=True)
+            try:
+                # Create contingency table
+                contingency_table = pd.crosstab(df[var1], df[var2])
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("contingency_table")}</div>', unsafe_allow_html=True)
+                    st.dataframe(contingency_table, use_container_width=True)
+                
+                with col2:
+                    # Perform chi-square test
+                    chi2, p_value, dof, expected = chi2_contingency(contingency_table)
+                    
+                    st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #059669; margin: 0.5rem 0;">{get_translation("chi_square_results")}</div>', unsafe_allow_html=True)
+                    st.markdown(f"""
+                    <div class="metric-card">
+                        <strong>{get_translation("chi_square_statistic")}:</strong> {chi2:.4f}<br>
+                        <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
+                        <strong>{get_translation("degrees_of_freedom")}:</strong> {dof}<br>
+                        <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                # Interpretation
+                if p_value < 0.05:
+                    st.markdown(f"""
+                    <div class="insight-box">
+                        <strong>{get_translation("insight")}</strong> {get_translation("significant_insight")} {var1} dan {var2}.
+                        {get_translation("independent_variables")}
+                    </div>
+                    """, unsafe_allow_html=True)
+                else:
+                    st.markdown(f"""
+                    <div class="insight-box">
+                        <strong>{get_translation("insight")}</strong> {get_translation("not_significant_insight")} {var1} dan {var2}.
+                        {get_translation("independent_variables_alt")}
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+            except Exception as e:
+                st.error(f"Error in Chi-Square analysis: {str(e)}")
         
-        # Interpretation
-        if p_value < 0.05:
-            st.markdown(f"""
-            <div class="insight-box">
-                <strong>{get_translation("insight")}</strong> {get_translation("significant_insight")} {var1} dan {var2}.
-                {get_translation("independent_variables")}
-            </div>
-            """, unsafe_allow_html=True)
-        else:
-            st.markdown(f"""
-            <div class="insight-box">
-                <strong>{get_translation("insight")}</strong> {get_translation("not_significant_insight")} {var1} dan {var2}.
-                {get_translation("independent_variables_alt")}
-            </div>
-            """, unsafe_allow_html=True)
-    
-    elif analysis_info['type'] == 'correlation':
-        # Correlation analysis for numerical variables
-        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #7c3aed; margin: 1rem 0;">{get_translation("correlation_results")}</div>', unsafe_allow_html=True)
-        
-        # Remove rows with missing values for selected variables
-        clean_df = df[[var1, var2]].dropna()
-        
-        # Calculate both Pearson and Spearman correlations
-        pearson_corr, pearson_p = pearsonr(clean_df[var1], clean_df[var2])
-        spearman_corr, spearman_p = spearmanr(clean_df[var1], clean_df[var2])
-        
-        # Use Pearson by default (can add option to choose)
-        correlation = pearson_corr
-        p_value = pearson_p
-        method = "Pearson"
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0891b2; margin: 0.5rem 0;">{get_translation("correlation_results")}</div>', unsafe_allow_html=True)
-            st.markdown(f"""
-            <div class="metric-card">
-                <strong>{get_translation("correlation_coefficient")} ({method}):</strong> {correlation:.4f}<br>
-                <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
-                <strong>{get_translation("sample_size")}:</strong> {len(clean_df)}<br>
-                <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
-            </div>
-            """, unsafe_allow_html=True)
+        elif analysis_info['type'] == 'correlation':
+            # Correlation analysis for numerical variables
+            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #7c3aed; margin: 1rem 0;">{get_translation("correlation_results")}</div>', unsafe_allow_html=True)
             
-            # Correlation strength indicator
-            strength = get_correlation_strength(correlation)
-            direction = get_translation("positive") if correlation > 0 else get_translation("negative")
-            
-            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0891b2; margin: 0.5rem 0;">{get_translation("correlation_strength_indicator")}</div>', unsafe_allow_html=True)
-            
-            # Visual correlation strength bar
-            correlation_normalized = (abs(correlation) + 1) / 2  # Normalize to 0-1 for positioning
-            st.markdown(f"""
-            <div style="position: relative; margin: 1rem 0;">
-                <div class="correlation-strength-bar"></div>
-                <div class="correlation-indicator" style="left: {correlation_normalized * 100}%"></div>
-            </div>
-            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #64748b; margin-top: 0.5rem;">
-                <span>Sangat Lemah</span>
-                <span>Lemah</span>
-                <span>Sedang</span>
-                <span>Kuat</span>
-                <span>Sangat Kuat</span>
-            </div>
-            """, unsafe_allow_html=True)
-            
-            st.markdown(f"""
-            <div class="metric-card">
-                <strong>Kekuatan:</strong> {strength}<br>
-                <strong>Arah:</strong> {direction}<br>
-                <strong>Nilai Absolut:</strong> {abs(correlation):.4f}
-            </div>
-            """, unsafe_allow_html=True)
-        
-        with col2:
-            # Scatter plot
-            fig_scatter = px.scatter(clean_df, x=var1, y=var2, 
-                                   title=f'Scatter Plot: {var1} vs {var2}',
-                                   trendline='ols')
-            fig_scatter.update_layout(height=400)
-            st.plotly_chart(fig_scatter, use_container_width=True)
-        
-        # Interpretation
-        st.markdown(f"""
-        <div class="insight-box">
-            <strong>{get_translation("insight")}</strong> {get_translation("correlation_insight")} {direction} {strength} {get_translation("between_variables")} {var1} dan {var2}.
-            {get_translation("statistical_significance") if p_value < 0.05 else get_translation("no_statistical_significance")}
-        </div>
-        """, unsafe_allow_html=True)
-    
-    else:  # ANOVA
-        # ANOVA test for categorical vs numerical
-        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #0891b2; margin: 1rem 0;">{get_translation("anova_results")}</div>', unsafe_allow_html=True)
-        
-        # Identify categorical and numerical variables
-        cat_var = var1 if var1_type == 'categorical' else var2
-        num_var = var2 if var1_type == 'categorical' else var1
-        
-        # Group by categorical variable
-        grouped_data = df.groupby(cat_var)[num_var].describe()
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0d9488; margin: 0.5rem 0;">{get_translation("statistics_by").format(num_var, cat_var)}</div>', unsafe_allow_html=True)
-            st.dataframe(grouped_data.round(2), use_container_width=True)
-        
-        with col2:
-            # Box plot by category
-            fig_box_cat = px.box(df, x=cat_var, y=num_var, 
-                               title=get_translation("distribution_by").format(num_var, cat_var))
-            fig_box_cat.update_layout(height=400)
-            st.plotly_chart(fig_box_cat, use_container_width=True)
-        
-        # ANOVA test
-        categories = df[cat_var].unique()
-        category_groups = [df[df[cat_var] == cat][num_var].dropna() for cat in categories]
-        
-        # Remove empty groups
-        category_groups = [group for group in category_groups if len(group) > 0]
-        
-        if len(category_groups) >= 2:
-            f_stat, p_value = stats.f_oneway(*category_groups)
-            
-            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("anova_results")}</div>', unsafe_allow_html=True)
-            st.markdown(f"""
-            <div class="metric-card">
-                <strong>{get_translation("f_statistic")}:</strong> {f_stat:.4f}<br>
-                <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
-                <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
-            </div>
-            """, unsafe_allow_html=True)
-            
-            if p_value < 0.05:
+            try:
+                # Remove rows with missing values for selected variables
+                clean_df = df[[var1, var2]].dropna()
+                
+                if len(clean_df) < 2:
+                    st.error("Not enough data points for correlation analysis (need at least 2).")
+                    return
+                
+                # Calculate both Pearson and Spearman correlations
+                pearson_corr, pearson_p = pearsonr(clean_df[var1], clean_df[var2])
+                spearman_corr, spearman_p = spearmanr(clean_df[var1], clean_df[var2])
+                
+                # Use Pearson by default (can add option to choose)
+                correlation = pearson_corr
+                p_value = pearson_p
+                method = "Pearson"
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0891b2; margin: 0.5rem 0;">{get_translation("correlation_results")}</div>', unsafe_allow_html=True)
+                    st.markdown(f"""
+                    <div class="metric-card">
+                        <strong>{get_translation("correlation_coefficient")} ({method}):</strong> {correlation:.4f}<br>
+                        <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
+                        <strong>{get_translation("sample_size")}:</strong> {len(clean_df)}<br>
+                        <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    # Correlation strength indicator
+                    strength = get_correlation_strength(correlation)
+                    direction = get_translation("positive") if correlation > 0 else get_translation("negative")
+                    
+                    st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0891b2; margin: 0.5rem 0;">{get_translation("correlation_strength_indicator")}</div>', unsafe_allow_html=True)
+                    
+                    # Visual correlation strength bar
+                    correlation_normalized = (abs(correlation) + 1) / 2  # Normalize to 0-1 for positioning
+                    st.markdown(f"""
+                    <div style="position: relative; margin: 1rem 0;">
+                        <div class="correlation-strength-bar"></div>
+                        <div class="correlation-indicator" style="left: {correlation_normalized * 100}%"></div>
+                    </div>
+                    <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #64748b; margin-top: 0.5rem;">
+                        <span>Sangat Lemah</span>
+                        <span>Lemah</span>
+                        <span>Sedang</span>
+                        <span>Kuat</span>
+                        <span>Sangat Kuat</span>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    st.markdown(f"""
+                    <div class="metric-card">
+                        <strong>Kekuatan:</strong> {strength}<br>
+                        <strong>Arah:</strong> {direction}<br>
+                        <strong>Nilai Absolut:</strong> {abs(correlation):.4f}
+                    </div>
+                    """, unsafe_allow_html=True)
+                
+                with col2:
+                    # Scatter plot with error handling for trendline
+                    try:
+                        if STATSMODELS_AVAILABLE:
+                            fig_scatter = px.scatter(clean_df, x=var1, y=var2, 
+                                                   title=f'Scatter Plot: {var1} vs {var2}',
+                                                   trendline='ols')
+                        else:
+                            fig_scatter = px.scatter(clean_df, x=var1, y=var2, 
+                                                   title=f'Scatter Plot: {var1} vs {var2} (trendline not available)')
+                            # Add a simple linear regression line manually
+                        fig_scatter.update_layout(height=400)
+                        st.plotly_chart(fig_scatter, use_container_width=True)
+                        
+                        if not STATSMODELS_AVAILABLE:
+                            st.info("📊 Trendline requires 'statsmodels' library. Install with: pip install statsmodels")
+                            
+                    except Exception as e:
+                        st.error(f"Error creating scatter plot: {str(e)}")
+                        # Fallback to simple scatter plot without trendline
+                        try:
+                            fig_scatter = px.scatter(clean_df, x=var1, y=var2, 
+                                                   title=f'Scatter Plot: {var1} vs {var2}')
+                            fig_scatter.update_layout(height=400)
+                            st.plotly_chart(fig_scatter, use_container_width=True)
+                        except Exception as fallback_error:
+                            st.error(f"Could not create scatter plot: {str(fallback_error)}")
+                
+                # Interpretation
                 st.markdown(f"""
                 <div class="insight-box">
-                    <strong>{get_translation("insight")}</strong> {get_translation("mean_difference_insight")} {num_var} {get_translation("between_categories")} {cat_var}.
+                    <strong>{get_translation("insight")}</strong> {get_translation("correlation_insight")} {direction} {strength} {get_translation("between_variables")} {var1} dan {var2}.
+                    {get_translation("statistical_significance") if p_value < 0.05 else get_translation("no_statistical_significance")}
                 </div>
                 """, unsafe_allow_html=True)
-            else:
-                st.markdown(f"""
-                <div class="insight-box">
-                    <strong>{get_translation("insight")}</strong> {get_translation("no_mean_difference_insight")} {num_var} {get_translation("between_categories_alt")}.
-                </div>
-                """, unsafe_allow_html=True)
+                
+            except Exception as e:
+                st.error(f"Error in correlation analysis: {str(e)}")
+        
+        else:  # ANOVA
+            # ANOVA test for categorical vs numerical
+            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #0891b2; margin: 1rem 0;">{get_translation("anova_results")}</div>', unsafe_allow_html=True)
+            
+            try:
+                # Identify categorical and numerical variables
+                cat_var = var1 if var1_type == 'categorical' else var2
+                num_var = var2 if var1_type == 'categorical' else var1
+                
+                # Group by categorical variable
+                grouped_data = df.groupby(cat_var)[num_var].describe()
+                
+                col1, col2 = st.columns(2)
+                with col1:
+                    st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0d9488; margin: 0.5rem 0;">{get_translation("statistics_by").format(num_var, cat_var)}</div>', unsafe_allow_html=True)
+                    st.dataframe(grouped_data.round(2), use_container_width=True)
+                
+                with col2:
+                    try:
+                        # Box plot by category
+                        fig_box_cat = px.box(df, x=cat_var, y=num_var, 
+                                           title=get_translation("distribution_by").format(num_var, cat_var))
+                        fig_box_cat.update_layout(height=400)
+                        st.plotly_chart(fig_box_cat, use_container_width=True)
+                    except Exception as e:
+                        st.error(f"Error creating box plot: {str(e)}")
+                        # Fallback: try simple visualization
+                        try:
+                            st.write(f"**{get_translation('distribution_by').format(num_var, cat_var)}**")
+                            st.dataframe(grouped_data.round(2))
+                        except Exception as fallback_error:
+                            st.error(f"Could not display grouped data: {str(fallback_error)}")
+                
+                # ANOVA test
+                categories = df[cat_var].unique()
+                category_groups = [df[df[cat_var] == cat][num_var].dropna() for cat in categories]
+                
+                # Remove empty groups
+                category_groups = [group for group in category_groups if len(group) > 0]
+                
+                if len(category_groups) >= 2:
+                    f_stat, p_value = stats.f_oneway(*category_groups)
+                    
+                    st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("anova_results")}</div>', unsafe_allow_html=True)
+                    st.markdown(f"""
+                    <div class="metric-card">
+                        <strong>{get_translation("f_statistic")}:</strong> {f_stat:.4f}<br>
+                        <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
+                        <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
+                    </div>
+                    """, unsafe_allow_html=True)
+                    
+                    if p_value < 0.05:
+                        st.markdown(f"""
+                        <div class="insight-box">
+                            <strong>{get_translation("insight")}</strong> {get_translation("mean_difference_insight")} {num_var} {get_translation("between_categories")} {cat_var}.
+                        </div>
+                        """, unsafe_allow_html=True)
+                    else:
+                        st.markdown(f"""
+                        <div class="insight-box">
+                            <strong>{get_translation("insight")}</strong> {get_translation("no_mean_difference_insight")} {num_var} {get_translation("between_categories_alt")}.
+                        </div>
+                        """, unsafe_allow_html=True)
+                else:
+                    st.warning("Not enough categories for ANOVA test (need at least 2 categories with data).")
+                    
+            except Exception as e:
+                st.error(f"Error in ANOVA analysis: {str(e)}")
+                
+    except Exception as e:
+        st.error(f"Error in automatic association analysis: {str(e)}")
+        st.error("Please check your data and try again.")
 
 def descriptive_analysis(df, numerical_cols, categorical_cols):
     """Perform descriptive analysis"""
-    st.markdown(f'<div class="section-header">{get_translation("descriptive_analysis")}</div>', unsafe_allow_html=True)
-    
-    # Basic Statistics
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">{get_translation("dataset_overview")}</div>', unsafe_allow_html=True)
-        st.markdown(f"""
-        <div class="metric-card">
-            <strong>{get_translation("total_rows")}:</strong> {df.shape[0]:,}<br>
-            <strong>{get_translation("total_columns")}:</strong> {df.shape[1]}<br>
-            <strong>{get_translation("numerical_columns")}:</strong> {len(numerical_cols)}<br>
-            <strong>{get_translation("categorical_columns")}:</strong> {len(categorical_cols)}
-        </div>
-        """, unsafe_allow_html=True)
+    try:
+        st.markdown(f'<div class="section-header">{get_translation("descriptive_analysis")}</div>', unsafe_allow_html=True)
         
-        # Missing values
-        missing_data = df.isnull().sum()
-        if missing_data.sum() > 0:
-            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #f59e0b; margin: 1rem 0;">{get_translation("missing_values")}</div>', unsafe_allow_html=True)
-            missing_df = pd.DataFrame({
-                get_translation("columns"): missing_data.index,
-                'Jumlah Missing': missing_data.values,
-                'Persentase': (missing_data.values / len(df) * 100).round(2)
-            })
-            missing_df = missing_df[missing_df['Jumlah Missing'] > 0]
-            st.dataframe(missing_df, use_container_width=True)
-    
-    with col2:
-        # Numerical columns statistics
-        if numerical_cols:
-            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #059669; margin: 1rem 0;">{get_translation("numerical_stats")}</div>', unsafe_allow_html=True)
-            stats_df = df[numerical_cols].describe().round(2)
-            st.dataframe(stats_df, use_container_width=True)
-    
-    # Visualizations
-    if numerical_cols:
-        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">{get_translation("data_visualization")}</div>', unsafe_allow_html=True)
-        
-        # Distribution plots
-        selected_num_col = st.selectbox(get_translation("select_numerical_column"), numerical_cols)
-        
+        # Basic Statistics
         col1, col2 = st.columns(2)
+        
         with col1:
-            # Histogram
-            fig_hist = px.histogram(df, x=selected_num_col, title=f'{get_translation("distribution")} {selected_num_col}',
-                                   nbins=30, marginal='box')
-            fig_hist.update_layout(height=400)
-            st.plotly_chart(fig_hist, use_container_width=True)
-        
-        with col2:
-            # Box plot
-            fig_box = px.box(df, y=selected_num_col, title=f'Box Plot {selected_num_col}')
-            fig_box.update_layout(height=400)
-            st.plotly_chart(fig_box, use_container_width=True)
-        
-        # Correlation matrix for numerical variables
-        if len(numerical_cols) > 1:
-            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #7c3aed; margin: 1rem 0;">{get_translation("correlation_matrix")}</div>', unsafe_allow_html=True)
-            correlation_matrix = df[numerical_cols].corr()
+            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">{get_translation("dataset_overview")}</div>', unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class="metric-card">
+                <strong>{get_translation("total_rows")}:</strong> {df.shape[0]:,}<br>
+                <strong>{get_translation("total_columns")}:</strong> {df.shape[1]}<br>
+                <strong>{get_translation("numerical_columns")}:</strong> {len(numerical_cols)}<br>
+                <strong>{get_translation("categorical_columns")}:</strong> {len(categorical_cols)}
+            </div>
+            """, unsafe_allow_html=True)
             
-            fig_corr = px.imshow(correlation_matrix, 
-                                text_auto=True, 
-                                aspect="auto",
-                                color_continuous_scale='RdBu_r',
-                                title=get_translation("correlation_matrix"))
-            fig_corr.update_layout(height=500)
-            st.plotly_chart(fig_corr, use_container_width=True)
-    
-    # Categorical analysis
-    if categorical_cols:
-        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #dc2626; margin: 1rem 0;">{get_translation("categorical_analysis")}</div>', unsafe_allow_html=True)
-        
-        selected_cat_col = st.selectbox(get_translation("select_categorical_column"), categorical_cols)
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            # Value counts
-            value_counts = df[selected_cat_col].value_counts()
-            fig_pie = px.pie(values=value_counts.values, 
-                            names=value_counts.index, 
-                            title=f'{get_translation("distribution")} {selected_cat_col}')
-            fig_pie.update_layout(height=400)
-            st.plotly_chart(fig_pie, use_container_width=True)
+            # Missing values
+            try:
+                missing_data = df.isnull().sum()
+                if missing_data.sum() > 0:
+                    st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #f59e0b; margin: 1rem 0;">{get_translation("missing_values")}</div>', unsafe_allow_html=True)
+                    missing_df = pd.DataFrame({
+                        get_translation("columns"): missing_data.index,
+                        'Jumlah Missing': missing_data.values,
+                        'Persentase': (missing_data.values / len(df) * 100).round(2)
+                    })
+                    missing_df = missing_df[missing_df['Jumlah Missing'] > 0]
+                    st.dataframe(missing_df, use_container_width=True)
+            except Exception as e:
+                st.error(f"Error analyzing missing values: {str(e)}")
         
         with col2:
-            # Bar chart
-            fig_bar = px.bar(x=value_counts.index, 
-                           y=value_counts.values,
-                           title=f'{get_translation("frequency_chart")} {selected_cat_col}')
-            fig_bar.update_layout(height=400, xaxis_title=selected_cat_col, yaxis_title=get_translation("frequency_chart"))
-            st.plotly_chart(fig_bar, use_container_width=True)
+            # Numerical columns statistics
+            if numerical_cols:
+                try:
+                    st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #059669; margin: 1rem 0;">{get_translation("numerical_stats")}</div>', unsafe_allow_html=True)
+                    stats_df = df[numerical_cols].describe().round(2)
+                    st.dataframe(stats_df, use_container_width=True)
+                except Exception as e:
+                    st.error(f"Error calculating numerical statistics: {str(e)}")
         
-        # Frequency table
-        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #0891b2; margin: 1rem 0;">{get_translation("frequency_table")}</div>', unsafe_allow_html=True)
-        freq_table = pd.DataFrame({
-            get_translation("category"): value_counts.index,
-            get_translation("frequency"): value_counts.values,
-            get_translation("percentage"): (value_counts.values / len(df) * 100).round(2)
-        })
-        st.dataframe(freq_table, use_container_width=True)
+        # Visualizations
+        if numerical_cols:
+            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">{get_translation("data_visualization")}</div>', unsafe_allow_html=True)
+            
+            # Distribution plots
+            selected_num_col = st.selectbox(get_translation("select_numerical_column"), numerical_cols)
+            
+            col1, col2 = st.columns(2)
+            with col1:
+                try:
+                    # Histogram
+                    fig_hist = px.histogram(df, x=selected_num_col, title=f'{get_translation("distribution")} {selected_num_col}',
+                                           nbins=30, marginal='box')
+                    fig_hist.update_layout(height=400)
+                    st.plotly_chart(fig_hist, use_container_width=True)
+                except Exception as e:
+                    st.error(f"Error creating histogram: {str(e)}")
+            
+            with col2:
+                try:
+                    # Box plot
+                    fig_box = px.box(df, y=selected_num_col, title=f'Box Plot {selected_num_col}')
+                    fig_box.update_layout(height=400)
+                    st.plotly_chart(fig_box, use_container_width=True)
+                except Exception as e:
+                    st.error(f"Error creating box plot: {str(e)}")
+            
+            # Correlation matrix for numerical variables
+            if len(numerical_cols) > 1:
+                st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #7c3aed; margin: 1rem 0;">{get_translation("correlation_matrix")}</div>', unsafe_allow_html=True)
+                try:
+                    correlation_matrix = df[numerical_cols].corr()
+                    
+                    fig_corr = px.imshow(correlation_matrix, 
+                                        text_auto=True, 
+                                        aspect="auto",
+                                        color_continuous_scale='RdBu_r',
+                                        title=get_translation("correlation_matrix"))
+                    fig_corr.update_layout(height=500)
+                    st.plotly_chart(fig_corr, use_container_width=True)
+                except Exception as e:
+                    st.error(f"Error creating correlation matrix: {str(e)}")
+        
+        # Categorical analysis
+        if categorical_cols:
+            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #dc2626; margin: 1rem 0;">{get_translation("categorical_analysis")}</div>', unsafe_allow_html=True)
+            
+            selected_cat_col = st.selectbox(get_translation("select_categorical_column"), categorical_cols)
+            
+            try:
+                # Value counts
+                value_counts = df[selected_cat_col].value_counts()
+                
+                col1, col2 = st.columns(2)
+                
+                with col1:
+                    try:
+                        fig_pie = px.pie(values=value_counts.values, 
+                                        names=value_counts.index, 
+                                        title=f'{get_translation("distribution")} {selected_cat_col}')
+                        fig_pie.update_layout(height=400)
+                        st.plotly_chart(fig_pie, use_container_width=True)
+                    except Exception as e:
+                        st.error(f"Error creating pie chart: {str(e)}")
+                
+                with col2:
+                    try:
+                        fig_bar = px.bar(x=value_counts.index, 
+                                       y=value_counts.values,
+                                       title=f'{get_translation("frequency_chart")} {selected_cat_col}')
+                        fig_bar.update_layout(height=400, xaxis_title=selected_cat_col, yaxis_title=get_translation("frequency_chart"))
+                        st.plotly_chart(fig_bar, use_container_width=True)
+                    except Exception as e:
+                        st.error(f"Error creating bar chart: {str(e)}")
+                
+                # Frequency table
+                st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #0891b2; margin: 1rem 0;">{get_translation("frequency_table")}</div>', unsafe_allow_html=True)
+                freq_table = pd.DataFrame({
+                    get_translation("category"): value_counts.index,
+                    get_translation("frequency"): value_counts.values,
+                    get_translation("percentage"): (value_counts.values / len(df) * 100).round(2)
+                })
+                st.dataframe(freq_table, use_container_width=True)
+                
+            except Exception as e:
+                st.error(f"Error in categorical analysis: {str(e)}")
+                
+    except Exception as e:
+        st.error(f"Error in descriptive analysis: {str(e)}")
+        st.error("Please check your data and try again.")
 
 def association_analysis(df, numerical_cols, categorical_cols):
     """Perform automatic association analysis"""
-    st.markdown(f'<div class="section-header">{get_translation("association_analysis")}</div>', unsafe_allow_html=True)
-    
-    # NEW: Automatic Analysis Section
-    st.markdown(f'<div style="font-size: 1.4rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">{get_translation("automatic_analysis")}</div>', unsafe_allow_html=True)
-    
-    all_columns = numerical_cols + categorical_cols
-    
-    if len(all_columns) < 2:
-        st.warning("You need at least 2 columns to perform association analysis.")
-        return
-    
-    col1, col2 = st.columns(2)
-    with col1:
-        var1 = st.selectbox(get_translation("select_variable_1"), all_columns, key='auto_var1')
-    with col2:
-        available_vars = [col for col in all_columns if col != var1]
-        var2 = st.selectbox(get_translation("select_variable_2"), available_vars, key='auto_var2')
-    
-    # Show analysis type that will be performed
-    var1_type = 'numerical' if var1 in numerical_cols else 'categorical'
-    var2_type = 'numerical' if var2 in numerical_cols else 'categorical'
-    analysis_info = determine_analysis_type(var1_type, var2_type, var1, var2)
-    
-    st.markdown(f"""
-    <div class="analysis-type-card">
-        <div class="analysis-type-title">{analysis_info["icon"]} {get_translation("determined_test")}: {analysis_info["title"]}</div>
-        <div class="analysis-type-desc">{analysis_info["description"]}</div>
-        <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(255,255,255,0.7); border-radius: 6px;">
-            <strong>Variable 1:</strong> {var1} ({var1_type})<br>
-            <strong>Variable 2:</strong> {var2} ({var2_type})
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
-    
-    if st.button(get_translation("analyze_button"), key="auto_analyze"):
-        automatic_association_analysis(df, var1, var2, numerical_cols, categorical_cols)
-    
-    st.markdown("---")
-    
-    # Keep original manual analysis options as backup
-    st.markdown(f'<div style="font-size: 1.2rem; font-weight: 600; color: #64748b; margin: 1rem 0;">Manual Analysis Options</div>', unsafe_allow_html=True)
-    
-    # Chi-square test for categorical variables
-    if len(categorical_cols) >= 2:
-        with st.expander(get_translation("chi_square_test")):
-            col1, col2 = st.columns(2)
-            with col1:
-                var1 = st.selectbox(get_translation("select_variable_1"), categorical_cols, key='cat1')
-            with col2:
-                var2 = st.selectbox(get_translation("select_variable_2"), [col for col in categorical_cols if col != var1], key='cat2')
-            
-            if st.button(get_translation("analyze_chi_square"), key="manual_chi"):
-                automatic_association_analysis(df, var1, var2, numerical_cols, categorical_cols)
-    
-    # Correlation analysis for numerical variables
-    if len(numerical_cols) >= 2:
-        with st.expander(get_translation("correlation_analysis")):
-            col1, col2 = st.columns(2)
-            with col1:
-                var3 = st.selectbox(get_translation("select_variable_1"), numerical_cols, key='num1')
-            with col2:
-                var4 = st.selectbox(get_translation("select_variable_2"), [col for col in numerical_cols if col != var3], key='num2')
-            
-            correlation_method = st.radio(get_translation("correlation_method"), [get_translation("pearson"), get_translation("spearman")])
-            
-            if st.button(get_translation("analyze_correlation"), key="manual_corr"):
-                automatic_association_analysis(df, var3, var4, numerical_cols, categorical_cols)
-    
-    # Categorical vs Numerical analysis
-    if numerical_cols and categorical_cols:
-        with st.expander(get_translation("categorical_numerical_analysis")):
-            col1, col2 = st.columns(2)
-            with col1:
-                cat_var = st.selectbox(get_translation("select_categorical_variable"), categorical_cols, key='cat_num')
-            with col2:
-                num_var = st.selectbox(get_translation("select_numerical_variable"), numerical_cols, key='num_cat')
-            
-            if st.button(get_translation("analyze_categorical_numerical"), key="manual_anova"):
-                automatic_association_analysis(df, cat_var, num_var, numerical_cols, categorical_cols)
-
-def main():
-    # Main header
-    st.markdown(f'<h1 class="main-header">{get_translation("title")}</h1>', unsafe_allow_html=True)
-    
-    # Language buttons (functional) - ONLY IN TOP LEFT
-    col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 6, 1])
-    with col1:
-        if st.button("🇮🇩 ID", key="lang_id"):
-            st.session_state.language = 'id'
-            st.rerun()
-    with col2:
-        if st.button("🇬🇧 EN", key="lang_en"):
-            st.session_state.language = 'en'
-            st.rerun()
-    with col3:
-        if st.button("🇨🇳 中文", key="lang_zh"):
-            st.session_state.language = 'zh'
-            st.rerun()
-    
-    # Upload area - CENTERED IN MIDDLE
-    if st.session_state.uploaded_file is None:
-        st.markdown("""
-        <div class="upload-container">
-            <div class="upload-area">
-                <div class="upload-title">""" + get_translation("upload_title") + """</div>
-                <div class="upload-description">
-                    """ + get_translation("upload_description") + """
-                </div>
+    try:
+        st.markdown(f'<div class="section-header">{get_translation("association_analysis")}</div>', unsafe_allow_html=True)
+        
+        # NEW: Automatic Analysis Section
+        st.markdown(f'<div style="font-size: 1.4rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">{get_translation("automatic_analysis")}</div>', unsafe_allow_html=True)
+        
+        all_columns = numerical_cols + categorical_cols
+        
+        if len(all_columns) < 2:
+            st.warning("You need at least 2 columns to perform association analysis.")
+            return
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            var1 = st.selectbox(get_translation("select_variable_1"), all_columns, key='auto_var1')
+        with col2:
+            available_vars = [col for col in all_columns if col != var1]
+            var2 = st.selectbox(get_translation("select_variable_2"), available_vars, key='auto_var2')
+        
+        # Show analysis type that will be performed
+        var1_type = 'numerical' if var1 in numerical_cols else 'categorical'
+        var2_type = 'numerical' if var2 in numerical_cols else 'categorical'
+        analysis_info = determine_analysis_type(var1_type, var2_type, var1, var2)
+        
+        st.markdown(f"""
+        <div class="analysis-type-card">
+            <div class="analysis-type-title">{analysis_info["icon"]} {get_translation("determined_test")}: {analysis_info["title"]}</div>
+            <div class="analysis-type-desc">{analysis_info["description"]}</div>
+            <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(255,255,255,0.7); border-radius: 6px;">
+                <strong>Variable 1:</strong> {var1} ({var1_type})<br>
+                <strong>Variable 2:</strong> {var2} ({var2_type})
             </div>
         </div>
         """, unsafe_allow_html=True)
-    
-    # File uploader (HIDDEN - used by JavaScript)
-    uploaded_file = st.file_uploader(get_translation("upload_button"), type=['xlsx', 'xls', 'csv'], 
-                                   help=get_translation("upload_step"),
-                                   label_visibility="collapsed")
-    
-    if uploaded_file is not None:
-        # Store file in session state
-        st.session_state.uploaded_file = uploaded_file
         
-        # Show file info
-        st.markdown(f"""
-        <div class="file-info">
-            <div class="file-name">{get_translation("file_name")} {uploaded_file.name}</div>
-            <div class="file-size">{get_translation("file_size")}: {uploaded_file.size / 1024 / 1024:.2f} MB</div>
-        </div>
-        """, unsafe_allow_html=True)
+        if st.button(get_translation("analyze_button"), key="auto_analyze"):
+            try:
+                automatic_association_analysis(df, var1, var2, numerical_cols, categorical_cols)
+            except Exception as e:
+                st.error(f"Error in automatic analysis: {str(e)}")
         
-        # Load data
-        with st.spinner(get_translation("loading_data")):
-            df = load_data(uploaded_file)
+        st.markdown("---")
         
-        if df is not None:
-            # Success message
-            st.success(f"{get_translation('success_message')} {df.shape[0]} {get_translation('rows_text')} dan {df.shape[1]} {get_translation('columns_text')}.")
-            
-            # Show raw data
-            with st.expander(get_translation("see_raw_data")):
-                st.dataframe(df, use_container_width=True)
-            
-            # Get column types
-            numerical_cols, categorical_cols = get_column_types(df)
-            
-            # Show column information
-            col1, col2 = st.columns(2)
-            with col1:
-                if numerical_cols:
-                    st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #1e40af; margin: 0.5rem 0;">{get_translation("numerical_columns")}:</div>', unsafe_allow_html=True)
-                    for col in numerical_cols:
-                        st.markdown(f"• {col}")
-            
-            with col2:
-                if categorical_cols:
-                    st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("categorical_columns")}:</div>', unsafe_allow_html=True)
-                    for col in categorical_cols:
-                        st.markdown(f"• {col}")
-            
-            # Analysis tabs
-            tab1, tab2 = st.tabs([get_translation("descriptive_analysis"), get_translation("association_analysis")])
-            
-            with tab1:
-                descriptive_analysis(df, numerical_cols, categorical_cols)
-            
-            with tab2:
-                association_analysis(df, numerical_cols, categorical_cols)
-            
-            # Export functionality
-            st.markdown("---")
-            st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #059669; margin: 1rem 0;">{get_translation("export_results")}</div>', unsafe_allow_html=True)
-            
-            if st.button(get_translation("download_summary")):
-                # Create a summary report
-                summary_data = {
-                    'Metric': [get_translation("total_rows"), get_translation("total_columns"), get_translation("numerical_columns"), get_translation("categorical_columns"), 'Missing Values'],
-                    'Value': [df.shape[0], df.shape[1], len(numerical_cols), len(categorical_cols), df.isnull().sum().sum()]
-                }
-                summary_df = pd.DataFrame(summary_data)
+        # Keep original manual analysis options as backup
+        st.markdown(f'<div style="font-size: 1.2rem; font-weight: 600; color: #64748b; margin: 1rem 0;">Manual Analysis Options</div>', unsafe_allow_html=True)
+        
+        # Chi-square test for categorical variables
+        if len(categorical_cols) >= 2:
+            with st.expander(get_translation("chi_square_test")):
+                col1, col2 = st.columns(2)
+                with col1:
+                    var1 = st.selectbox(get_translation("select_variable_1"), categorical_cols, key='cat1')
+                with col2:
+                    var2 = st.selectbox(get_translation("select_variable_2"), [col for col in categorical_cols if col != var1], key='cat2')
                 
-                # Convert to CSV
-                csv = summary_df.to_csv(index=False)
-                b64 = base64.b64encode(csv.encode()).decode()
-                href = f'<a href="data:file/csv;base64,{b64}" download="survey_analysis_summary.csv" style="background: #3b82f6; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">Download CSV Summary</a>'
-                st.markdown(href, unsafe_allow_html=True)
-    
-    else:
-        # Instructions
-        st.markdown(f"""
-<div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border: 1px solid #e5e7eb; margin: 2rem 0;">
-<h2 style="color: #1e40af; margin-bottom: 1rem;">{get_translation("instructions")}</h2>
-<ol style="color: #374151; line-height: 1.6;">
-    <li><strong style="color: #3b82f6;">{get_translation("upload_step")}</strong></li>
-    <li><strong style="color: #7c3aed;">{get_translation("analysis_step")}</strong></li>
-    <li><strong style="color: #dc2626;">{get_translation("export_step")}</strong></li>
-</ol>
+                if st.button(get_translation("analyze_chi_square"), key="manual_chi"):
+                    try:
+                        automatic_association_analysis(df, var1, var2, numerical_cols, categorical_cols)
+                    except Exception as e:
+                        st.error(f"Error in manual Chi-Square analysis: {str(e)}")
+        
+        # Correlation analysis for numerical variables
+        if len(numerical_cols) >= 2:
+            with st.expander(get_translation("correlation_analysis")):
+                col1, col2 = st.columns(2)
+                with col1:
+                    var3 = st.selectbox(get_translation("select_variable_1"), numerical_cols, key='num1')
+                with col2:
+                    var4 = st.selectbox(get_translation("select_variable_2"), [col for col in numerical_cols if col != var3], key='num2')
+                
+                correlation_method = st.radio(get_translation("correlation_method"), [get_translation("pearson"), get_translation("spearman")])
+                
+                if st.button(get_translation("analyze_correlation"), key="manual_corr"):
+                    try:
+                        automatic_association_analysis(df, var3, var4, numerical_cols, categorical_cols)
+                    except Exception as e:
+                        st.error(f"Error in manual correlation analysis: {str(e)}")
+        
+        # Categorical vs Numerical analysis
+        if numerical_cols and categorical_cols:
+            with st.expander(get_translation("categorical_numerical_analysis")):
+                col1, col2 = st.columns(2)
+                with col1:
+                    cat_var = st.selectbox(get_translation("select_categorical_variable"), categorical_cols, key='cat_num')
+                with col2:
+                    num_var = st.selectbox(get_translation("select_numerical_variable"), numerical_cols, key='num_cat')
+                
+                if st.button(get_translation("analyze_categorical_numerical"), key="manual_anova"):
+                    try:
+                        automatic_association_analysis(df, cat_var, num_var, numerical_cols, categorical_cols)
+                    except Exception as e:
+                        st.error(f"Error in manual ANOVA analysis: {str(e)}")
+                        
+    except Exception as e:
+        st.error(f"Error in association analysis section: {str(e)}")
+        st.error("Please check your data and try again.")
 
-<h3 style="color: #1e40af; margin: 1.5rem 0 1rem 0;">{get_translation("features_title")}</h3>
+def main():
+    try:
+        # Main header
+        st.markdown(f'<h1 class="main-header">{get_translation("title")}</h1>', unsafe_allow_html=True)
+        
+        # Language buttons (functional) - ONLY IN TOP LEFT
+        col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 6, 1])
+        with col1:
+            if st.button("🇮🇩 ID", key="lang_id"):
+                st.session_state.language = 'id'
+                st.rerun()
+        with col2:
+            if st.button("🇬🇧 EN", key="lang_en"):
+                st.session_state.language = 'en'
+                st.rerun()
+        with col3:
+            if st.button("🇨🇳 中文", key="lang_zh"):
+                st.session_state.language = 'zh'
+                st.rerun()
+        
+        # Upload area - CENTERED IN MIDDLE
+        if st.session_state.uploaded_file is None:
+            st.markdown("""
+            <div class="upload-container">
+                <div class="upload-area">
+                    <div class="upload-title">""" + get_translation("upload_title") + """</div>
+                    <div class="upload-description">
+                        """ + get_translation("upload_description") + """
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # File uploader (HIDDEN - used by JavaScript)
+        uploaded_file = st.file_uploader(get_translation("upload_button"), type=['xlsx', 'xls', 'csv'], 
+                                       help=get_translation("upload_step"),
+                                       label_visibility="collapsed")
+        
+        if uploaded_file is not None:
+            # Store file in session state
+            st.session_state.uploaded_file = uploaded_file
+            
+            # Show file info
+            st.markdown(f"""
+            <div class="file-info">
+                <div class="file-name">{get_translation("file_name")} {uploaded_file.name}</div>
+                <div class="file-size">{get_translation("file_size")}: {uploaded_file.size / 1024 / 1024:.2f} MB</div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Load data
+            with st.spinner(get_translation("loading_data")):
+                df = load_data(uploaded_file)
+            
+            if df is not None:
+                try:
+                    # Success message
+                    st.success(f"{get_translation('success_message')} {df.shape[0]} {get_translation('rows_text')} dan {df.shape[1]} {get_translation('columns_text')}.")
+                    
+                    # Show raw data
+                    with st.expander(get_translation("see_raw_data")):
+                        st.dataframe(df, use_container_width=True)
+                    
+                    # Get column types
+                    numerical_cols, categorical_cols = get_column_types(df)
+                    
+                    # Show column information
+                    col1, col2 = st.columns(2)
+                    with col1:
+                        if numerical_cols:
+                            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #1e40af; margin: 0.5rem 0;">{get_translation("numerical_columns")}:</div>', unsafe_allow_html=True)
+                            for col in numerical_cols:
+                                st.markdown(f"• {col}")
+                    
+                    with col2:
+                        if categorical_cols:
+                            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("categorical_columns")}:</div>', unsafe_allow_html=True)
+                            for col in categorical_cols:
+                                st.markdown(f"• {col}")
+                    
+                    # Analysis tabs
+                    tab1, tab2 = st.tabs([get_translation("descriptive_analysis"), get_translation("association_analysis")])
+                    
+                    with tab1:
+                        try:
+                            descriptive_analysis(df, numerical_cols, categorical_cols)
+                        except Exception as e:
+                            st.error(f"Error in descriptive analysis tab: {str(e)}")
+                    
+                    with tab2:
+                        try:
+                            association_analysis(df, numerical_cols, categorical_cols)
+                        except Exception as e:
+                            st.error(f"Error in association analysis tab: {str(e)}")
+                    
+                    # Export functionality
+                    st.markdown("---")
+                    st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #059669; margin: 1rem 0;">{get_translation("export_results")}</div>', unsafe_allow_html=True)
+                    
+                    if st.button(get_translation("download_summary")):
+                        try:
+                            # Create a summary report
+                            summary_data = {
+                                'Metric': [get_translation("total_rows"), get_translation("total_columns"), get_translation("numerical_columns"), get_translation("categorical_columns"), 'Missing Values'],
+                                'Value': [df.shape[0], df.shape[1], len(numerical_cols), len(categorical_cols), df.isnull().sum().sum()]
+                            }
+                            summary_df = pd.DataFrame(summary_data)
+                            
+                            # Convert to CSV
+                            csv = summary_df.to_csv(index=False)
+                            b64 = base64.b64encode(csv.encode()).decode()
+                            href = f'<a href="data:file/csv;base64,{b64}" download="survey_analysis_summary.csv" style="background: #3b82f6; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">Download CSV Summary</a>'
+                            st.markdown(href, unsafe_allow_html=True)
+                        except Exception as e:
+                            st.error(f"Error creating download: {str(e)}")
+                            
+                except Exception as e:
+                    st.error(f"Error processing data: {str(e)}")
+                    st.error("Please check your data format and try again.")
+        
+        else:
+            # Instructions
+            st.markdown(f"""
+    <div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border: 1px solid #e5e7eb; margin: 2rem 0;">
+    <h2 style="color: #1e40af; margin-bottom: 1rem;">{get_translation("instructions")}</h2>
+    <ol style="color: #374151; line-height: 1.6;">
+        <li><strong style="color: #3b82f6;">{get_translation("upload_step")}</strong></li>
+        <li><strong style="color: #7c3aed;">{get_translation("analysis_step")}</strong></li>
+        <li><strong style="color: #dc2626;">{get_translation("export_step")}</strong></li>
+    </ol>
 
-<div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #3b82f6;">
-<h4 style="color: #1e40af; margin-bottom: 0.5rem;">{get_translation("descriptive_features")}:</h4>
-<ul style="color: #374151; line-height: 1.5;">
-    {get_translation("descriptive_features_list")}
-</ul>
-</div>
+    <h3 style="color: #1e40af; margin: 1.5rem 0 1rem 0;">{get_translation("features_title")}</h3>
 
-<div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #dc2626;">
-<h4 style="color: #dc2626; margin-bottom: 0.5rem;">{get_translation("association_features")}:</h4>
-<ul style="color: #374151; line-height: 1.5;">
-    {get_translation("association_features_list")}
-</ul>
-</div>
+    <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #3b82f6;">
+    <h4 style="color: #1e40af; margin-bottom: 0.5rem;">{get_translation("descriptive_features")}:</h4>
+    <ul style="color: #374151; line-height: 1.5;">
+        {get_translation("descriptive_features_list")}
+    </ul>
+    </div>
 
-<h3 style="color: #ea580c; margin: 1.5rem 0 1rem 0;">{get_translation("supported_formats")}</h3>
-<ul style="color: #374151; line-height: 1.5;">
-  {get_translation("supported_formats_list")}
-</ul>
+    <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #dc2626;">
+    <h4 style="color: #dc2626; margin-bottom: 0.5rem;">{get_translation("association_features")}:</h4>
+    <ul style="color: #374151; line-height: 1.5;">
+        {get_translation("association_features_list")}
+    </ul>
+    </div>
 
-<div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); padding: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6; margin: 1rem 0;">
-<p style="color: #1e40af; margin: 0; font-weight: 600;">💡 <strong>Tip</strong>: {get_translation("tip")}</p>
-</div>
-</div>
-        """, unsafe_allow_html=True)
+    <h3 style="color: #ea580c; margin: 1.5rem 0 1rem 0;">{get_translation("supported_formats")}</h3>
+    <ul style="color: #374151; line-height: 1.5;">
+      {get_translation("supported_formats_list")}
+    </ul>
+
+    <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); padding: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6; margin: 1rem 0;">
+    <p style="color: #1e40af; margin: 0; font-weight: 600;">💡 <strong>Tip</strong>: {get_translation("tip")}</p>
+    </div>
+    </div>
+            """, unsafe_allow_html=True)
+            
+    except Exception as e:
+        st.error(f"Unexpected error in main application: {str(e)}")
+        st.error("Please refresh the page and try again.")
+        if st.button("Clear Session and Restart"):
+            st.session_state.clear()
+            st.rerun()
 
 if __name__ == "__main__":
     main()
