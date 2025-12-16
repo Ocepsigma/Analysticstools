@@ -1014,6 +1014,110 @@ st.markdown("""
         animation: textGlow 3s ease-in-out infinite alternate;
     }
     
+    /* Profile content with white background */
+    .profile-content {
+        background: rgba(255, 255, 255, 0.95);
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+    }
+    
+    .profile-section {
+        margin-bottom: 2rem;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 12px;
+        border-left: 4px solid #3b82f6;
+    }
+    
+    .profile-section h3 {
+        color: #1e40af;
+        margin-bottom: 1rem;
+        font-size: 1.3rem;
+        font-weight: 600;
+    }
+    
+    .profile-info {
+        margin-bottom: 0.5rem;
+        padding: 0.8rem;
+        background: rgba(255, 255, 255, 0.6);
+        border-radius: 8px;
+        border-left: 3px solid #3b82f6;
+    }
+    
+    .profile-text {
+        color: #1f2937;
+        line-height: 1.6;
+        margin: 0;
+    }
+    
+    .profile-text strong {
+        color: #1e40af;
+        font-weight: 600;
+    }
+    
+    .tech-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+    }
+    
+    .tech-item {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 8px;
+        padding: 1rem;
+        border: 1px solid #e5e7eb;
+        transition: all 0.3s ease;
+    }
+    
+    .tech-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        border-color: #3b82f6;
+    }
+    
+    .tech-item h4 {
+        color: #1e40af;
+        margin-bottom: 0.5rem;
+        font-size: 1.1rem;
+        font-weight: 600;
+    }
+    
+    .tech-item ul {
+        color: #4b5563;
+        margin: 0;
+        padding-left: 1rem;
+    }
+    
+    .tech-item li {
+        margin-bottom: 0.3rem;
+        color: #374151;
+    }
+    
+    .contact-section {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        border: 1px solid #e5e7eb;
+        text-align: center;
+    }
+    
+    .footer-text {
+        color: #64748b;
+        font-style: italic;
+        margin-top: 2rem;
+        text-align: center;
+        padding: 1rem;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+    }
+    
     .analysis-type-card {
         background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
         border: 1px solid #bae6fd;
@@ -1058,6 +1162,7 @@ st.markdown("""
 </style>
 
 <!-- Floating elements -->
+<div class="floating-element"></div>
 <div class="floating-element"></div>
 <div class="floating-element"></div>
 <div class="floating-element"></div>
@@ -1380,8 +1485,8 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
             st.markdown(f"""
             <div class="metric-card">
                 <strong>{get_translation("total_rows")}:</strong> {df.shape[0]:,}<br>
-                <strong>{get_translation("total_columns")}:</strong> {df.shape[1]}<br>
-                <strong>{get_translation("numerical_columns")}:</strong> {len(numerical_cols)}<br>
+                <strong>{get_translation("total_columns")}:</strong> {df.shape[1]}<bt>
+                <strong>{get_translation("numerical_columns")}:</strong> {len(numerical_cols)}<bt>
                 <strong>{get_translation("categorical_columns")}:</strong> {len(categorical_cols)}
             </div>
             """, unsafe_allow_html=True)
@@ -1481,6 +1586,7 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
                         fig_bar = px.bar(x=value_counts.index, 
                                        y=value_counts.values,
                                        title=f'{get_translation("frequency_chart")} {selected_cat_col}')
+                        fig_bar.update_layout(height=400, xaxis_title=selected_cat_col, yaxis_title=get_translation("frequency_chart"))
                         fig_bar.update_layout(height=400, xaxis_title=selected_cat_col, yaxis_title=get_translation("frequency_chart"))
                         st.plotly_chart(fig_bar, use_container_width=True)
                     except Exception as e:
@@ -1605,32 +1711,39 @@ def profile_page():
     """Display developer profile page"""
     st.markdown(f'<h1 class="profile-header">{get_translation("profile_title")}</h1>', unsafe_allow_html=True)
     
-    # Main Developer Card
-    with st.container():
-        st.markdown("---")
+    # Main Developer Card with white background
+    st.markdown('<div class="profile-content">', unsafe_allow_html=True)
         
         # Developer Information
         col1, col2 = st.columns([1, 2])
         
         with col1:
-            st.markdown("### 👤 Informasi Pengembang")
-            st.markdown(f"**{get_translation('name')}:** Yoseph Sihite")
-            st.markdown(f"**{get_translation('student_id')}:** 004202400113")
-            st.markdown(f"**{get_translation('group')}:** Group 2 Linear Algebra")
-            st.markdown(f"**{get_translation('role')}:** Lead Group")
+            st.markdown('<div class="profile-section">', unsafe_allow_html=True)
+            st.markdown('<h3 class="profile-section-title">👤 Informasi Pengembang</h3>', unsafe_allow_html=True)
+            st.markdown('<div class="profile-info">', unsafe_allow_html=True)
+            st.markdown(f'<p class="profile-text"><strong>{get_translation("name")}:</strong> Yoseph Sihite</p>', unsafe_allow_html=True)
+            st.markdown(f'<p class="profile-text"><strong>{get_translation("student_id")}:</strong> 004202400113</p>', unsafe_allow_html=True)
+            st.markdown(f'<p class="profile-text"><strong>{get_translation("group")}:</strong> Group 2 Linear Algebra</p>', unsafe_allow_html=True)
+            st.markdown(f'<p class="text"><strong>{get_translation("role")}:</strong> Lead Group</p>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
         
         with col2:
-            st.markdown("### 📊 Statistik Proyek")
-            st.markdown("**Status:** ✅ Selesai")
-            st.markdown("**Tahun:** 2024")
-            st.markdown("**Mata Kuliah:** Aljabar Linear")
-            st.markdown("**Teknologi:** Python, Streamlit, Plotly")
-    
-    # Project Overview
-    st.markdown("---")
-    st.markdown("### 🎯 Ikhtisar Proyek")
-    
-    project_text = """
+            st.markdown('<div class="profile-section">', unsafe_allow_html=True)
+            st.markdown('<h3 class="profile-section-title">📊 Statistik Proyek</h3>', unsafe_allow_html=True)
+            st.markdown('<div class="profile-info">', unsafe_allow_html=True)
+            st.markdown('<p class="profile-text"><strong>Status:</strong> ✅ Selesai</p>', unsafe_allow_html=True)
+            st.markdown('<p class="profile-text"><strong>Tahun:</strong> 2024</p>', unsafe_allow_html=True)
+            st.markdown('<p class="profile-text"><strong>Mata Kuliah:</strong> Aljabar Linear</p>', unsafe_allow_html=True)
+            st.markdown('<p class="profile-text"><strong>Teknologi:</strong> Python, Streamlit, Plotly</p>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+            st.markdown('</div>', unsafe_allow_html=True)
+        
+        # Project Overview
+        st.markdown("---", unsafe_allow_html=True)
+        st.markdown('<h3 class="profile-section-title">🎯 Ikhtisar Proyek</h3>', unsafe_allow_html=True)
+        
+        project_text = """
     Studio Transformasi Matriks adalah aplikasi web interaktif yang dikembangkan sebagai Proyek Akhir Mata Kuliah Aljabar Linear. Aplikasi ini dirancang untuk memvisualisasikan konsep transformasi matriks agar lebih mudah dipahami melalui pendekatan visualisasi berbasis web.
     
     **Fitur Utama:**
@@ -1639,14 +1752,14 @@ def profile_page():
     - Demonstrasi konsep aljabar linear secara visual
     - Support berbagai jenis transformasi (rotasi, skala, translasi, dll.)
     """
-    
-    st.write(project_text)
-    
-    # Contributions
-    st.markdown("---")
-    st.markdown("### 💪 Kontribusi")
-    
-    contribution_text = """
+        
+        st.write(project_text)
+        
+        # Contributions
+        st.markdown("---", unsafe_allow_html=True)
+        st.markdown('<h3 class="profile-section-title">💪 Kontribusi</h3>', unsafe_allow_html=True)
+        
+        contribution_text = """
     Seluruh proses pengembangan proyek ini dikerjakan secara mandiri oleh **Yoseph Sihite**. Kontribusi yang dilakukan mencakup:
     
     **🔧 Pengembangan Teknis:**
@@ -1673,51 +1786,57 @@ def profile_page():
     
     **Catatan:** Pengembangan dilakukan secara individual karena tidak adanya anggota lain dalam Group 2, sehingga semua aspek pengembangan dari perencanaan hingga implementasi diselesaikan secara mandiri.
     """
-    
-    st.write(contribution_text)
-    
-    # Skills & Technologies
-    st.markdown("---")
-    st.markdown("### 🛠️ Teknologi & Keahlian")
-    
-    tech_col1, tech_col2, tech_col3 = st.columns(3)
-    
-    with tech_col1:
-        st.markdown("**🐍 Bahasa Pemrograman**")
-        st.write("• Python")
-        st.write("• JavaScript")
-        st.write("• HTML/CSS")
         
-    with tech_col2:
-        st.markdown("**📚 Libraries & Framework**")
-        st.write("• Streamlit")
-        st.write("• Plotly")
-        st.write("• NumPy")
-        st.write("• Pandas")
-        st.write("• SciPy")
+        st.write(contribution_text)
         
-    with tech_col3:
-        st.markdown("**🎯 Area Keahlian**")
-        st.write("• Aljabar Linear")
-        st.write("• Visualisasi Data")
-        st.write("• Web Development")
-        st.write("• Matematika Komputasi")
-    
-    # Contact & Footer
-    st.markdown("---")
-    st.markdown("### 📧 Informasi Kontak")
-    st.write("**Universitas:** [Nama Universitas]")
-    st.write("**Email:** [email@example.com]")
-    st.write("**GitHub:** [github.com/yosephsihite]")
-    
-    st.markdown("---")
-    st.markdown(
-        f"<div style='text-align: center; color: #64748b; margin-top: 2rem;'>"
-        f"<em>Proyek ini dikembangkan sebagai bagian dari Mata Kuliah Aljabar Linear • "
-        f"Tahun Akademik 2024</em>"
-        f"</div>", 
-        unsafe_allow_html=True
-    )
+        # Skills & Technologies
+        st.markdown("---", unsafe_allow_html=True)
+        st.markdown('<h3 class="profile-section-title">🛠️ Teknologi & Keahlian</h3>', unsafe_allow_html=True)
+        
+        tech_col1, tech_col2, tech_col3 = st.columns(3)
+        
+        with tech_col1:
+            st.markdown("**🐍 Bahasa Pemrograman**")
+            st.write("• Python")
+            st.write("• JavaScript")
+            st.write("• HTML/CSS")
+        
+        with tech_col2:
+            st.markdown("**📚 Libraries & Framework**")
+            st.write("• Streamlit")
+            st.write("• Plotly")
+            st.write("• NumPy")
+            st.write("• Pandas")
+            st.write("• SciPy")
+        
+        with tech_col3:
+            st.markdown("**🎯 Area Keahlian**")
+            st.write("• Aljabar Linear")
+            st.write("• Visualisasi Data")
+            st.write("• Web Development")
+            st.write("• Matematika Komputasi")
+        
+        # Contact & Footer
+        st.markdown("---", unsafe_allow_html=True)
+        st.markdown('<h3 class="profile-section-title">📧 Informasi Kontak</h3>', unsafe_allow_html=True)
+        st.markdown('<div class="contact-section">', unsafe_allow_html=True)
+        st.write("**Universitas:** [Nama Universitas]")
+        st.write("**Email:** [email@example.com]")
+        st.write("**GitHub:** [github.com/yosephsihite]")
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+        st.markdown("---", unsafe_allow_html=True)
+        st.markdown(
+            f"<div style='text-align: center; color: #64748b; margin-top: 2rem;'>"
+            f"<em>Proyek ini dikembangkan sebagai bagian dari Mata Kuliah Aljabar Linear • "
+            f"Tahun Akademik 2024</em>"
+            f"</div>", 
+            unsafe_allow_html=True
+        )
+        
+        st.markdown('</div>', unsafe_allow_html=True)
+        
+        st.markdown('</div>', unsafe_allow_html=True)
 
 def main():
     try:
@@ -1868,7 +1987,7 @@ def main():
         </ul>
         </div>
 
-        <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #dc2626;">
+        <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #3b82f6;">
         <h4 style="color: #dc2626; margin-bottom: 0.5rem;">{get_translation("association_features")}:</h4>
         <ul style="color: #374151; line-height: 1.5;">
             {get_translation("association_features_list")}
@@ -1877,12 +1996,11 @@ def main():
 
         <h3 style="color: #ea580c; margin: 1.5rem 0 1rem 0;">{get_translation("supported_formats")}</h3>
         <ul style="color: #374151; line-height: 1.5;">
-          {get_translation("supported_formats_list")}
+            {get_translation("supported_formats_list")}
         </ul>
 
-        <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); padding: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6; margin: 1rem 0;">
+        <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); padding: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6; margin: 1rem 0; border-left: 4px solid #3b82f6; margin: 1rem 0;">
         <p style="color: #1e40af; margin: 0; font-weight: 600;">💡 <strong>Tip</strong>: {get_translation("tip")}</p>
-        </div>
         </div>
                 """, unsafe_allow_html=True)
             
