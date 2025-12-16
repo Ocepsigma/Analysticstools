@@ -124,7 +124,19 @@ TRANSLATIONS = {
         "statistics_by": "Statistik {0} berdasarkan {1}",
         "distribution_by": "Distribusi {0} berdasarkan {1}",
         "f_statistic": "F-statistic",
-        "p_value": "P-value"
+        "p_value": "P-value",
+        # NEW KEYS FOR AUTOMATIC ANALYSIS
+        "automatic_analysis": "🤖 Analisis Asosiasi Otomatis",
+        "select_two_variables": "Pilih dua variabel untuk analisis:",
+        "analyze_button": "Analisis",
+        "analysis_type": "Tipe Analisis",
+        "chi_square_desc": "Menganalisis asosiasi antara dua variabel kategorikal",
+        "correlation_desc": "Mengukur hubungan linear antara dua variabel numerik",
+        "anova_desc": "Membandingkan rata-rata antar kategori",
+        "analysis_results": "Hasil Analisis",
+        "determined_test": "Tes yang Ditentukan",
+        "sample_size": "Ukuran Sampel",
+        "correlation_strength_indicator": "Indikator Kekuatan Korelasi"
     },
     "en": {
         "title": "Survey Data Analysis",
@@ -223,7 +235,19 @@ TRANSLATIONS = {
         "statistics_by": "Statistics of {0} by {1}",
         "distribution_by": "Distribution of {0} by {1}",
         "f_statistic": "F-statistic",
-        "p_value": "P-value"
+        "p_value": "P-value",
+        # NEW KEYS FOR AUTOMATIC ANALYSIS
+        "automatic_analysis": "🤖 Automatic Association Analysis",
+        "select_two_variables": "Select two variables for analysis:",
+        "analyze_button": "Analyze",
+        "analysis_type": "Analysis Type",
+        "chi_square_desc": "Analyzes association between two categorical variables",
+        "correlation_desc": "Measures linear relationship between two numerical variables",
+        "anova_desc": "Compares means across different categories",
+        "analysis_results": "Analysis Results",
+        "determined_test": "Determined Test",
+        "sample_size": "Sample Size",
+        "correlation_strength_indicator": "Correlation Strength Indicator"
     },
     "zh": {
         "title": "调查数据分析",
@@ -322,7 +346,19 @@ TRANSLATIONS = {
         "statistics_by": "{1}的{0}统计",
         "distribution_by": "{0}按{1}的分布",
         "f_statistic": "F统计量",
-        "p_value": "P值"
+        "p_value": "P值",
+        # NEW KEYS FOR AUTOMATIC ANALYSIS
+        "automatic_analysis": "🤖 自动关联分析",
+        "select_two_variables": "选择两个变量进行分析：",
+        "analyze_button": "分析",
+        "analysis_type": "分析类型",
+        "chi_square_desc": "分析两个分类变量之间的关联",
+        "correlation_desc": "测量两个数值变量之间的线性关系",
+        "anova_desc": "比较不同类别之间的均值",
+        "analysis_results": "分析结果",
+        "determined_test": "确定的测试",
+        "sample_size": "样本大小",
+        "correlation_strength_indicator": "相关强度指标"
     }
 }
 
@@ -885,6 +921,49 @@ st.markdown("""
     footer {
         visibility: hidden;
     }
+    
+    /* NEW STYLES FOR AUTOMATIC ANALYSIS */
+    .analysis-type-card {
+        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+        border: 1px solid #bae6fd;
+        border-radius: 12px;
+        padding: 1.5rem;
+        margin: 1rem 0;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+    }
+    
+    .analysis-type-title {
+        font-size: 1.2rem;
+        font-weight: 600;
+        color: #1e40af;
+        margin-bottom: 0.5rem;
+    }
+    
+    .analysis-type-desc {
+        color: #64748b;
+        font-size: 0.9rem;
+        line-height: 1.4;
+    }
+    
+    .correlation-strength-bar {
+        height: 8px;
+        background: linear-gradient(90deg, #ef4444 0%, #f59e0b 25%, #eab308 50%, #84cc16 75%, #22c55e 100%);
+        border-radius: 4px;
+        position: relative;
+        margin: 1rem 0;
+    }
+    
+    .correlation-indicator {
+        position: absolute;
+        top: -8px;
+        width: 24px;
+        height: 24px;
+        background: white;
+        border: 3px solid #3b82f6;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        transition: left 0.3s ease;
+    }
 </style>
 
 <!-- Floating elements -->
@@ -920,6 +999,229 @@ def get_column_types(df):
     numerical_cols = df.select_dtypes(include=[np.number]).columns.tolist()
     categorical_cols = df.select_dtypes(include=['object', 'category']).columns.tolist()
     return numerical_cols, categorical_cols
+
+def determine_analysis_type(col1_type, col2_type, var1_name, var2_name):
+    """Determine the appropriate analysis type based on column types"""
+    if col1_type == 'categorical' and col2_type == 'categorical':
+        return {
+            'type': 'chi-square',
+            'title': get_translation("chi_square_test"),
+            'description': get_translation("chi_square_desc"),
+            'icon': '🎯'
+        }
+    elif col1_type == 'numerical' and col2_type == 'numerical':
+        return {
+            'type': 'correlation',
+            'title': get_translation("correlation_analysis"),
+            'description': get_translation("correlation_desc"),
+            'icon': '📊'
+        }
+    else:
+        return {
+            'type': 'anova',
+            'title': get_translation("anova_test"),
+            'description': get_translation("anova_desc"),
+            'icon': '🔄'
+        }
+
+def get_correlation_strength(correlation):
+    """Get correlation strength description"""
+    abs_corr = abs(correlation)
+    if abs_corr >= 0.8:
+        return get_translation("correlation_strength").split("sangat kuat")[0] + "sangat kuat"
+    elif abs_corr >= 0.6:
+        return get_translation("correlation_strength").split("kuat")[0] + "kuat"
+    elif abs_corr >= 0.4:
+        return get_translation("correlation_strength").split("sedang")[0] + "sedang"
+    elif abs_corr >= 0.2:
+        return get_translation("correlation_strength").split("lemah")[0] + "lemah"
+    else:
+        return get_translation("correlation_strength").split("sangat lemah")[0] + "sangat lemah"
+
+def automatic_association_analysis(df, var1, var2, numerical_cols, categorical_cols):
+    """Perform automatic association analysis based on variable types"""
+    
+    # Determine variable types
+    var1_type = 'numerical' if var1 in numerical_cols else 'categorical'
+    var2_type = 'numerical' if var2 in numerical_cols else 'categorical'
+    
+    analysis_info = determine_analysis_type(var1_type, var2_type, var1, var2)
+    
+    st.markdown(f'<div class="analysis-type-card">', unsafe_allow_html=True)
+    st.markdown(f'<div class="analysis-type-title">{analysis_info["icon"]} {analysis_info["title"]}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="analysis-type-desc">{analysis_info["description"]}</div>', unsafe_allow_html=True)
+    st.markdown(f'</div>', unsafe_allow_html=True)
+    
+    if analysis_info['type'] == 'chi-square':
+        # Chi-Square test for categorical variables
+        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #ea580c; margin: 1rem 0;">{get_translation("chi_square_results")}</div>', unsafe_allow_html=True)
+        
+        # Create contingency table
+        contingency_table = pd.crosstab(df[var1], df[var2])
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("contingency_table")}</div>', unsafe_allow_html=True)
+            st.dataframe(contingency_table, use_container_width=True)
+        
+        with col2:
+            # Perform chi-square test
+            chi2, p_value, dof, expected = chi2_contingency(contingency_table)
+            
+            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #059669; margin: 0.5rem 0;">{get_translation("chi_square_results")}</div>', unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class="metric-card">
+                <strong>{get_translation("chi_square_statistic")}:</strong> {chi2:.4f}<br>
+                <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
+                <strong>{get_translation("degrees_of_freedom")}:</strong> {dof}<br>
+                <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
+            </div>
+            """, unsafe_allow_html=True)
+        
+        # Interpretation
+        if p_value < 0.05:
+            st.markdown(f"""
+            <div class="insight-box">
+                <strong>{get_translation("insight")}</strong> {get_translation("significant_insight")} {var1} dan {var2}.
+                {get_translation("independent_variables")}
+            </div>
+            """, unsafe_allow_html=True)
+        else:
+            st.markdown(f"""
+            <div class="insight-box">
+                <strong>{get_translation("insight")}</strong> {get_translation("not_significant_insight")} {var1} dan {var2}.
+                {get_translation("independent_variables_alt")}
+            </div>
+            """, unsafe_allow_html=True)
+    
+    elif analysis_info['type'] == 'correlation':
+        # Correlation analysis for numerical variables
+        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #7c3aed; margin: 1rem 0;">{get_translation("correlation_results")}</div>', unsafe_allow_html=True)
+        
+        # Remove rows with missing values for selected variables
+        clean_df = df[[var1, var2]].dropna()
+        
+        # Calculate both Pearson and Spearman correlations
+        pearson_corr, pearson_p = pearsonr(clean_df[var1], clean_df[var2])
+        spearman_corr, spearman_p = spearmanr(clean_df[var1], clean_df[var2])
+        
+        # Use Pearson by default (can add option to choose)
+        correlation = pearson_corr
+        p_value = pearson_p
+        method = "Pearson"
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0891b2; margin: 0.5rem 0;">{get_translation("correlation_results")}</div>', unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class="metric-card">
+                <strong>{get_translation("correlation_coefficient")} ({method}):</strong> {correlation:.4f}<br>
+                <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
+                <strong>{get_translation("sample_size")}:</strong> {len(clean_df)}<br>
+                <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Correlation strength indicator
+            strength = get_correlation_strength(correlation)
+            direction = get_translation("positive") if correlation > 0 else get_translation("negative")
+            
+            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0891b2; margin: 0.5rem 0;">{get_translation("correlation_strength_indicator")}</div>', unsafe_allow_html=True)
+            
+            # Visual correlation strength bar
+            correlation_normalized = (abs(correlation) + 1) / 2  # Normalize to 0-1 for positioning
+            st.markdown(f"""
+            <div style="position: relative; margin: 1rem 0;">
+                <div class="correlation-strength-bar"></div>
+                <div class="correlation-indicator" style="left: {correlation_normalized * 100}%"></div>
+            </div>
+            <div style="display: flex; justify-content: space-between; font-size: 0.8rem; color: #64748b; margin-top: 0.5rem;">
+                <span>Sangat Lemah</span>
+                <span>Lemah</span>
+                <span>Sedang</span>
+                <span>Kuat</span>
+                <span>Sangat Kuat</span>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            st.markdown(f"""
+            <div class="metric-card">
+                <strong>Kekuatan:</strong> {strength}<br>
+                <strong>Arah:</strong> {direction}<br>
+                <strong>Nilai Absolut:</strong> {abs(correlation):.4f}
+            </div>
+            """, unsafe_allow_html=True)
+        
+        with col2:
+            # Scatter plot
+            fig_scatter = px.scatter(clean_df, x=var1, y=var2, 
+                                   title=f'Scatter Plot: {var1} vs {var2}',
+                                   trendline='ols')
+            fig_scatter.update_layout(height=400)
+            st.plotly_chart(fig_scatter, use_container_width=True)
+        
+        # Interpretation
+        st.markdown(f"""
+        <div class="insight-box">
+            <strong>{get_translation("insight")}</strong> {get_translation("correlation_insight")} {direction} {strength} {get_translation("between_variables")} {var1} dan {var2}.
+            {get_translation("statistical_significance") if p_value < 0.05 else get_translation("no_statistical_significance")}
+        </div>
+        """, unsafe_allow_html=True)
+    
+    else:  # ANOVA
+        # ANOVA test for categorical vs numerical
+        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #0891b2; margin: 1rem 0;">{get_translation("anova_results")}</div>', unsafe_allow_html=True)
+        
+        # Identify categorical and numerical variables
+        cat_var = var1 if var1_type == 'categorical' else var2
+        num_var = var2 if var1_type == 'categorical' else var1
+        
+        # Group by categorical variable
+        grouped_data = df.groupby(cat_var)[num_var].describe()
+        
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0d9488; margin: 0.5rem 0;">{get_translation("statistics_by").format(num_var, cat_var)}</div>', unsafe_allow_html=True)
+            st.dataframe(grouped_data.round(2), use_container_width=True)
+        
+        with col2:
+            # Box plot by category
+            fig_box_cat = px.box(df, x=cat_var, y=num_var, 
+                               title=get_translation("distribution_by").format(num_var, cat_var))
+            fig_box_cat.update_layout(height=400)
+            st.plotly_chart(fig_box_cat, use_container_width=True)
+        
+        # ANOVA test
+        categories = df[cat_var].unique()
+        category_groups = [df[df[cat_var] == cat][num_var].dropna() for cat in categories]
+        
+        # Remove empty groups
+        category_groups = [group for group in category_groups if len(group) > 0]
+        
+        if len(category_groups) >= 2:
+            f_stat, p_value = stats.f_oneway(*category_groups)
+            
+            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("anova_results")}</div>', unsafe_allow_html=True)
+            st.markdown(f"""
+            <div class="metric-card">
+                <strong>{get_translation("f_statistic")}:</strong> {f_stat:.4f}<br>
+                <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
+                <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
+            </div>
+            """, unsafe_allow_html=True)
+            
+            if p_value < 0.05:
+                st.markdown(f"""
+                <div class="insight-box">
+                    <strong>{get_translation("insight")}</strong> {get_translation("mean_difference_insight")} {num_var} {get_translation("between_categories")} {cat_var}.
+                </div>
+                """, unsafe_allow_html=True)
+            else:
+                st.markdown(f"""
+                <div class="insight-box">
+                    <strong>{get_translation("insight")}</strong> {get_translation("no_mean_difference_insight")} {num_var} {get_translation("between_categories_alt")}.
+                </div>
+                """, unsafe_allow_html=True)
 
 def descriptive_analysis(df, numerical_cols, categorical_cols):
     """Perform descriptive analysis"""
@@ -1027,167 +1329,86 @@ def descriptive_analysis(df, numerical_cols, categorical_cols):
         st.dataframe(freq_table, use_container_width=True)
 
 def association_analysis(df, numerical_cols, categorical_cols):
-    """Perform association analysis"""
+    """Perform automatic association analysis"""
     st.markdown(f'<div class="section-header">{get_translation("association_analysis")}</div>', unsafe_allow_html=True)
+    
+    # NEW: Automatic Analysis Section
+    st.markdown(f'<div style="font-size: 1.4rem; font-weight: 600; color: #1e40af; margin: 1rem 0;">{get_translation("automatic_analysis")}</div>', unsafe_allow_html=True)
+    
+    all_columns = numerical_cols + categorical_cols
+    
+    if len(all_columns) < 2:
+        st.warning("You need at least 2 columns to perform association analysis.")
+        return
+    
+    col1, col2 = st.columns(2)
+    with col1:
+        var1 = st.selectbox(get_translation("select_variable_1"), all_columns, key='auto_var1')
+    with col2:
+        available_vars = [col for col in all_columns if col != var1]
+        var2 = st.selectbox(get_translation("select_variable_2"), available_vars, key='auto_var2')
+    
+    # Show analysis type that will be performed
+    var1_type = 'numerical' if var1 in numerical_cols else 'categorical'
+    var2_type = 'numerical' if var2 in numerical_cols else 'categorical'
+    analysis_info = determine_analysis_type(var1_type, var2_type, var1, var2)
+    
+    st.markdown(f"""
+    <div class="analysis-type-card">
+        <div class="analysis-type-title">{analysis_info["icon"]} {get_translation("determined_test")}: {analysis_info["title"]}</div>
+        <div class="analysis-type-desc">{analysis_info["description"]}</div>
+        <div style="margin-top: 1rem; padding: 0.5rem; background: rgba(255,255,255,0.7); border-radius: 6px;">
+            <strong>Variable 1:</strong> {var1} ({var1_type})<br>
+            <strong>Variable 2:</strong> {var2} ({var2_type})
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    if st.button(get_translation("analyze_button"), key="auto_analyze"):
+        automatic_association_analysis(df, var1, var2, numerical_cols, categorical_cols)
+    
+    st.markdown("---")
+    
+    # Keep original manual analysis options as backup
+    st.markdown(f'<div style="font-size: 1.2rem; font-weight: 600; color: #64748b; margin: 1rem 0;">Manual Analysis Options</div>', unsafe_allow_html=True)
     
     # Chi-square test for categorical variables
     if len(categorical_cols) >= 2:
-        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #ea580c; margin: 1rem 0;">{get_translation("chi_square_test")}</div>', unsafe_allow_html=True)
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            var1 = st.selectbox(get_translation("select_variable_1"), categorical_cols, key='cat1')
-        with col2:
-            var2 = st.selectbox(get_translation("select_variable_2"), [col for col in categorical_cols if col != var1], key='cat2')
-        
-        if st.button(get_translation("analyze_chi_square")):
-            # Create contingency table
-            contingency_table = pd.crosstab(df[var1], df[var2])
-            
+        with st.expander(get_translation("chi_square_test")):
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("contingency_table")}</div>', unsafe_allow_html=True)
-                st.dataframe(contingency_table, use_container_width=True)
-            
+                var1 = st.selectbox(get_translation("select_variable_1"), categorical_cols, key='cat1')
             with col2:
-                # Perform chi-square test
-                chi2, p_value, dof, expected = chi2_contingency(contingency_table)
-                
-                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #059669; margin: 0.5rem 0;">{get_translation("chi_square_results")}</div>', unsafe_allow_html=True)
-                st.markdown(f"""
-                <div class="metric-card">
-                    <strong>{get_translation("chi_square_statistic")}:</strong> {chi2:.4f}<br>
-                    <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
-                    <strong>{get_translation("degrees_of_freedom")}:</strong> {dof}<br>
-                    <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
-                </div>
-                """, unsafe_allow_html=True)
-                
-                # Interpretation
-                if p_value < 0.05:
-                    st.markdown(f"""
-                    <div class="insight-box">
-                        <strong>{get_translation("insight")}</strong> {get_translation("significant_insight")} {var1} dan {var2}.
-                        {get_translation("independent_variables")}
-                    </div>
-                    """, unsafe_allow_html=True)
-                else:
-                    st.markdown(f"""
-                    <div class="insight-box">
-                        <strong>{get_translation("insight")}</strong> {get_translation("not_significant_insight")} {var1} dan {var2}.
-                        {get_translation("independent_variables_alt")}
-                    </div>
-                    """, unsafe_allow_html=True)
+                var2 = st.selectbox(get_translation("select_variable_2"), [col for col in categorical_cols if col != var1], key='cat2')
+            
+            if st.button(get_translation("analyze_chi_square"), key="manual_chi"):
+                automatic_association_analysis(df, var1, var2, numerical_cols, categorical_cols)
     
     # Correlation analysis for numerical variables
     if len(numerical_cols) >= 2:
-        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #7c3aed; margin: 1rem 0;">{get_translation("correlation_analysis")}</div>', unsafe_allow_html=True)
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            var3 = st.selectbox(get_translation("select_variable_1"), numerical_cols, key='num1')
-        with col2:
-            var4 = st.selectbox(get_translation("select_variable_2"), [col for col in numerical_cols if col != var3], key='num2')
-        
-        correlation_method = st.radio(get_translation("correlation_method"), [get_translation("pearson"), get_translation("spearman")])
-        
-        if st.button(get_translation("analyze_correlation")):
-            # Remove rows with missing values for selected variables
-            clean_df = df[[var3, var4]].dropna()
-            
-            # Calculate correlation
-            if correlation_method == get_translation("pearson"):
-                corr_coef, p_value = pearsonr(clean_df[var3], clean_df[var4])
-            else:
-                corr_coef, p_value = spearmanr(clean_df[var3], clean_df[var4])
-            
+        with st.expander(get_translation("correlation_analysis")):
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0891b2; margin: 0.5rem 0;">{get_translation("correlation_results")}</div>', unsafe_allow_html=True)
-                st.markdown(f"""
-                <div class="metric-card">
-                    <strong>{get_translation("correlation_coefficient")} ({correlation_method}):</strong> {corr_coef:.4f}<br>
-                    <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
-                    <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
-                </div>
-                """, unsafe_allow_html=True)
-                
-                # Interpretation
-                strength = get_translation("correlation_strength")
-                direction = get_translation("positive") if corr_coef > 0 else get_translation("negative")
-                
-                st.markdown(f"""
-                <div class="insight-box">
-                    <strong>{get_translation("insight")}</strong> {get_translation("correlation_insight")} {direction} {strength} {get_translation("between_variables")} {var3} dan {var4}.
-                    {get_translation("statistical_significance") if p_value < 0.05 else get_translation("no_statistical_significance")}
-                </div>
-                """, unsafe_allow_html=True)
-            
+                var3 = st.selectbox(get_translation("select_variable_1"), numerical_cols, key='num1')
             with col2:
-                # Scatter plot
-                fig_scatter = px.scatter(clean_df, x=var3, y=var4, 
-                                       title=f'Scatter Plot: {var3} vs {var4}',
-                                       trendline='ols')
-                fig_scatter.update_layout(height=400)
-                st.plotly_chart(fig_scatter, use_container_width=True)
+                var4 = st.selectbox(get_translation("select_variable_2"), [col for col in numerical_cols if col != var3], key='num2')
+            
+            correlation_method = st.radio(get_translation("correlation_method"), [get_translation("pearson"), get_translation("spearman")])
+            
+            if st.button(get_translation("analyze_correlation"), key="manual_corr"):
+                automatic_association_analysis(df, var3, var4, numerical_cols, categorical_cols)
     
     # Categorical vs Numerical analysis
     if numerical_cols and categorical_cols:
-        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #0891b2; margin: 1rem 0;">{get_translation("categorical_numerical_analysis")}</div>', unsafe_allow_html=True)
-        
-        col1, col2 = st.columns(2)
-        with col1:
-            cat_var = st.selectbox(get_translation("select_categorical_variable"), categorical_cols, key='cat_num')
-        with col2:
-            num_var = st.selectbox(get_translation("select_numerical_variable"), numerical_cols, key='num_cat')
-        
-        if st.button(get_translation("analyze_categorical_numerical")):
-            # Group by categorical variable
-            grouped_data = df.groupby(cat_var)[num_var].describe()
-            
+        with st.expander(get_translation("categorical_numerical_analysis")):
             col1, col2 = st.columns(2)
             with col1:
-                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #0d9488; margin: 0.5rem 0;">{get_translation("statistics_by").format(num_var, cat_var)}</div>', unsafe_allow_html=True)
-                st.dataframe(grouped_data.round(2), use_container_width=True)
-            
+                cat_var = st.selectbox(get_translation("select_categorical_variable"), categorical_cols, key='cat_num')
             with col2:
-                # Box plot by category
-                fig_box_cat = px.box(df, x=cat_var, y=num_var, 
-                                   title=get_translation("distribution_by").format(num_var, cat_var))
-                fig_box_cat.update_layout(height=400)
-                st.plotly_chart(fig_box_cat, use_container_width=True)
+                num_var = st.selectbox(get_translation("select_numerical_variable"), numerical_cols, key='num_cat')
             
-            # ANOVA test
-            categories = df[cat_var].unique()
-            category_groups = [df[df[cat_var] == cat][num_var].dropna() for cat in categories]
-            
-            # Remove empty groups
-            category_groups = [group for group in category_groups if len(group) > 0]
-            
-            if len(category_groups) >= 2:
-                f_stat, p_value = stats.f_oneway(*category_groups)
-                
-                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("anova_results")}</div>', unsafe_allow_html=True)
-                st.markdown(f"""
-                <div class="metric-card">
-                    <strong>{get_translation("f_statistic")}:</strong> {f_stat:.4f}<br>
-                    <strong>{get_translation("p_value")}:</strong> {p_value:.4f}<br>
-                    <strong>{get_translation("significance")}:</strong> {'✅ ' + get_translation("significant") if p_value < 0.05 else '❌ ' + get_translation("not_significant")}
-                </div>
-                """, unsafe_allow_html=True)
-                
-                if p_value < 0.05:
-                    st.markdown(f"""
-                    <div class="insight-box">
-                        <strong>{get_translation("insight")}</strong> {get_translation("mean_difference_insight")} {num_var} {get_translation("between_categories")} {cat_var}.
-                    </div>
-                    """, unsafe_allow_html=True)
-                else:
-                    st.markdown(f"""
-                    <div class="insight-box">
-                        <strong>{get_translation("insight")}</strong> {get_translation("no_mean_difference_insight")} {num_var} {get_translation("between_categories_alt")}.
-                    </div>
-                    """, unsafe_allow_html=True)
+            if st.button(get_translation("analyze_categorical_numerical"), key="manual_anova"):
+                automatic_association_analysis(df, cat_var, num_var, numerical_cols, categorical_cols)
 
 def main():
     # Main header
