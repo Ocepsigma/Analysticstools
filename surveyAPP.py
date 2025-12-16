@@ -107,21 +107,21 @@ TRANSLATIONS = {
         "see_raw_data": "👀 Lihat Data Mentah",
         "export_results": "💾 Export Hasil Analisis",
         "loading_data": "Memuat data...",
-        "insight": "💡 Insight:",
-        "significant_insight": "Terdapat asosiasi yang signifikan antara variabel",
-        "not_significant_insight": "Tidak terdapat asosiasi yang signifikan antara variabel",
+        "conclusion": "💡 Kesimpulan:",
+        "significant_conclusion": "Terdapat asosiasi yang signifikan antara variabel",
+        "not_significant_conclusion": "Tidak terdapat asosiasi yang signifikan antara variabel",
         "independent_variables": "Variabel-variabel ini tidak independen satu sama lain.",
         "independent_variables_alt": "Variabel-variabel ini cenderung independen.",
         "correlation_strength": "sangat kuat",
         "positive": "positif",
         "negative": "negatif",
-        "correlation_insight": "Terdapat hubungan",
+        "correlation_conclusion": "Terdapat hubungan",
         "between_variables": "antara",
         "statistical_significance": "Hubungan ini signifikan secara statistik.",
         "no_statistical_significance": "Hubungan ini tidak signifikan secara statistik.",
-        "mean_difference_insight": "Terdapat perbedaan yang signifikan dalam rata-rata",
+        "mean_difference_conclusion": "Terdapat perbedaan yang signifikan dalam rata-rata",
         "between_categories": "antar kategori",
-        "no_mean_difference_insight": "Tidak ada perbedaan signifikan dalam rata-rata",
+        "no_mean_difference_conclusion": "Tidak ada perbedaan signifikan dalam rata-rata",
         "between_categories_alt": "antar kategori",
         "distribution": "Distribusi",
         "frequency_chart": "Frekuensi",
@@ -144,7 +144,16 @@ TRANSLATIONS = {
         "analysis_results": "Hasil Analisis",
         "determined_test": "Tes yang Ditentukan",
         "sample_size": "Ukuran Sampel",
-        "correlation_strength_indicator": "Indikator Kekuatan Korelasi"
+        "correlation_strength_indicator": "Indikator Kekuatan Korelasi",
+        # PROFILE PAGE
+        "profile_title": "👤 Profil Pembuat",
+        "main_developer": "Pengembang Utama",
+        "name": "Nama",
+        "student_id": "ID Mahasiswa",
+        "group": "Grup",
+        "role": "Peran",
+        "project_overview": "🎯 Ikhtisar Proyek",
+        "contributions": "💪 Kontribusi"
     },
     "en": {
         "title": "Survey Data Analysis",
@@ -218,21 +227,21 @@ TRANSLATIONS = {
         "see_raw_data": "👀 See Raw Data",
         "export_results": "💾 Export Analysis Results",
         "loading_data": "Loading data...",
-        "insight": "💡 Insight:",
-        "significant_insight": "There is a significant association between variables",
-        "not_significant_insight": "There is no significant association between variables",
+        "conclusion": "💡 Conclusion:",
+        "significant_conclusion": "There is a significant association between variables",
+        "not_significant_conclusion": "There is no significant association between variables",
         "independent_variables": "These variables are not independent of each other.",
         "independent_variables_alt": "These variables tend to be independent.",
         "correlation_strength": "very strong",
         "positive": "positive",
         "negative": "negative",
-        "correlation_insight": "There is a",
+        "correlation_conclusion": "There is a",
         "between_variables": "between",
         "statistical_significance": "This relationship is statistically significant.",
         "no_statistical_significance": "This relationship is not statistically significant.",
-        "mean_difference_insight": "There is a significant difference in mean",
+        "mean_difference_conclusion": "There is a significant difference in mean",
         "between_categories": "between categories",
-        "no_mean_difference_insight": "There is no significant difference in mean",
+        "no_mean_difference_conclusion": "There is no significant difference in mean",
         "between_categories_alt": "between categories",
         "distribution": "Distribution",
         "frequency_chart": "Frequency",
@@ -255,7 +264,16 @@ TRANSLATIONS = {
         "analysis_results": "Analysis Results",
         "determined_test": "Determined Test",
         "sample_size": "Sample Size",
-        "correlation_strength_indicator": "Correlation Strength Indicator"
+        "correlation_strength_indicator": "Correlation Strength Indicator",
+        # PROFILE PAGE
+        "profile_title": "👤 Developer Profile",
+        "main_developer": "Main Developer",
+        "name": "Name",
+        "student_id": "Student ID",
+        "group": "Group",
+        "role": "Role",
+        "project_overview": "🎯 Project Overview",
+        "contributions": "💪 Contributions"
     },
     "zh": {
         "title": "调查数据分析",
@@ -329,21 +347,21 @@ TRANSLATIONS = {
         "see_raw_data": "👀 查看原始数据",
         "export_results": "💾 导出分析结果",
         "loading_data": "加载数据...",
-        "insight": "💡 洞察：",
-        "significant_insight": "变量之间存在显著关联",
-        "not_significant_insight": "变量之间不存在显著关联",
+        "conclusion": "💡 结论：",
+        "significant_conclusion": "变量之间存在显著关联",
+        "not_significant_conclusion": "变量之间不存在显著关联",
         "independent_variables": "这些变量彼此不独立。",
         "independent_variables_alt": "这些变量倾向于独立。",
         "correlation_strength": "非常强",
         "positive": "正",
         "negative": "负",
-        "correlation_insight": "存在",
+        "correlation_conclusion": "存在",
         "between_variables": "之间",
         "statistical_significance": "这种关系在统计上是显著的。",
         "no_statistical_significance": "这种关系在统计上不显著。",
-        "mean_difference_insight": "平均值存在显著差异",
+        "mean_difference_conclusion": "平均值存在显著差异",
         "between_categories": "在类别之间",
-        "no_mean_difference_insight": "平均值不存在显著差异",
+        "no_mean_difference_conclusion": "平均值不存在显著差异",
         "between_categories_alt": "在类别之间",
         "distribution": "分布",
         "frequency_chart": "频率",
@@ -366,7 +384,16 @@ TRANSLATIONS = {
         "analysis_results": "分析结果",
         "determined_test": "确定的测试",
         "sample_size": "样本大小",
-        "correlation_strength_indicator": "相关强度指标"
+        "correlation_strength_indicator": "相关强度指标",
+        # PROFILE PAGE
+        "profile_title": "👤 开发者简介",
+        "main_developer": "主要开发者",
+        "name": "姓名",
+        "student_id": "学生ID",
+        "group": "组",
+        "role": "角色",
+        "project_overview": "🎯 项目概述",
+        "contributions": "💪 贡献"
     }
 }
 
@@ -972,6 +999,75 @@ st.markdown("""
         transform: translateX(-50%);
         transition: left 0.3s ease;
     }
+    
+    /* Profile page styles */
+    .profile-header {
+        font-size: 2.5rem;
+        font-weight: 700;
+        background: linear-gradient(135deg, #1e40af, #3b82f6, #60a5fa);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-align: center;
+        margin-bottom: 2rem;
+        text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .profile-card {
+        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+        border: 1px solid #e2e8f0;
+        border-radius: 16px;
+        padding: 2rem;
+        margin: 1rem 0;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        transition: all 0.3s ease;
+    }
+    
+    .profile-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+    }
+    
+    .profile-section {
+        margin-bottom: 2rem;
+    }
+    
+    .profile-section-title {
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: #1e40af;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .profile-item {
+        display: flex;
+        margin-bottom: 0.8rem;
+    }
+    
+    .profile-label {
+        font-weight: 600;
+        color: #374151;
+        width: 150px;
+        flex-shrink: 0;
+    }
+    
+    .profile-value {
+        color: #1f2937;
+        flex-grow: 1;
+    }
+    
+    .project-description {
+        line-height: 1.6;
+        color: #4b5563;
+        background: rgba(255, 255, 255, 0.7);
+        padding: 1rem;
+        border-radius: 8px;
+        border-left: 4px solid #3b82f6;
+        margin-top: 1rem;
+    }
 </style>
 
 <!-- Floating elements -->
@@ -1009,7 +1105,7 @@ def get_column_types(df):
     return numerical_cols, categorical_cols
 
 def determine_analysis_type(col1_type, col2_type, var1_name, var2_name):
-    """Determine the appropriate analysis type based on column types"""
+    """Determine appropriate analysis type based on column types"""
     if col1_type == 'categorical' and col2_type == 'categorical':
         return {
             'type': 'chi-square',
@@ -1088,18 +1184,18 @@ def automatic_association_analysis(df, var1, var2, numerical_cols, categorical_c
                     </div>
                     """, unsafe_allow_html=True)
                 
-                # Interpretation
+                # Conclusion (changed from insight)
                 if p_value < 0.05:
                     st.markdown(f"""
                     <div class="insight-box">
-                        <strong>{get_translation("insight")}</strong> {get_translation("significant_insight")} {var1} dan {var2}.
+                        <strong>{get_translation("conclusion")}</strong> {get_translation("significant_conclusion")} {var1} dan {var2}.
                         {get_translation("independent_variables")}
                     </div>
                     """, unsafe_allow_html=True)
                 else:
                     st.markdown(f"""
                     <div class="insight-box">
-                        <strong>{get_translation("insight")}</strong> {get_translation("not_significant_insight")} {var1} dan {var2}.
+                        <strong>{get_translation("conclusion")}</strong> {get_translation("not_significant_conclusion")} {var1} dan {var2}.
                         {get_translation("independent_variables_alt")}
                     </div>
                     """, unsafe_allow_html=True)
@@ -1198,10 +1294,10 @@ def automatic_association_analysis(df, var1, var2, numerical_cols, categorical_c
                         except Exception as fallback_error:
                             st.error(f"Could not create scatter plot: {str(fallback_error)}")
                 
-                # Interpretation
+                # Conclusion (changed from insight)
                 st.markdown(f"""
                 <div class="insight-box">
-                    <strong>{get_translation("insight")}</strong> {get_translation("correlation_insight")} {direction} {strength} {get_translation("between_variables")} {var1} dan {var2}.
+                    <strong>{get_translation("conclusion")}</strong> {get_translation("correlation_conclusion")} {direction} {strength} {get_translation("between_variables")} {var1} dan {var2}.
                     {get_translation("statistical_significance") if p_value < 0.05 else get_translation("no_statistical_significance")}
                 </div>
                 """, unsafe_allow_html=True)
@@ -1261,16 +1357,17 @@ def automatic_association_analysis(df, var1, var2, numerical_cols, categorical_c
                     </div>
                     """, unsafe_allow_html=True)
                     
+                    # Conclusion (changed from insight)
                     if p_value < 0.05:
                         st.markdown(f"""
                         <div class="insight-box">
-                            <strong>{get_translation("insight")}</strong> {get_translation("mean_difference_insight")} {num_var} {get_translation("between_categories")} {cat_var}.
+                            <strong>{get_translation("conclusion")}</strong> {get_translation("mean_difference_conclusion")} {num_var} {get_translation("between_categories")} {cat_var}.
                         </div>
                         """, unsafe_allow_html=True)
                     else:
                         st.markdown(f"""
                         <div class="insight-box">
-                            <strong>{get_translation("insight")}</strong> {get_translation("no_mean_difference_insight")} {num_var} {get_translation("between_categories_alt")}.
+                            <strong>{get_translation("conclusion")}</strong> {get_translation("no_mean_difference_conclusion")} {num_var} {get_translation("between_categories_alt")}.
                         </div>
                         """, unsafe_allow_html=True)
                 else:
@@ -1517,10 +1614,72 @@ def association_analysis(df, numerical_cols, categorical_cols):
         st.error(f"Error in association analysis section: {str(e)}")
         st.error("Please check your data and try again.")
 
+def profile_page():
+    """Display developer profile page"""
+    st.markdown(f'<h1 class="profile-header">{get_translation("profile_title")}</h1>', unsafe_allow_html=True)
+    
+    # Main Developer Card
+    st.markdown(f"""
+    <div class="profile-card">
+        <div class="profile-section">
+            <div class="profile-section-title">{get_translation("main_developer")}</div>
+            
+            <div class="profile-item">
+                <div class="profile-label">{get_translation("name")}:</div>
+                <div class="profile-value">Yoseph Sihite</div>
+            </div>
+            
+            <div class="profile-item">
+                <div class="profile-label">{get_translation("student_id")}:</div>
+                <div class="profile-value">004202400113</div>
+            </div>
+            
+            <div class="profile-item">
+                <div class="profile-label">{get_translation("group")}:</div>
+                <div class="profile-value">Group 2 Linear Algebra</div>
+            </div>
+            
+            <div class="profile-item">
+                <div class="profile-label">{get_translation("role")}:</div>
+                <div class="profile-value">Lead Group</div>
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Project Overview
+    st.markdown(f"""
+    <div class="profile-card">
+        <div class="profile-section">
+            <div class="profile-section-title">{get_translation("project_overview")}</div>
+            
+            <div class="project-description">
+                Studio Transformasi Matriks adalah aplikasi web interaktif yang dikembangkan sebagai Proyek Akhir Mata Kuliah Aljabar Linear. Aplikasi ini dirancang untuk memvisualisasikan konsep transformasi matriks agar lebih mudah dipahami melalui pendekatan visualisasi berbasis web.
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+    
+    # Contributions
+    st.markdown(f"""
+    <div class="profile-card">
+        <div class="profile-section">
+            <div class="profile-section-title">{get_translation("contributions")}</div>
+            
+            <div class="project-description">
+                Seluruh proses pengembangan proyek ini dikerjakan secara mandiri oleh Yoseph Sihite. Kontribusi yang dilakukan mencakup perancangan konsep dan arsitektur aplikasi, pengembangan algoritma transformasi matriks, serta implementasi konsep aljabar linear ke dalam sistem visual interaktif. Selain itu, pengembangan web app, termasuk desain antarmuka pengguna, pengelolaan logika aplikasi, dan pengujian fungsionalitas, sepenuhnya diselesaikan secara individual karena tidak adanya anggota lain dalam Group 2.
+            </div>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
+
 def main():
     try:
-        # Main header
-        st.markdown(f'<h1 class="main-header">{get_translation("title")}</h1>', unsafe_allow_html=True)
+        # Create navigation
+        page = st.sidebar.selectbox(
+            "Navigation",
+            ["📊 Analisis Data", "👤 Profil Pembuat"]
+        )
         
         # Language buttons (functional) - ONLY IN TOP LEFT
         col1, col2, col3, col4, col5 = st.columns([1, 1, 1, 6, 1])
@@ -1537,143 +1696,149 @@ def main():
                 st.session_state.language = 'zh'
                 st.rerun()
         
-        # Upload area - CENTERED IN MIDDLE
-        if st.session_state.uploaded_file is None:
-            st.markdown("""
-            <div class="upload-container">
-                <div class="upload-area">
-                    <div class="upload-title">""" + get_translation("upload_title") + """</div>
-                    <div class="upload-description">
-                        """ + get_translation("upload_description") + """
+        if page == "👤 Profil Pembuat":
+            profile_page()
+        else:
+            # Main header
+            st.markdown(f'<h1 class="main-header">{get_translation("title")}</h1>', unsafe_allow_html=True)
+            
+            # Upload area - CENTERED IN MIDDLE
+            if st.session_state.uploaded_file is None:
+                st.markdown("""
+                <div class="upload-container">
+                    <div class="upload-area">
+                        <div class="upload-title">""" + get_translation("upload_title") + """</div>
+                        <div class="upload-description">
+                            """ + get_translation("upload_description") + """
+                        </div>
                     </div>
                 </div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-        # File uploader (HIDDEN - used by JavaScript)
-        uploaded_file = st.file_uploader(get_translation("upload_button"), type=['xlsx', 'xls', 'csv'], 
-                                       help=get_translation("upload_step"),
-                                       label_visibility="collapsed")
-        
-        if uploaded_file is not None:
-            # Store file in session state
-            st.session_state.uploaded_file = uploaded_file
+                """, unsafe_allow_html=True)
             
-            # Show file info
-            st.markdown(f"""
-            <div class="file-info">
-                <div class="file-name">{get_translation("file_name")} {uploaded_file.name}</div>
-                <div class="file-size">{get_translation("file_size")}: {uploaded_file.size / 1024 / 1024:.2f} MB</div>
-            </div>
-            """, unsafe_allow_html=True)
+            # File uploader (HIDDEN - used by JavaScript)
+            uploaded_file = st.file_uploader(get_translation("upload_button"), type=['xlsx', 'xls', 'csv'], 
+                                           help=get_translation("upload_step"),
+                                           label_visibility="collapsed")
             
-            # Load data
-            with st.spinner(get_translation("loading_data")):
-                df = load_data(uploaded_file)
+            if uploaded_file is not None:
+                # Store file in session state
+                st.session_state.uploaded_file = uploaded_file
+                
+                # Show file info
+                st.markdown(f"""
+                <div class="file-info">
+                    <div class="file-name">{get_translation("file_name")} {uploaded_file.name}</div>
+                    <div class="file-size">{get_translation("file_size")}: {uploaded_file.size / 1024 / 1024:.2f} MB</div>
+                </div>
+                """, unsafe_allow_html=True)
+                
+                # Load data
+                with st.spinner(get_translation("loading_data")):
+                    df = load_data(uploaded_file)
+                
+                if df is not None:
+                    try:
+                        # Success message
+                        st.success(f"{get_translation('success_message')} {df.shape[0]} {get_translation('rows_text')} dan {df.shape[1]} {get_translation('columns_text')}.")
+                        
+                        # Show raw data
+                        with st.expander(get_translation("see_raw_data")):
+                            st.dataframe(df, use_container_width=True)
+                        
+                        # Get column types
+                        numerical_cols, categorical_cols = get_column_types(df)
+                        
+                        # Show column information
+                        col1, col2 = st.columns(2)
+                        with col1:
+                            if numerical_cols:
+                                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #1e40af; margin: 0.5rem 0;">{get_translation("numerical_columns")}:</div>', unsafe_allow_html=True)
+                                for col in numerical_cols:
+                                    st.markdown(f"• {col}")
+                        
+                        with col2:
+                            if categorical_cols:
+                                st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("categorical_columns")}:</div>', unsafe_allow_html=True)
+                                for col in categorical_cols:
+                                    st.markdown(f"• {col}")
+                        
+                        # Analysis tabs
+                        tab1, tab2 = st.tabs([get_translation("descriptive_analysis"), get_translation("association_analysis")])
+                        
+                        with tab1:
+                            try:
+                                descriptive_analysis(df, numerical_cols, categorical_cols)
+                            except Exception as e:
+                                st.error(f"Error in descriptive analysis tab: {str(e)}")
+                        
+                        with tab2:
+                            try:
+                                association_analysis(df, numerical_cols, categorical_cols)
+                            except Exception as e:
+                                st.error(f"Error in association analysis tab: {str(e)}")
+                        
+                        # Export functionality
+                        st.markdown("---")
+                        st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #059669; margin: 1rem 0;">{get_translation("export_results")}</div>', unsafe_allow_html=True)
+                        
+                        if st.button(get_translation("download_summary")):
+                            try:
+                                # Create a summary report
+                                summary_data = {
+                                    'Metric': [get_translation("total_rows"), get_translation("total_columns"), get_translation("numerical_columns"), get_translation("categorical_columns"), 'Missing Values'],
+                                    'Value': [df.shape[0], df.shape[1], len(numerical_cols), len(categorical_cols), df.isnull().sum().sum()]
+                                }
+                                summary_df = pd.DataFrame(summary_data)
+                                
+                                # Convert to CSV
+                                csv = summary_df.to_csv(index=False)
+                                b64 = base64.b64encode(csv.encode()).decode()
+                                href = f'<a href="data:file/csv;base64,{b64}" download="survey_analysis_summary.csv" style="background: #3b82f6; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">Download CSV Summary</a>'
+                                st.markdown(href, unsafe_allow_html=True)
+                            except Exception as e:
+                                st.error(f"Error creating download: {str(e)}")
+                                
+                    except Exception as e:
+                        st.error(f"Error processing data: {str(e)}")
+                        st.error("Please check your data format and try again.")
             
-            if df is not None:
-                try:
-                    # Success message
-                    st.success(f"{get_translation('success_message')} {df.shape[0]} {get_translation('rows_text')} dan {df.shape[1]} {get_translation('columns_text')}.")
-                    
-                    # Show raw data
-                    with st.expander(get_translation("see_raw_data")):
-                        st.dataframe(df, use_container_width=True)
-                    
-                    # Get column types
-                    numerical_cols, categorical_cols = get_column_types(df)
-                    
-                    # Show column information
-                    col1, col2 = st.columns(2)
-                    with col1:
-                        if numerical_cols:
-                            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #1e40af; margin: 0.5rem 0;">{get_translation("numerical_columns")}:</div>', unsafe_allow_html=True)
-                            for col in numerical_cols:
-                                st.markdown(f"• {col}")
-                    
-                    with col2:
-                        if categorical_cols:
-                            st.markdown(f'<div style="font-size: 1.1rem; font-weight: 600; color: #dc2626; margin: 0.5rem 0;">{get_translation("categorical_columns")}:</div>', unsafe_allow_html=True)
-                            for col in categorical_cols:
-                                st.markdown(f"• {col}")
-                    
-                    # Analysis tabs
-                    tab1, tab2 = st.tabs([get_translation("descriptive_analysis"), get_translation("association_analysis")])
-                    
-                    with tab1:
-                        try:
-                            descriptive_analysis(df, numerical_cols, categorical_cols)
-                        except Exception as e:
-                            st.error(f"Error in descriptive analysis tab: {str(e)}")
-                    
-                    with tab2:
-                        try:
-                            association_analysis(df, numerical_cols, categorical_cols)
-                        except Exception as e:
-                            st.error(f"Error in association analysis tab: {str(e)}")
-                    
-                    # Export functionality
-                    st.markdown("---")
-                    st.markdown(f'<div style="font-size: 1.3rem; font-weight: 600; color: #059669; margin: 1rem 0;">{get_translation("export_results")}</div>', unsafe_allow_html=True)
-                    
-                    if st.button(get_translation("download_summary")):
-                        try:
-                            # Create a summary report
-                            summary_data = {
-                                'Metric': [get_translation("total_rows"), get_translation("total_columns"), get_translation("numerical_columns"), get_translation("categorical_columns"), 'Missing Values'],
-                                'Value': [df.shape[0], df.shape[1], len(numerical_cols), len(categorical_cols), df.isnull().sum().sum()]
-                            }
-                            summary_df = pd.DataFrame(summary_data)
-                            
-                            # Convert to CSV
-                            csv = summary_df.to_csv(index=False)
-                            b64 = base64.b64encode(csv.encode()).decode()
-                            href = f'<a href="data:file/csv;base64,{b64}" download="survey_analysis_summary.csv" style="background: #3b82f6; color: white; padding: 0.75rem 1.5rem; border-radius: 8px; text-decoration: none; font-weight: 600;">Download CSV Summary</a>'
-                            st.markdown(href, unsafe_allow_html=True)
-                        except Exception as e:
-                            st.error(f"Error creating download: {str(e)}")
-                            
-                except Exception as e:
-                    st.error(f"Error processing data: {str(e)}")
-                    st.error("Please check your data format and try again.")
-        
-        else:
-            # Instructions
-            st.markdown(f"""
-    <div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border: 1px solid #e5e7eb; margin: 2rem 0;">
-    <h2 style="color: #1e40af; margin-bottom: 1rem;">{get_translation("instructions")}</h2>
-    <ol style="color: #374151; line-height: 1.6;">
-        <li><strong style="color: #3b82f6;">{get_translation("upload_step")}</strong></li>
-        <li><strong style="color: #7c3aed;">{get_translation("analysis_step")}</strong></li>
-        <li><strong style="color: #dc2626;">{get_translation("export_step")}</strong></li>
-    </ol>
+            else:
+                # Instructions
+                st.markdown(f"""
+        <div style="background: rgba(255, 255, 255, 0.9); padding: 2rem; border-radius: 15px; border: 1px solid #e5e7eb; margin: 2rem 0;">
+        <h2 style="color: #1e40af; margin-bottom: 1rem;">{get_translation("instructions")}</h2>
+        <ol style="color: #374151; line-height: 1.6;">
+            <li><strong style="color: #3b82f6;">{get_translation("upload_step")}</strong></li>
+            <li><strong style="color: #7c3aed;">{get_translation("analysis_step")}</strong></li>
+            <li><strong style="color: #dc2626;">{get_translation("export_step")}</strong></li>
+        </ol>
 
-    <h3 style="color: #1e40af; margin: 1.5rem 0 1rem 0;">{get_translation("features_title")}</h3>
+        <h3 style="color: #1e40af; margin: 1.5rem 0 1rem 0;">{get_translation("features_title")}</h3>
 
-    <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #3b82f6;">
-    <h4 style="color: #1e40af; margin-bottom: 0.5rem;">{get_translation("descriptive_features")}:</h4>
-    <ul style="color: #374151; line-height: 1.5;">
-        {get_translation("descriptive_features_list")}
-    </ul>
-    </div>
+        <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #3b82f6;">
+        <h4 style="color: #1e40af; margin-bottom: 0.5rem;">{get_translation("descriptive_features")}:</h4>
+        <ul style="color: #374151; line-height: 1.5;">
+            {get_translation("descriptive_features_list")}
+        </ul>
+        </div>
 
-    <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #dc2626;">
-    <h4 style="color: #dc2626; margin-bottom: 0.5rem;">{get_translation("association_features")}:</h4>
-    <ul style="color: #374151; line-height: 1.5;">
-        {get_translation("association_features_list")}
-    </ul>
-    </div>
+        <div style="background: #f8fafc; padding: 1rem; border-radius: 10px; margin: 1rem 0; border-left: 4px solid #dc2626;">
+        <h4 style="color: #dc2626; margin-bottom: 0.5rem;">{get_translation("association_features")}:</h4>
+        <ul style="color: #374151; line-height: 1.5;">
+            {get_translation("association_features_list")}
+        </ul>
+        </div>
 
-    <h3 style="color: #ea580c; margin: 1.5rem 0 1rem 0;">{get_translation("supported_formats")}</h3>
-    <ul style="color: #374151; line-height: 1.5;">
-      {get_translation("supported_formats_list")}
-    </ul>
+        <h3 style="color: #ea580c; margin: 1.5rem 0 1rem 0;">{get_translation("supported_formats")}</h3>
+        <ul style="color: #374151; line-height: 1.5;">
+          {get_translation("supported_formats_list")}
+        </ul>
 
-    <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); padding: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6; margin: 1rem 0;">
-    <p style="color: #1e40af; margin: 0; font-weight: 600;">💡 <strong>Tip</strong>: {get_translation("tip")}</p>
-    </div>
-    </div>
-            """, unsafe_allow_html=True)
+        <div style="background: linear-gradient(135deg, #eff6ff, #dbeafe); padding: 1rem; border-radius: 10px; border-left: 4px solid #3b82f6; margin: 1rem 0;">
+        <p style="color: #1e40af; margin: 0; font-weight: 600;">💡 <strong>Tip</strong>: {get_translation("tip")}</p>
+        </div>
+        </div>
+                """, unsafe_allow_html=True)
             
     except Exception as e:
         st.error(f"Unexpected error in main application: {str(e)}")
