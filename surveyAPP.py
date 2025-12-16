@@ -1011,62 +1011,49 @@ st.markdown("""
         text-align: center;
         margin-bottom: 2rem;
         text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
+        animation: textGlow 3s ease-in-out infinite alternate;
     }
     
-    .profile-card {
-        background: linear-gradient(135deg, #f8fafc, #f1f5f9);
-        border: 1px solid #e2e8f0;
-        border-radius: 16px;
-        padding: 2rem;
+    .analysis-type-card {
+        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+        border: 1px solid #bae6fd;
+        border-radius: 12px;
+        padding: 1.5rem;
         margin: 1rem 0;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
     }
     
-    .profile-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
-    }
-    
-    .profile-section {
-        margin-bottom: 2rem;
-    }
-    
-    .profile-section-title {
-        font-size: 1.4rem;
+    .analysis-type-title {
+        font-size: 1.2rem;
         font-weight: 600;
         color: #1e40af;
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
-        gap: 0.5rem;
+        margin-bottom: 0.5rem;
     }
     
-    .profile-item {
-        display: flex;
-        margin-bottom: 0.8rem;
+    .analysis-type-desc {
+        color: #64748b;
+        font-size: 0.9rem;
+        line-height: 1.4;
     }
     
-    .profile-label {
-        font-weight: 600;
-        color: #374151;
-        width: 150px;
-        flex-shrink: 0;
+    .correlation-strength-bar {
+        height: 8px;
+        background: linear-gradient(90deg, #ef4444 0%, #f59e0b 25%, #eab308 50%, #84cc16 75%, #22c55e 100%);
+        border-radius: 4px;
+        position: relative;
+        margin: 1rem 0;
     }
     
-    .profile-value {
-        color: #1f2937;
-        flex-grow: 1;
-    }
-    
-    .project-description {
-        line-height: 1.6;
-        color: #4b5563;
-        background: rgba(255, 255, 255, 0.7);
-        padding: 1rem;
-        border-radius: 8px;
-        border-left: 4px solid #3b82f6;
-        margin-top: 1rem;
+    .correlation-indicator {
+        position: absolute;
+        top: -8px;
+        width: 24px;
+        height: 24px;
+        background: white;
+        border: 3px solid #3b82f6;
+        border-radius: 50%;
+        transform: translateX(-50%);
+        transition: left 0.3s ease;
     }
 </style>
 
@@ -1619,59 +1606,118 @@ def profile_page():
     st.markdown(f'<h1 class="profile-header">{get_translation("profile_title")}</h1>', unsafe_allow_html=True)
     
     # Main Developer Card
-    st.markdown(f"""
-    <div class="profile-card">
-        <div class="profile-section">
-            <div class="profile-section-title">{get_translation("main_developer")}</div>
-            
-            <div class="profile-item">
-                <div class="profile-label">{get_translation("name")}:</div>
-                <div class="profile-value">Yoseph Sihite</div>
-            </div>
-            
-            <div class="profile-item">
-                <div class="profile-label">{get_translation("student_id")}:</div>
-                <div class="profile-value">004202400113</div>
-            </div>
-            
-            <div class="profile-item">
-                <div class="profile-label">{get_translation("group")}:</div>
-                <div class="profile-value">Group 2 Linear Algebra</div>
-            </div>
-            
-            <div class="profile-item">
-                <div class="profile-label">{get_translation("role")}:</div>
-                <div class="profile-value">Lead Group</div>
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    with st.container():
+        st.markdown("---")
+        
+        # Developer Information
+        col1, col2 = st.columns([1, 2])
+        
+        with col1:
+            st.markdown("### 👤 Informasi Pengembang")
+            st.markdown(f"**{get_translation('name')}:** Yoseph Sihite")
+            st.markdown(f"**{get_translation('student_id')}:** 004202400113")
+            st.markdown(f"**{get_translation('group')}:** Group 2 Linear Algebra")
+            st.markdown(f"**{get_translation('role')}:** Lead Group")
+        
+        with col2:
+            st.markdown("### 📊 Statistik Proyek")
+            st.markdown("**Status:** ✅ Selesai")
+            st.markdown("**Tahun:** 2024")
+            st.markdown("**Mata Kuliah:** Aljabar Linear")
+            st.markdown("**Teknologi:** Python, Streamlit, Plotly")
     
     # Project Overview
-    st.markdown(f"""
-    <div class="profile-card">
-        <div class="profile-section">
-            <div class="profile-section-title">{get_translation("project_overview")}</div>
-            
-            <div class="project-description">
-                Studio Transformasi Matriks adalah aplikasi web interaktif yang dikembangkan sebagai Proyek Akhir Mata Kuliah Aljabar Linear. Aplikasi ini dirancang untuk memvisualisasikan konsep transformasi matriks agar lebih mudah dipahami melalui pendekatan visualisasi berbasis web.
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown("### 🎯 Ikhtisar Proyek")
+    
+    project_text = """
+    Studio Transformasi Matriks adalah aplikasi web interaktif yang dikembangkan sebagai Proyek Akhir Mata Kuliah Aljabar Linear. Aplikasi ini dirancang untuk memvisualisasikan konsep transformasi matriks agar lebih mudah dipahami melalui pendekatan visualisasi berbasis web.
+    
+    **Fitur Utama:**
+    - Visualisasi transformasi matriks secara real-time
+    - Interface interaktif untuk manipulasi matriks
+    - Demonstrasi konsep aljabar linear secara visual
+    - Support berbagai jenis transformasi (rotasi, skala, translasi, dll.)
+    """
+    
+    st.write(project_text)
     
     # Contributions
-    st.markdown(f"""
-    <div class="profile-card">
-        <div class="profile-section">
-            <div class="profile-section-title">{get_translation("contributions")}</div>
-            
-            <div class="project-description">
-                Seluruh proses pengembangan proyek ini dikerjakan secara mandiri oleh Yoseph Sihite. Kontribusi yang dilakukan mencakup perancangan konsep dan arsitektur aplikasi, pengembangan algoritma transformasi matriks, serta implementasi konsep aljabar linear ke dalam sistem visual interaktif. Selain itu, pengembangan web app, termasuk desain antarmuka pengguna, pengelolaan logika aplikasi, dan pengujian fungsionalitas, sepenuhnya diselesaikan secara individual karena tidak adanya anggota lain dalam Group 2.
-            </div>
-        </div>
-    </div>
-    """, unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown("### 💪 Kontribusi")
+    
+    contribution_text = """
+    Seluruh proses pengembangan proyek ini dikerjakan secara mandiri oleh **Yoseph Sihite**. Kontribusi yang dilakukan mencakup:
+    
+    **🔧 Pengembangan Teknis:**
+    - Perancangan konsep dan arsitektur aplikasi
+    - Pengembangan algoritma transformasi matriks
+    - Implementasi konsep aljabar linear ke dalam sistem visual interaktif
+    - Pengembangan web application dengan Streamlit
+    - Desain antarmuka pengguna yang intuitif
+    - Implementasi logika aplikasi yang robust
+    - Pengujian fungsionalitas dan debugging
+    
+    **🎨 Desain & UX:**
+    - Desain antarmuka pengguna yang user-friendly
+    - Implementasi visualisasi yang menarik dan informatif
+    - Responsive design untuk berbagai ukuran layar
+    - Animasi dan transisi yang smooth
+    
+    **📚 Implementasi Konsep:**
+    - Transformasi geometri 2D dan 3D
+    - Operasi matriks fundamental
+    - Konsep eigenvalues dan eigenvectors
+    - Dekomposisi matriks
+    - Transformasi linear dan aplikasinya
+    
+    **Catatan:** Pengembangan dilakukan secara individual karena tidak adanya anggota lain dalam Group 2, sehingga semua aspek pengembangan dari perencanaan hingga implementasi diselesaikan secara mandiri.
+    """
+    
+    st.write(contribution_text)
+    
+    # Skills & Technologies
+    st.markdown("---")
+    st.markdown("### 🛠️ Teknologi & Keahlian")
+    
+    tech_col1, tech_col2, tech_col3 = st.columns(3)
+    
+    with tech_col1:
+        st.markdown("**🐍 Bahasa Pemrograman**")
+        st.write("• Python")
+        st.write("• JavaScript")
+        st.write("• HTML/CSS")
+        
+    with tech_col2:
+        st.markdown("**📚 Libraries & Framework**")
+        st.write("• Streamlit")
+        st.write("• Plotly")
+        st.write("• NumPy")
+        st.write("• Pandas")
+        st.write("• SciPy")
+        
+    with tech_col3:
+        st.markdown("**🎯 Area Keahlian**")
+        st.write("• Aljabar Linear")
+        st.write("• Visualisasi Data")
+        st.write("• Web Development")
+        st.write("• Matematika Komputasi")
+    
+    # Contact & Footer
+    st.markdown("---")
+    st.markdown("### 📧 Informasi Kontak")
+    st.write("**Universitas:** [Nama Universitas]")
+    st.write("**Email:** [email@example.com]")
+    st.write("**GitHub:** [github.com/yosephsihite]")
+    
+    st.markdown("---")
+    st.markdown(
+        f"<div style='text-align: center; color: #64748b; margin-top: 2rem;'>"
+        f"<em>Proyek ini dikembangkan sebagai bagian dari Mata Kuliah Aljabar Linear • "
+        f"Tahun Akademik 2024</em>"
+        f"</div>", 
+        unsafe_allow_html=True
+    )
 
 def main():
     try:
@@ -1842,7 +1888,7 @@ def main():
             
     except Exception as e:
         st.error(f"Unexpected error in main application: {str(e)}")
-        st.error("Please refresh the page and try again.")
+        st.error("Please refresh page and try again.")
         if st.button("Clear Session and Restart"):
             st.session_state.clear()
             st.rerun()
