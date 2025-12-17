@@ -1013,48 +1013,6 @@ st.markdown("""
         text-shadow: 0px 2px 4px rgba(0,0,0,0.1);
         animation: textGlow 3s ease-in-out infinite alternate;
     }
-    
-    .analysis-type-card {
-        background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
-        border: 1px solid #bae6fd;
-        border-radius: 12px;
-        padding: 1.5rem;
-        margin: 1rem 0;
-        box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
-    }
-    
-    .analysis-type-title {
-        font-size: 1.2rem;
-        font-weight: 600;
-        color: #1e40af;
-        margin-bottom: 0.5rem;
-    }
-    
-    .analysis-type-desc {
-        color: #64748b;
-        font-size: 0.9rem;
-        line-height: 1.4;
-    }
-    
-    .correlation-strength-bar {
-        height: 8px;
-        background: linear-gradient(90deg, #ef4444 0%, #f59e0b 25%, #eab308 50%, #84cc16 75%, #22c55e 100%);
-        border-radius: 4px;
-        position: relative;
-        margin: 1rem 0;
-    }
-    
-    .correlation-indicator {
-        position: absolute;
-        top: -8px;
-        width: 24px;
-        height: 24px;
-        background: white;
-        border: 3px solid #3b82f6;
-        border-radius: 50%;
-        transform: translateX(-50%);
-        transition: left 0.3s ease;
-    }
 </style>
 
 <!-- Floating elements -->
@@ -1607,74 +1565,106 @@ def profile_page():
     
     # Main Developer Card
     with st.container():
-        st.markdown("---")
-        
-        # Developer Information
+        # Profile Header with Image and Basic Info
         col1, col2 = st.columns([1, 2])
         
         with col1:
-            st.markdown("### 👤 Informasi Pengembang")
-            st.markdown(f"**{get_translation('name')}:** Yoseph Sihite")
-            st.markdown(f"**{get_translation('student_id')}:** 004202400113")
-            st.markdown(f"**{get_translation('group')}:** Group 2 Linear Algebra")
-            st.markdown(f"**{get_translation('role')}:** Lead Group")
+            # Profile Image Placeholder
+            st.markdown("""
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="width: 150px; height: 150px; background-color: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 4px solid #3b82f6;">
+                    <span style="font-size: 60px; color: #3b82f6;">👤</span>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+            
+            # Name and Location
+            st.markdown("""
+            <div style="text-align: center; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                <h2 style="color: #1e40af; margin: 0 0 10px 0; font-size: 24px;">Yoseph Sihite</h2>
+                <p style="color: #64748b; margin: 0; font-size: 16px;">📍 Cikarang, Indonesia</p>
+            </div>
+            """, unsafe_allow_html=True)
         
         with col2:
-            st.markdown("### 📊 Statistik Proyek")
-            st.markdown("**Status:** ✅ Selesai")
-            st.markdown("**Tahun:** 2024")
-            st.markdown("**Mata Kuliah:** Aljabar Linear")
-            st.markdown("**Teknologi:** Python, Streamlit, Plotly")
+            # Main Developer Information
+            st.markdown("""
+            <div style="background: linear-gradient(135deg, #3b82f6, #1e40af); color: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 20px rgba(59, 130, 246, 0.3);">
+                <h3 style="margin: 0 0 15px 0; font-size: 20px; display: flex; align-items: center;">
+                    <span style="margin-right: 10px;">👨‍💻</span> Main Developer
+                </h3>
+                <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
+                    <p style="margin: 5px 0;"><strong>Nama:</strong> Yoseph Sihite</p>
+                    <p style="margin: 5px 0;"><strong>Student ID:</strong> 004202400113</p>
+                    <p style="margin: 5px 0;"><strong>Group:</strong> Group 2 Linear Algebra</p>
+                    <p style="margin: 5px 0;"><strong>Role:</strong> Lead Group</p>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
     
     # Project Overview
     st.markdown("---")
     st.markdown("### 🎯 Ikhtisar Proyek")
     
-    project_text = """
-    Studio Transformasi Matriks adalah aplikasi web interaktif yang dikembangkan sebagai Proyek Akhir Mata Kuliah Aljabar Linear. Aplikasi ini dirancang untuk memvisualisasikan konsep transformasi matriks agar lebih mudah dipahami melalui pendekatan visualisasi berbasis web.
+    st.markdown("""
+    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin-bottom: 25px;">
+        <h3 style="color: #1e40af; margin: 0 0 15px 0; font-size: 20px;">Studio Transformasi Matriks</h3>
+        <p style="color: #374151; line-height: 1.6; margin: 0;">
+            Aplikasi web interaktif untuk visualisasi konsep transformasi matriks dalam mata kuliah Aljabar Linear. 
+            Dikembangkan sebagai proyek akhir untuk membantu pemahaman konsep aljabar linear melalui pendekatan visual.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
     
-    **Fitur Utama:**
-    - Visualisasi transformasi matriks secara real-time
-    - Interface interaktif untuk manipulasi matriks
-    - Demonstrasi konsep aljabar linear secara visual
-    - Support berbagai jenis transformasi (rotasi, skala, translasi, dll.)
-    """
-    
-    st.write(project_text)
-    
-    # Contributions
-    st.markdown("---")
+    # Contributions Section
     st.markdown("### 💪 Kontribusi")
     
-    contribution_text = """
-    Seluruh proses pengembangan proyek ini dikerjakan secara mandiri oleh **Yoseph Sihite**. Kontribusi yang dilakukan mencakup:
-    
-    **🔧 Pengembangan Teknis:**
-    - Perancangan konsep dan arsitektur aplikasi
-    - Pengembangan algoritma transformasi matriks
-    - Implementasi konsep aljabar linear ke dalam sistem visual interaktif
-    - Pengembangan web application dengan Streamlit
-    - Desain antarmuka pengguna yang intuitif
-    - Implementasi logika aplikasi yang robust
-    - Pengujian fungsionalitas dan debugging
-    
-    **🎨 Desain & UX:**
-    - Desain antarmuka pengguna yang user-friendly
-    - Implementasi visualisasi yang menarik dan informatif
-    - Responsive design untuk berbagai ukuran layar
-    - Animasi dan transisi yang smooth
-    
-    **📚 Implementasi Konsep:**
-    - Transformasi geometri 2D dan 3D
-    - Operasi matriks fundamental
-    - Konsep eigenvalues dan eigenvectors
-    - Dekomposisi matriks
-    - Transformasi linear dan aplikasinya
-    
-    **Catatan:** Pengembangan dilakukan secara individual karena tidak adanya anggota lain dalam Group 2, sehingga semua aspek pengembangan dari perencanaan hingga implementasi diselesaikan secara mandiri.
-    """
-    
-    st.write(contribution_text)
+    st.markdown("""
+    <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+        <h3 style="color: #1e40af; margin: 0 0 15px 0; font-size: 20px;">Kontribusi Pengembangan</h3>
+        
+        <div style="margin-bottom: 20px;">
+            <h4 style="color: #3b82f6; margin: 0 0 10px 0; font-size: 18px;">🔧 Pengembangan Teknis</h4>
+            <ul style="color: #374151; line-height: 1.6; margin: 0; padding-left: 20px;">
+                <li>Perancangan konsep dan arsitektur aplikasi</li>
+                <li>Pengembangan algoritma transformasi matriks</li>
+                <li>Implementasi konsep aljabar linear ke dalam sistem visual interaktif</li>
+                <li>Pengembangan web application dengan Streamlit</li>
+                <li>Desain antarmuka pengguna yang intuitif</li>
+                <li>Implementasi logika aplikasi yang robust</li>
+                <li>Pengujian fungsionalitas dan debugging</li>
+            </ul>
+        </div>
+        
+        <div style="margin-bottom: 20px;">
+            <h4 style="color: #3b82f6; margin: 0 0 10px 0; font-size: 18px;">🎨 Desain & UX</h4>
+            <ul style="color: #374151; line-height: 1.6; margin: 0; padding-left: 20px;">
+                <li>Desain antarmuka pengguna yang user-friendly</li>
+                <li>Implementasi visualisasi yang menarik dan informatif</li>
+                <li>Responsive design untuk berbagai ukuran layar</li>
+                <li>Animasi dan transisi yang smooth</li>
+            </ul>
+        </div>
+        
+        <div>
+            <h4 style="color: #3b82f6; margin: 0 0 10px 0; font-size: 18px;">📚 Implementasi Konsep</h4>
+            <ul style="color: #374151; line-height: 1.6; margin: 0; padding-left: 20px;">
+                <li>Transformasi geometri 2D dan 3D</li>
+                <li>Operasi matriks fundamental</li>
+                <li>Konsep eigenvalues dan eigenvectors</li>
+                <li>Dekomposisi matriks</li>
+                <li>Transformasi linear dan aplikasinya</li>
+            </ul>
+        </div>
+        
+        <div style="background: #f0f9ff; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #3b82f6;">
+            <p style="color: #1e40af; margin: 0; font-weight: 600;">
+                <strong>Catatan:</strong> Pengembangan dilakukan secara individual karena tidak adanya anggota lain dalam Group 2, 
+                sehingga semua aspek pengembangan dari perencanaan hingga implementasi diselesaikan secara mandiri.
+            </p>
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     # Skills & Technologies
     st.markdown("---")
@@ -1683,36 +1673,77 @@ def profile_page():
     tech_col1, tech_col2, tech_col3 = st.columns(3)
     
     with tech_col1:
-        st.markdown("**🐍 Bahasa Pemrograman**")
-        st.write("• Python")
-        st.write("• JavaScript")
-        st.write("• HTML/CSS")
+        st.markdown("""
+        <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: 100%;">
+            <h4 style="color: #1e40af; margin: 0 0 15px 0; font-size: 18px;">🐍 Bahasa Pemrograman</h4>
+            <div style="color: #374151; line-height: 1.8;">
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;">• Python</div>
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;">• JavaScript</div>
+                <div style="padding: 8px 0;">• HTML/CSS</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
     with tech_col2:
-        st.markdown("**📚 Libraries & Framework**")
-        st.write("• Streamlit")
-        st.write("• Plotly")
-        st.write("• NumPy")
-        st.write("• Pandas")
-        st.write("• SciPy")
+        st.markdown("""
+        <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: 100%;">
+            <h4 style="color: #1e40af; margin: 0 0 15px 0; font-size: 18px;">📚 Libraries & Framework</h4>
+            <div style="color: #374151; line-height: 1.8;">
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;">• Streamlit</div>
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;">• Plotly</div>
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;">• NumPy</div>
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;">• Pandas</div>
+                <div style="padding: 8px 0;">• SciPy</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
     with tech_col3:
-        st.markdown("**🎯 Area Keahlian**")
-        st.write("• Aljabar Linear")
-        st.write("• Visualisasi Data")
-        st.write("• Web Development")
-        st.write("• Matematika Komputasi")
+        st.markdown("""
+        <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); height: 100%;">
+            <h4 style="color: #1e40af; margin: 0 0 15px 0; font-size: 18px;">🎯 Area Keahlian</h4>
+            <div style="color: #374151; line-height: 1.8;">
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;">• Aljabar Linear</div>
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;">• Visualisasi Data</div>
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;">• Web Development</div>
+                <div style="padding: 8px 0;">• Matematika Komputasi</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     # Contact & Footer
     st.markdown("---")
     st.markdown("### 📧 Informasi Kontak")
-    st.write("**Universitas:** [Nama Universitas]")
-    st.write("**Email:** [email@example.com]")
-    st.write("**GitHub:** [github.com/yosephsihite]")
+    
+    contact_col1, contact_col2 = st.columns(2)
+    
+    with contact_col1:
+        st.markdown("""
+        <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h4 style="color: #1e40af; margin: 0 0 15px 0; font-size: 18px;">🏫 Informasi Akademik</h4>
+            <div style="color: #374151; line-height: 1.8;">
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;"><strong>Universitas:</strong> [Nama Universitas]</div>
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;"><strong>Mata Kuliah:</strong> Aljabar Linear</div>
+                <div style="padding: 8px 0;"><strong>Tahun Akademik:</strong> 2024</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    
+    with contact_col2:
+        st.markdown("""
+        <div style="background: white; padding: 20px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h4 style="color: #1e40af; margin: 0 0 15px 0; font-size: 18px;">📞 Kontak</h4>
+            <div style="color: #374151; line-height: 1.8;">
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;"><strong>📧 Email:</strong> [email@example.com]</div>
+                <div style="padding: 8px 0; border-bottom: 1px solid #f1f5f9;"><strong>📱 Telepon:</strong> [+62 xxx-xxxx-xxxx]</div>
+                <div style="padding: 8px 0;"><strong>🐙 GitHub:</strong> [github.com/yosephsihite]</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     st.markdown("---")
     st.markdown(
-        f"<div style='text-align: center; color: #64748b; margin-top: 2rem;'>"
+        f"<div style='text-align: center; color: #64748b; margin-top: 2rem; padding: 20px; background: rgba(255,255,255,0.8); border-radius: 15px;'>"
         f"<em>Proyek ini dikembangkan sebagai bagian dari Mata Kuliah Aljabar Linear • "
         f"Tahun Akademik 2024</em>"
         f"</div>", 
