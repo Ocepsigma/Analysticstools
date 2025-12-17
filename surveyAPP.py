@@ -1023,7 +1023,7 @@ def profile_page():
                 <div style="background: rgba(255,255,255,0.1); padding: 15px; border-radius: 10px; margin-top: 15px;">
                     <p style="margin: 5px 0;"><strong>Nama:</strong> Yoseph Sihite</p>
                     <p style="margin: 5px 0;"><strong>Student ID:</strong> 004202400113</p>
-                    <p style="margin: 5px 0;"><strong>Group:</strong> Group 2 Linear Algebra</p>
+                    <p style="margin: 5px 0;"><strong>Group:</strong> Group 2 Statistics 1</p>
                     <p style="margin: 5px 0;"><strong>Role:</strong> Lead Group</p>
                 </div>
             </div>
@@ -1040,7 +1040,7 @@ def profile_page():
     st.markdown("#### Kontribusi Pengembangan")
     
     st.write("""
-    Ada pelaksanaan final project Statistik 1, saya berkontribusi secara penuh dengan mengerjakan seluruh tahapan proyek secara mandiri. 
+    Ada pelaksanaan final project Statistics 1, saya berkontribusi secara penuh dengan mengerjakan seluruh tahapan proyek secara mandiri. 
     Mulai dari perencanaan konsep, pengolahan dan analisis data, hingga perancangan dan pengembangan web app, 
     seluruh proses dikerjakan sendiri tanpa pembagian tugas dengan anggota lain.
     """)
@@ -1051,7 +1051,7 @@ def profile_page():
     """)
     
     st.write("""
-    Kontribusi ini mencerminkan kemandirian, pemahaman materi Statistik 1, serta kemampuan saya dalam 
+    Kontribusi ini mencerminkan kemandirian, pemahaman materi Statistics 1, serta kemampuan saya dalam 
     mengimplementasikan analisis statistik ke dalam bentuk aplikasi berbasis web secara utuh.
     """)
     
@@ -1077,7 +1077,7 @@ def profile_page():
     st.markdown("---")
     st.markdown(
         f"<div style='text-align: center; color: #64748b; margin-top: 2rem; padding: 20px; background: rgba(255,255,255,0.8); border-radius: 15px;'>"
-        f"<em>Proyek ini dikembangkan sebagai bagian dari Mata Kuliah Statistik 1 • "
+        f"<em>Proyek ini dikembangkan sebagai bagian dari Mata Kuliah Statistics 1 • "
         f"Tahun Akademik 2024</em>"
         f"</div>", 
         unsafe_allow_html=True
