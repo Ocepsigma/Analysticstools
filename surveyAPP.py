@@ -637,7 +637,7 @@ def automatic_association_analysis(df, var1, var2, alpha=0.05):
             x = df[var1].dropna()
             y = df[var2].dropna()
             
-            # Align the data
+            # Align data
             common_idx = x.index.intersection(y.index)
             x = x.loc[common_idx]
             y = y.loc[common_idx]
@@ -692,7 +692,7 @@ def automatic_association_analysis(df, var1, var2, alpha=0.05):
             x = df[var1].dropna()
             y = df[var2].dropna()
             
-            # Align the data
+            # Align data
             common_idx = x.index.intersection(y.index)
             x = x.loc[common_idx]
             y = y.loc[common_idx]
@@ -1092,7 +1092,7 @@ def main():
         )
         
         # Language buttons
-        col1, col2, col3 = st.columns(3)
+        col1, col2 = st.columns(2)
         with col1:
             if st.button("🇮🇩 ID", key="lang_id"):
                 st.session_state.language = 'id'
@@ -1100,10 +1100,6 @@ def main():
         with col2:
             if st.button("🇬🇧 EN", key="lang_en"):
                 st.session_state.language = 'en'
-                st.rerun()
-        with col3:
-            if st.button("🇨🇳 中文", key="lang_zh"):
-                st.session_state.language = 'zh'
                 st.rerun()
         
         if page == "👤 Profil Pembuat":
