@@ -1033,40 +1033,44 @@ def profile_page():
     
     st.markdown("""
     <div style="background: white; padding: 25px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-        <h3 style="color: #1e40af; margin: 0 0 15px 0; font-size: 20px;">Kontribusi Pengembangan</h3>
-        
-        <p style="color: #374151; line-height: 1.6; margin: 0 0 15px 0;">
-            Ada pelaksanaan final project Statistik 1, saya berkontribusi secara penuh dengan mengerjakan seluruh tahapan proyek secara mandiri. 
-            Mulai dari perencanaan konsep, pengolahan dan analisis data, hingga perancangan dan pengembangan web app, 
-            seluruh proses dikerjakan sendiri tanpa pembagian tugas dengan anggota lain.
-        </p>
-        
-        <p style="color: #374151; line-height: 1.6; margin: 0 0 15px 0;">
-            Hal ini dikarenakan pada Kelompok 2 saya merupakan satu-satunya anggota yang aktif, sehingga tanggung jawab 
-            penyelesaian proyek dari awal hingga akhir sepenuhnya berada pada saya.
-        </p>
-        
-        <p style="color: #374151; line-height: 1.6; margin: 0 0 20px 0;">
-            Kontribusi ini mencerminkan kemandirian, pemahaman materi Statistik 1, serta kemampuan saya dalam 
-            mengimplementasikan analisis statistik ke dalam bentuk aplikasi berbasis web secara utuh.
-        </p>
-        
-        <div style="background: #f0f9ff; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #3b82f6;">
-            <p style="color: #1e40af; margin: 0; font-weight: 600;">
-                <strong>Tahapan yang Dikerjakan:</strong>
-            </p>
-            <ul style="color: #1e40af; margin: 10px 0 0 20px; padding: 0;">
-                <li>Perencanaan konsep proyek</li>
-                <li>Pengolahan dan analisis data statistik</li>
-                <li>Perancangan arsitektur aplikasi</li>
-                <li>Pengembangan web application dengan Streamlit</li>
-                <li>Implementasi visualisasi data interaktif</li>
-                <li>Testing dan debugging fungsionalitas</li>
-                <li>Dokumentasi dan presentasi hasil</li>
-            </ul>
-        </div>
-    </div>
     """, unsafe_allow_html=True)
+    
+    st.markdown("#### Kontribusi Pengembangan")
+    
+    st.write("""
+    Ada pelaksanaan final project Statistik 1, saya berkontribusi secara penuh dengan mengerjakan seluruh tahapan proyek secara mandiri. 
+    Mulai dari perencanaan konsep, pengolahan dan analisis data, hingga perancangan dan pengembangan web app, 
+    seluruh proses dikerjakan sendiri tanpa pembagian tugas dengan anggota lain.
+    """)
+    
+    st.write("""
+    Hal ini dikarenakan pada Kelompok 2 saya merupakan satu-satunya anggota yang aktif, sehingga tanggung jawab 
+    penyelesaian proyek dari awal hingga akhir sepenuhnya berada pada saya.
+    """)
+    
+    st.write("""
+    Kontribusi ini mencerminkan kemandirian, pemahaman materi Statistik 1, serta kemampuan saya dalam 
+    mengimplementasikan analisis statistik ke dalam bentuk aplikasi berbasis web secara utuh.
+    """)
+    
+    st.markdown("""
+    <div style="background: #f0f9ff; padding: 15px; border-radius: 10px; margin-top: 20px; border-left: 4px solid #3b82f6;">
+    """, unsafe_allow_html=True)
+    
+    st.markdown("**Tahapan yang Dikerjakan:**")
+    
+    st.write("""
+    - Perencanaan konsep proyek
+    - Pengolahan dan analisis data statistik
+    - Perancangan arsitektur aplikasi
+    - Pengembangan web application dengan Streamlit
+    - Implementasi visualisasi data interaktif
+    - Testing dan debugging fungsionalitas
+    - Dokumentasi dan presentasi hasil
+    """)
+    
+    st.markdown("</div>", unsafe_allow_html=True)
+    st.markdown("</div>", unsafe_allow_html=True)
     
     st.markdown("---")
     st.markdown(
