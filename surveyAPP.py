@@ -994,11 +994,13 @@ def profile_page():
         col1, col2 = st.columns([1, 2])
         
         with col1:
-            # Profile Image Placeholder
+            # Profile Image
             st.markdown("""
             <div style="text-align: center; margin-bottom: 20px;">
-                <div style="width: 150px; height: 150px; background-color: #e0e7ff; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; border: 4px solid #3b82f6;">
-                    <span style="font-size: 60px; color: #3b82f6;">👤</span>
+                <div style="width: 150px; height: 150px; border-radius: 50%; overflow: hidden; border: 4px solid #3b82f6; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); margin: 0 auto;">
+                    <img src="https://raw.githubusercontent.com/Ocepsigma/Analysticstools/main/foto_yoseph.jpg" 
+                         alt="Profile Photo" 
+                         style="width: 100%; height: 100%; object-fit: cover; display: block;">
                 </div>
             </div>
             """, unsafe_allow_html=True)
